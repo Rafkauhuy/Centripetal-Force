@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gaya Sentripetal Dashboard</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #020617;
+      color: white;
+      text-align: center;
+    }
+
+    .light {
+      background: white;
+      color: black;
+    }
+
+    h1 {
+      margin-top: 20px;
+      color: #38bdf8;
+      text-shadow: 0 0 15px #38bdf8;
+    }
+
+    .logo img {
+      width: 80px;
+      border-radius: 50%;
+      box-shadow: 0 0 20px #38bdf8;
+    }
+
+    .team {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(30,41,59,0.7);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(56,189,248,0.3);
+      backdrop-filter: blur(10px);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px #38bdf8;
+    }
+
+    .big {
+      font-size: 28px;
+      font-weight: bold;
+      color: #22c55e;
+    }
+
+    button, input {
+      margin: 5px;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      font-weight: bold;
+    }
+
+    .start { background: #22c55e; }
+    .stop { background: #ef4444; }
+    .reset { background: #f59e0b; }
+
+    canvas {
+      background: rgba(15,23,42,0.8);
+      border-radius: 15px;
+      padding: 10px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      max-height: 200px;
+      overflow-y: auto;
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="logo">
+  <img src="https://via.placeholder.com/80">
+</div>
+
+<h1>⚡ Gaya Sentripetal IoT</h1>
+
+<div class="team">
+  Kelompok 6: Nama1, Nama2, Nama3, Nama4
+</div>
+
+<h3 id="status">Status: Normal</h3>
+<h3 id="timer">0 s</h3>
+
+<div class="container">
+  <div class="card"><h3>Force</h3><div id="force" class="big">0</div></div>
+  <div class="card"><h3>Max</h3><div id="max" class="big">0</div></div>
+  <div class="card"><h3>Min</h3><div id="min" class="big">0</div></div>
+  <div class="card"><h3>Average</h3><div id="avg" class="big">0</div></div>
+</div>
+
+<div class="card" style="margin:20px;">
+  <canvas id="chart"></canvas>
+</div>
+
+<div>
+  <button class="start" onclick="startData()">START</button>
+  <button class="stop" onclick="stopData()">STOP</button>
+  <button class="reset" onclick="resetData()">RESET</button>
+  <button onclick="toggleMode()">MODE</button>
+  <button onclick="downloadCSV()">DOWNLOAD</button>
+</div>
+
+<div>
+  <input type="number" id="limit" placeholder="Set limit">
+  <button onclick="setLimit()">SET LIMIT</button>
+</div>
+
+<div class="card" style="margin:20px;">
+  <h3>History</h3>
+  <ul id="history"></ul>
+</div>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "API_KEY_KAMU",
+    authDomain: "PROJECT_ID.firebaseapp.com",
+    databaseURL: "https://PROJECT_ID-default-rtdb.firebaseio.com/",
+    projectId: "PROJECT_ID",
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  let data = [];
+  let labels = [];
+
+  let maxVal = -Infinity;
+  let minVal = Infinity;
+  let sum = 0;
+  let count = 0;
+
+  let running = true;
+  let limit = 2;
+  let time = 0;
+
+  function beep() {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(800, ctx.currentTime);
+    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.1);
+  }
+
+  const chart = new Chart(document.getElementById('chart'), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Force (N)',
+        data: data,
+        borderWidth: 2,
+        borderColor: 'lime'
+      }]
+    }
+  });
+
+  const historyList = document.getElementById("history");
+
+  db.ref("sensor/force").on("value", (snapshot) => {
+    let value = snapshot.val();
+
+    if(value !== null && running){
+
+      value = parseFloat(value);
+
+      document.getElementById("force").innerHTML = value.toFixed(2);
+
+      if(data.length > 15){
+        data.shift();
+        labels.shift();
+      }
+
+      data.push(value);
+      labels.push("");
+
+      chart.data.datasets[0].borderColor = value > limit ? 'red' : 'lime';
+      chart.update();
+
+      if(value > limit){
+        beep();
+      }
+
+      // STATUS
+      let statusText = "Normal";
+      if(value < 1){
+        statusText = "Putaran Lambat 🐢";
+      } else if(value < 2){
+        statusText = "Putaran Stabil ⚖️";
+      } else {
+        statusText = "Putaran Cepat ⚡";
+      }
+      document.getElementById("status").innerHTML = "Status: " + statusText;
+
+      if(value > maxVal) maxVal = value;
+      if(value < minVal) minVal = value;
+
+      sum += value;
+      count++;
+
+      let avg = sum / count;
+
+      document.getElementById("max").innerHTML = maxVal.toFixed(2);
+      document.getElementById("min").innerHTML = minVal.toFixed(2);
+      document.getElementById("avg").innerHTML = avg.toFixed(2);
+
+      let t = new Date().toLocaleTimeString();
+
+      let item = document.createElement("li");
+      item.innerHTML = t + " → " + value + " N";
+
+      historyList.prepend(item);
+
+      if(historyList.children.length > 10){
+        historyList.removeChild(historyList.lastChild);
+      }
+    }
+  });
+
+  function startData(){ running = true; }
+  function stopData(){ running = false; }
+
+  function resetData(){
+    data = [];
+    labels = [];
+    maxVal = -Infinity;
+    minVal = Infinity;
+    sum = 0;
+    count = 0;
+    time = 0;
+
+    chart.data.labels = [];
+    chart.data.datasets[0].data = [];
+    chart.update();
+
+    document.getElementById("max").innerHTML = "0";
+    document.getElementById("min").innerHTML = "0";
+    document.getElementById("avg").innerHTML = "0";
+    document.getElementById("timer").innerHTML = "0 s";
+
+    historyList.innerHTML = "";
+  }
+
+  function toggleMode(){
+    document.body.classList.toggle("light");
+  }
+
+  function setLimit(){
+    limit = document.getElementById("limit").value;
+  }
+
+  function downloadCSV() {
+    let csv = "Time,Force (N)\n";
+    let items = document.querySelectorAll("#history li");
+
+    items.forEach(item => {
+      csv += item.innerText.replace(" → ", ",") + "\n";
+    });
+
+    let blob = new Blob([csv], { type: 'text/csv' });
+    let url = window.URL.createObjectURL(blob);
+
+    let a = document.createElement("a");
+    a.href = url;
+    a.download = "data_gaya.csv";
+    a.click();
+  }
+
+  setInterval(()=>{
+    if(running){
+      time++;
+      document.getElementById("timer").innerHTML = time + " s";
+    }
+  },1000);
+</script>
+
+</body>
+</html>
