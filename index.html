@@ -9,6 +9,7 @@
 <style>
 body{
 margin:0;
+padding-top:100px;
 font-family:'Segoe UI';
 color:white;
 text-align:center;
@@ -18,13 +19,40 @@ overflow-x:hidden;
 
 /* LOADER */
 #loader{
-position:fixed;width:100%;height:100%;
+position:fixed;
+width:100%;
+height:100%;
 background:#000;
-display:flex;justify-content:center;align-items:center;
+display:flex;
+justify-content:center;
+align-items:center;
 z-index:9999;
+flex-direction:column;
 }
 .bar{width:250px;height:10px;background:#111;border-radius:10px;}
 .fill{height:100%;width:0%;background:linear-gradient(90deg,#22c55e,#38bdf8);}
+
+/* CONTROL PANEL */
+.control{
+position:fixed;
+top:0;left:0;width:100%;
+z-index:999;
+background:rgba(0,0,0,0.7);
+backdrop-filter:blur(8px);
+padding:10px;
+box-shadow:0 0 20px #38bdf8 inset;
+}
+.control button{
+padding:10px;margin:5px;
+border-radius:10px;border:none;
+font-weight:bold;color:white;
+cursor:pointer;
+}
+.start{background:#22c55e;}
+.stop{background:#ef4444;}
+.reset{background:#f59e0b;}
+.sim{background:#6366f1;}
+.active{box-shadow:0 0 20px currentColor;}
 
 /* BG */
 #stars{position:fixed;width:100%;height:100%;z-index:-3;}
@@ -38,78 +66,42 @@ opacity:0.3;
 }
 
 /* TEXT */
-h1{color:#38bdf8;text-shadow:0 0 15px #38bdf8;}
-.team{font-size:13px;color:#38bdf8;text-shadow:0 0 10px #38bdf8;}
-.quote{color:#22c55e;text-shadow:0 0 10px #22c55e;}
+h1{color:#38bdf8;}
+.team{font-size:13px;color:#38bdf8;}
+.quote{color:#22c55e;}
+#trend{color:gold;}
 
 /* CARD */
-.container{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:10px;padding:10px;
-}
-.card{
-background:rgba(255,255,255,0.05);
-padding:10px;border-radius:10px;
-}
-.big{color:#22c55e;font-size:20px;}
-
-/* BUTTON */
-button{
-padding:10px;margin:5px;
-border-radius:10px;
-background:rgba(255,255,255,0.1);
-border:1px solid #38bdf8;
-color:white;
-transition:0.3s;
-}
-button:hover{transform:scale(1.1);box-shadow:0 0 10px #38bdf8;}
+.container{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px;}
+.card{background:rgba(255,255,255,0.05);padding:10px;border-radius:10px;}
+.big{color:#22c55e;}
 
 /* ORBIT */
-.orbit{
-width:160px;height:160px;
-margin:20px auto;
-border-radius:50%;
-border:2px solid #38bdf8;
-position:relative;
-}
-.dot{
-width:12px;height:12px;
-background:#22c55e;
-border-radius:50%;
-position:absolute;
-top:50%;left:50%;
-transform-origin:-70px center;
-}
-.arrow{
-position:absolute;height:2px;
-background:red;
-top:50%;left:-30px;
-}
+.orbit{width:160px;height:160px;margin:20px auto;border:2px solid #38bdf8;border-radius:50%;position:relative;}
+.dot{width:12px;height:12px;background:#22c55e;border-radius:50%;position:absolute;top:50%;left:50%;transform-origin:-70px center;}
 
 /* GAUGE */
-.gauge{
-width:80%;height:15px;margin:10px auto;
-background:#111;border-radius:10px;
-}
+.gauge{width:80%;height:15px;margin:10px auto;background:#111;border-radius:10px;}
 #gaugeFill{height:100%;width:0%;background:lime;border-radius:10px;}
 
-/* HISTORY */
 ul{max-height:120px;overflow:auto;text-align:left;font-size:12px;}
-
-#dynamicText{font-weight:bold;text-shadow:0 0 10px currentColor;}
-#trend{color:gold;text-shadow:0 0 10px gold;}
 </style>
 </head>
 
 <body>
 
-<!-- LOADER -->
+<!-- 🔥 LOADER BALIK -->
 <div id="loader">
-<div>
 <h2>⚡ INITIALIZING SYSTEM</h2>
 <div class="bar"><div class="fill" id="fill"></div></div>
 </div>
+
+<!-- CONTROL -->
+<div class="control">
+<button class="start" onclick="startData(this)">START</button>
+<button class="stop" onclick="stopData(this)">STOP</button>
+<button class="reset" onclick="resetData()">RESET</button>
+<button class="sim" onclick="toggleSim(this)">SIMULASI</button>
 </div>
 
 <canvas id="stars"></canvas>
@@ -124,15 +116,14 @@ Kelompok 6: MOHAMMAD RIZKY AL HIDAYAH, RAFKA ADE WIRAYUDA, SHESYA ANINDITA, MOHA
 <p class="quote">"Where rotation meets force, physics comes alive"</p>
 
 <p>
-Alat ini digunakan untuk mengukur gaya sentripetal pada gerak melingkar secara real-time,
-dengan data berupa angka, grafik, dan simulasi untuk memudahkan pemahaman.
+Alat ini digunakan untuk mengukur gaya sentripetal pada gerak melingkar secara real-time.
 </p>
 
 <p id="dynamicText"></p>
 <h3 id="trend">Trend: -</h3>
 
 <div class="orbit">
-<div class="dot" id="dot"><div class="arrow"></div></div>
+<div class="dot" id="dot"></div>
 </div>
 
 <div class="gauge"><div id="gaugeFill"></div></div>
@@ -145,15 +136,9 @@ dengan data berupa angka, grafik, dan simulasi untuk memudahkan pemahaman.
 <div class="card"><h3>Max</h3><div id="max" class="big">0</div></div>
 <div class="card"><h3>Min</h3><div id="min" class="big">0</div></div>
 <div class="card"><h3>Avg</h3><div id="avg" class="big">0</div></div>
-<div class="card"><h3>Prediction</h3><div id="pred" class="big">0</div></div>
 </div>
 
 <canvas id="chart"></canvas>
-
-<button onclick="startData()">START</button>
-<button onclick="stopData()">STOP</button>
-<button onclick="resetData()">RESET</button>
-<button onclick="toggleSim()">SIMULASI</button>
 
 <div class="card">
 <h3>History</h3>
@@ -162,7 +147,7 @@ dengan data berupa angka, grafik, dan simulasi untuk memudahkan pemahaman.
 
 <script type="module">
 
-/* FIREBASE MODULAR (TETAP ADA) */
+/* 🔥 FIREBASE FULL */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
@@ -179,27 +164,26 @@ appId: "1:770266306854:web:5b58bb1fa4c9632cd6c9e7"
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-/* VAR */
-let data=[],labels=[];
-let maxVal=-Infinity,minVal=Infinity,sum=0,count=0;
-let running=true,angle=0,time=0;
-let simulation=false;
-
-const historyList=document.getElementById("history");
-
-/* CHART */
-const chart=new Chart(document.getElementById("chart"),{
-type:"line",
-data:{labels:labels,datasets:[{data:data,borderColor:"lime"}]}
-});
-
-/* LOADER */
+/* LOADER ANIMASI */
 let p=0;
 let load=setInterval(()=>{
 p+=10;
 fill.style.width=p+"%";
-if(p>=100){clearInterval(load);loader.style.display="none";}
+if(p>=100){
+clearInterval(load);
+loader.style.display="none";
+}
 },200);
+
+/* DATA */
+let data=[],labels=[];
+let maxVal=-Infinity,minVal=Infinity,sum=0,count=0;
+let running=true,angle=0,time=0,simulation=false;
+
+const chart=new Chart(document.getElementById("chart"),{
+type:"line",
+data:{labels:labels,datasets:[{data:data,borderColor:"lime"}]}
+});
 
 /* STAR */
 const c=document.getElementById("stars");
@@ -207,24 +191,20 @@ const ctx=c.getContext("2d");
 c.width=window.innerWidth;
 c.height=window.innerHeight;
 let stars=[];
-for(let i=0;i<80;i++){
-stars.push({x:Math.random()*c.width,y:Math.random()*c.height});
-}
+for(let i=0;i<80;i++)stars.push({x:Math.random()*c.width,y:Math.random()*c.height});
 function draw(){
 ctx.clearRect(0,0,c.width,c.height);
 stars.forEach(s=>{
 ctx.fillStyle="#38bdf8";
 ctx.fillRect(s.x,s.y,2,2);
-s.y+=0.5;
-if(s.y>c.height)s.y=0;
+s.y+=0.5;if(s.y>c.height)s.y=0;
 });
 requestAnimationFrame(draw);
 }
 draw();
 
-/* SENSOR */
-onValue(ref(db,"sensor/force"),(snap)=>{
-
+/* FIREBASE */
+onValue(ref(db,"sensor/force"),snap=>{
 let v = simulation ? Math.random()*3 : snap.val();
 
 if(v!==null && running){
@@ -234,42 +214,30 @@ force.innerHTML=v.toFixed(2);
 
 /* TREND */
 let trend="➖ Stabil";
-if(data.length>0){
-if(v>data[data.length-1]) trend="🔺 Naik";
-else if(v<data[data.length-1]) trend="🔻 Turun";
+if(data.length){
+if(v>data[data.length-1])trend="🔺 Naik";
+else if(v<data[data.length-1])trend="🔻 Turun";
 }
-document.getElementById("trend").innerHTML="Trend: "+trend;
+trendEl.innerHTML="Trend: "+trend;
 
 /* AI */
-let ai="";
-if(v<1) ai="Sistem aman";
-else if(v<2) ai="Gaya meningkat";
-else ai="Bahaya tinggi!";
-dynamicText.innerHTML=ai;
+dynamicText.innerHTML = v<1?"Sistem aman":v<2?"Gaya meningkat":"Bahaya tinggi!";
 
 /* ALERT */
 if(v>2.5){
 document.body.style.background="#3f0000";
 status.innerHTML="🚨 WARNING 🚨";
-
-let ctxAudio=new (window.AudioContext||window.webkitAudioContext)();
-let osc=ctxAudio.createOscillator();
-osc.frequency.value=800;
-osc.connect(ctxAudio.destination);
-osc.start();
-osc.stop(ctxAudio.currentTime+0.1);
 }else{
 document.body.style.background="radial-gradient(circle,#020617,#000)";
+status.innerHTML="Status: Normal";
 }
 
-/* GAUGE */
+/* VISUAL */
 gaugeFill.style.width=Math.min(v/5*100,100)+"%";
-
-/* ORBIT */
 angle+=1+v*2;
 dot.style.transform=`rotate(${angle}deg) translateX(70px)`;
 
-/* STATS */
+/* DATA */
 if(v>maxVal)maxVal=v;
 if(v<minVal)minVal=v;
 sum+=v;count++;
@@ -278,15 +246,10 @@ max.innerHTML=maxVal.toFixed(2);
 min.innerHTML=minVal.toFixed(2);
 avg.innerHTML=(sum/count).toFixed(2);
 
-/* PRED */
-pred.innerHTML=(v+(Math.random()*0.5-0.25)).toFixed(2);
-
 /* HISTORY */
-let t=new Date().toLocaleTimeString();
-let item=document.createElement("li");
-item.innerHTML=t+" → "+v.toFixed(2);
-historyList.prepend(item);
-if(historyList.children.length>10)historyList.removeChild(historyList.lastChild);
+let li=document.createElement("li");
+li.innerHTML=v.toFixed(2);
+history.prepend(li);
 
 /* CHART */
 if(data.length>20){data.shift();labels.shift();}
@@ -296,21 +259,13 @@ chart.update();
 });
 
 /* TIMER */
-setInterval(()=>{
-if(running){time++;timer.innerHTML=time+" s";}
-},1000);
+setInterval(()=>{if(running)timer.innerHTML=++time+" s";},1000);
 
 /* CONTROL */
-window.startData=()=>running=true;
-window.stopData=()=>running=false;
-window.resetData=()=>{
-data=[];labels=[];
-maxVal=-Infinity;minVal=Infinity;sum=0;count=0;
-historyList.innerHTML="";
-chart.data.datasets[0].data=[];
-chart.update();
-};
-window.toggleSim=()=>simulation=!simulation;
+window.startData=(b)=>{running=true;b.classList.add("active");};
+window.stopData=(b)=>{running=false;b.classList.add("active");};
+window.resetData=()=>{data=[];labels=[];chart.update();};
+window.toggleSim=(b)=>{simulation=!simulation;b.classList.toggle("active");};
 
 </script>
 
