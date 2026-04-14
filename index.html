@@ -5,166 +5,107 @@
 <title>⚡ Gaya Sentripetal IoT</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
 <style>
-
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  color: white;
-  text-align: center;
-  background: radial-gradient(circle, #020617, #000);
+body{
+margin:0;
+font-family:'Segoe UI';
+color:white;
+text-align:center;
+background:radial-gradient(circle,#020617,#000);
+overflow-x:hidden;
 }
 
-.light {
-  background: white;
-  color: black;
+/* LOADER */
+#loader{
+position:fixed;
+width:100%;
+height:100%;
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
 }
+.bar{width:250px;height:10px;background:#111;border-radius:10px;}
+.fill{height:100%;width:0%;background:linear-gradient(90deg,#22c55e,#38bdf8);}
 
-/* ANIMASI BG */
-body::before {
-  content:"";
-  position:fixed;
-  width:200%;
-  height:200%;
-  background: repeating-radial-gradient(circle, #38bdf8 0px, transparent 2px);
-  opacity:0.05;
-  animation:spinBg 40s linear infinite;
+/* BACKGROUND */
+#stars{position:fixed;width:100%;height:100%;z-index:-3;}
+.grid{
+position:fixed;bottom:0;width:100%;height:50%;
+background-image:linear-gradient(#38bdf8 1px,transparent 1px),
+linear-gradient(90deg,#38bdf8 1px,transparent 1px);
+background-size:40px 40px;
+transform:perspective(400px) rotateX(60deg);
+opacity:.3;
 }
-
-@keyframes spinBg {
-  100% {transform: rotate(360deg);}
+.scanline{
+position:fixed;width:100%;height:100%;
+background:linear-gradient(to bottom,transparent,rgba(56,189,248,0.1),transparent);
+animation:scan 4s linear infinite;
 }
+@keyframes scan{from{transform:translateY(-100%)}to{transform:translateY(100%)}}
 
-/* HEADER */
-.logo img {
-  width: 90px;
-  border-radius: 50%;
-  box-shadow: 0 0 20px #38bdf8;
+/* TEXT */
+h1{color:#38bdf8;text-shadow:0 0 15px #38bdf8;}
+.team{font-size:13px;}
+.hero{margin:10px;padding:10px;border-radius:10px;background:rgba(255,255,255,0.05);}
+.quote{color:#22c55e;font-style:italic;}
+.glow{animation:glow 2s infinite alternate;}
+@keyframes glow{from{text-shadow:0 0 5px #22c55e;}to{text-shadow:0 0 20px #22c55e;}}
+
+/* ORBIT */
+.orbit{
+width:160px;height:160px;margin:20px auto;
+border-radius:50%;border:2px solid #38bdf8;position:relative;
 }
-
-h1 {
-  color:#38bdf8;
-  text-shadow:0 0 15px #38bdf8;
+.dot{
+width:12px;height:12px;background:#22c55e;border-radius:50%;
+position:absolute;top:50%;left:50%;transform-origin:-70px center;
 }
-
-.team {
-  font-size:13px;
-  padding: 0 10px;
-}
-
-/* HERO */
-.hero {
-  margin:15px;
-  padding:15px;
-  border-radius:15px;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
-}
-
-.quote { color:#22c55e; }
-.desc { font-size:14px; opacity:0.8; }
+.arrow{position:absolute;height:2px;background:red;top:50%;left:-30px;}
 
 /* GAUGE */
-.gauge {
-  width:80%;
-  height:20px;
-  margin:10px auto;
-  background:#111;
-  border-radius:20px;
-}
-
-.gauge-fill {
-  height:100%;
-  width:0%;
-  background:lime;
-  border-radius:20px;
-}
-
-/* LINGKARAN */
-.circle {
-  width:100px;
-  height:100px;
-  border:3px solid #38bdf8;
-  border-radius:50%;
-  margin:15px auto;
-  animation:spin 2s linear infinite;
-}
-
-@keyframes spin {
-  100% {transform: rotate(360deg);}
-}
-
-/* STATUS */
-#status { margin-top:10px; }
-#timer { color: gold; }
+.gauge{width:80%;height:20px;background:#111;margin:10px auto;border-radius:20px;}
+.fillGauge{height:100%;width:0%;background:lime;border-radius:20px;}
 
 /* CARD */
-.container {
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  padding:10px;
+.container{
+display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px;
 }
+.card{background:rgba(255,255,255,0.05);padding:10px;border-radius:10px;}
+.big{color:#22c55e;font-size:22px;}
 
-.card {
-  background: rgba(255,255,255,0.05);
-  padding:15px;
-  border-radius:15px;
+canvas{width:100%!important;height:250px!important;}
+
+button,input{
+width:45%;padding:10px;margin:5px;border:none;border-radius:10px;
 }
+.start{background:#22c55e;}
+.stop{background:#ef4444;}
+.reset{background:#f59e0b;}
 
-.big {
-  font-size:22px;
-  color:#22c55e;
-}
-
-/* CHART */
-canvas {
-  width:100% !important;
-  height:250px !important;
-}
-
-/* BUTTON */
-button, input {
-  width:45%;
-  margin:5px;
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  font-weight:bold;
-}
-
-.start { background:#22c55e; }
-.stop { background:#ef4444; }
-.reset { background:#f59e0b; }
-
-/* HISTORY */
-ul {
-  list-style:none;
-  max-height:150px;
-  overflow:auto;
-  font-size:13px;
-  text-align:left;
-}
-
-/* RESPONSIVE */
-@media(min-width:600px){
-  .container { grid-template-columns:repeat(4,1fr); }
-  canvas { height:300px !important; }
-}
-
+ul{max-height:150px;overflow:auto;text-align:left;font-size:13px;}
 </style>
 </head>
 
 <body>
 
-<div class="logo">
-  <img src="https://via.placeholder.com/90">
+<!-- LOADER -->
+<div id="loader">
+<div>
+<h2>⚡ INITIALIZING SYSTEM</h2>
+<div class="bar"><div class="fill" id="fill"></div></div>
+<p id="loadingText">Connecting...</p>
 </div>
+</div>
+
+<canvas id="stars"></canvas>
+<div class="grid"></div>
+<div class="scanline"></div>
 
 <h1>⚡ Gaya Sentripetal IoT</h1>
 
@@ -173,24 +114,24 @@ Kelompok 6: MOHAMMAD RIZKY AL HIDAYAH, RAFKA ADE WIRAYUDA, SHESYA ANINDITA, MOHA
 </div>
 
 <div class="hero">
-<p class="quote">"Where rotation meets force, physics comes alive"</p>
-<p class="desc">Monitoring gaya sentripetal real-time berbasis IoT (ESP32 + Firebase)</p>
+<p class="quote" id="quote"></p>
+<p style="font-size:13px;">Monitoring gaya sentripetal real-time berbasis IoT</p>
 </div>
 
-<div class="circle" id="circle"></div>
-
-<div class="gauge">
-  <div class="gauge-fill" id="gauge"></div>
+<div class="orbit">
+<div class="dot" id="dot"><div class="arrow"></div></div>
 </div>
+
+<div class="gauge"><div id="gauge" class="fillGauge"></div></div>
 
 <h3 id="status">Status: Normal</h3>
 <h3 id="timer">0 s</h3>
 
 <div class="container">
-  <div class="card"><h3>Force</h3><div id="force" class="big">0</div></div>
-  <div class="card"><h3>Max</h3><div id="max" class="big">0</div></div>
-  <div class="card"><h3>Min</h3><div id="min" class="big">0</div></div>
-  <div class="card"><h3>Average</h3><div id="avg" class="big">0</div></div>
+<div class="card"><h3>Force</h3><div id="force" class="big">0</div></div>
+<div class="card"><h3>Max</h3><div id="max" class="big">0</div></div>
+<div class="card"><h3>Min</h3><div id="min" class="big">0</div></div>
+<div class="card"><h3>Avg</h3><div id="avg" class="big">0</div></div>
 </div>
 
 <canvas id="chart"></canvas>
@@ -215,80 +156,124 @@ Kelompok 6: MOHAMMAD RIZKY AL HIDAYAH, RAFKA ADE WIRAYUDA, SHESYA ANINDITA, MOHA
 
 <script>
 
+/* FIREBASE (FIX DARI CONFIG LU) */
 const firebaseConfig = {
-  apiKey: "AIzaSyAQb7s...",
-  databaseURL: "https://centripetal-force-default-rtdb.firebaseio.com/"
+apiKey:"AIzaSyAQb7sQunsPqRBdd_KaxGRjtS0JpB7gTNI",
+authDomain:"centripetal-force.firebaseapp.com",
+databaseURL:"https://centripetal-force-default-rtdb.firebaseio.com/",
+projectId:"centripetal-force",
+storageBucket:"centripetal-force.firebasestorage.app",
+messagingSenderId:"807201222154",
+appId:"1:807201222154:web:90520e713ddceeda33b9f3"
 };
 
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const db=firebase.database();
 
+/* LOADER */
+let p=0;
+let load=setInterval(()=>{
+p+=10;
+fill.style.width=p+"%";
+if(p>=100){clearInterval(load);loader.style.display="none";}
+},200);
+
+/* TYPEWRITER */
+const text="Where rotation meets force, physics comes alive";
+let i=0;
+function type(){
+if(i<text.length){quote.innerHTML+=text[i++];setTimeout(type,40);}
+else{quote.classList.add("glow");}
+}
+setTimeout(type,800);
+
+/* STARFIELD */
+const c=document.getElementById("stars");
+const ctx=c.getContext("2d");
+c.width=innerWidth;c.height=innerHeight;
+let stars=[];
+for(let i=0;i<80;i++){
+stars.push({x:Math.random()*c.width,y:Math.random()*c.height});
+}
+function draw(){
+ctx.clearRect(0,0,c.width,c.height);
+stars.forEach(s=>{
+ctx.fillStyle="#38bdf8";
+ctx.fillRect(s.x,s.y,2,2);
+s.y+=0.5;
+if(s.y>c.height)s.y=0;
+});
+requestAnimationFrame(draw);
+}
+draw();
+
+/* DATA */
 let data=[],labels=[];
 let maxVal=-Infinity,minVal=Infinity,sum=0,count=0;
-let running=true,limit=2,time=0;
+let running=true,angle=0,limit=2,time=0;
 
-function beep(freq){
-  const ctx=new (window.AudioContext||window.webkitAudioContext)();
-  const osc=ctx.createOscillator();
-  const gain=ctx.createGain();
-  osc.frequency.value=freq;
-  gain.gain.value=0.1;
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.start();
-  osc.stop(ctx.currentTime+0.1);
-}
-
-const chart=new Chart(document.getElementById('chart'),{
-  type:'line',
-  data:{labels:labels,datasets:[{data:data,borderColor:'lime'}]}
+const chart=new Chart(chart,{
+type:"line",
+data:{labels:labels,datasets:[{data:data,borderColor:"lime"}]}
 });
 
 const historyList=document.getElementById("history");
 
-db.ref("sensor/force").on("value",(snap)=>{
+/* SOUND */
+function beep(f){
+let ctx=new AudioContext();
+let o=ctx.createOscillator();
+let g=ctx.createGain();
+o.frequency.value=f;
+g.gain.value=0.05;
+o.connect(g);g.connect(ctx.destination);
+o.start();o.stop(ctx.currentTime+0.1);
+}
+
+/* SENSOR */
+db.ref("sensor/force").on("value",snap=>{
 let v=snap.val();
 
 if(v!==null && running){
 v=parseFloat(v);
 
-document.getElementById("force").innerHTML=v.toFixed(2);
+force.innerHTML=v.toFixed(2);
 
-// gauge
+/* GAUGE */
 let percent=Math.min((v/5)*100,100);
-document.getElementById("gauge").style.width=percent+"%";
+gauge.style.width=percent+"%";
+gauge.style.background=v>limit?"red":"lime";
 
-// circle speed
-document.getElementById("circle").style.animationDuration=(2/(v+0.5))+"s";
+/* ORBIT */
+angle+=1+v*2;
+dot.style.transform=`rotate(${angle}deg) translateX(70px)`;
+document.querySelector(".arrow").style.width=(20+v*15)+"px";
 
-// status + beep
-let status="Normal";
-if(v<1){status="Lambat 🐢"; beep(300);}
-else if(v<2){status="Stabil ⚖️"; beep(600);}
-else {status="Cepat ⚡"; beep(900);}
+/* STATUS + SOUND */
+if(v<1){status.innerHTML="Status: Lambat 🐢";beep(300);}
+else if(v<2){status.innerHTML="Status: Stabil ⚖️";beep(600);}
+else{status.innerHTML="Status: Cepat ⚡";beep(900);}
 
-document.getElementById("status").innerHTML="Status: "+status;
+/* STATS */
+if(v>maxVal)maxVal=v;
+if(v<minVal)minVal=v;
 
-// stats
-if(v>maxVal) maxVal=v;
-if(v<minVal) minVal=v;
+sum+=v;count++;
 
-sum+=v; count++;
+max.innerHTML=maxVal.toFixed(2);
+min.innerHTML=minVal.toFixed(2);
+avg.innerHTML=(sum/count).toFixed(2);
 
-document.getElementById("max").innerHTML=maxVal.toFixed(2);
-document.getElementById("min").innerHTML=minVal.toFixed(2);
-document.getElementById("avg").innerHTML=(sum/count).toFixed(2);
-
-// chart
+/* CHART */
 if(data.length>15){data.shift();labels.shift();}
-data.push(v); labels.push("");
+data.push(v);labels.push("");
 chart.update();
 
-// history
+/* HISTORY */
 let t=new Date().toLocaleTimeString();
-let item=document.createElement("li");
-item.innerHTML=t+" → "+v+" N";
-historyList.prepend(item);
+let li=document.createElement("li");
+li.innerHTML=t+" → "+v+" N";
+historyList.prepend(li);
 
 if(historyList.children.length>10){
 historyList.removeChild(historyList.lastChild);
@@ -296,51 +281,37 @@ historyList.removeChild(historyList.lastChild);
 }
 });
 
-function startData(){ running=true; }
-function stopData(){ running=false; }
-
+/* CONTROL */
+function startData(){running=true;}
+function stopData(){running=false;}
 function resetData(){
 data=[];labels=[];
 maxVal=-Infinity;minVal=Infinity;sum=0;count=0;time=0;
-
 chart.data.datasets[0].data=[];
 chart.update();
-
-document.getElementById("max").innerHTML="0";
-document.getElementById("min").innerHTML="0";
-document.getElementById("avg").innerHTML="0";
-document.getElementById("timer").innerHTML="0 s";
-
 historyList.innerHTML="";
 }
 
-function toggleMode(){
-document.body.classList.toggle("light");
-}
-
-function setLimit(){
-limit=document.getElementById("limit").value;
-}
+function toggleMode(){document.body.classList.toggle("light");}
+function setLimit(){limit=document.getElementById("limit").value;}
 
 function downloadCSV(){
 let csv="Time,Force\n";
 document.querySelectorAll("#history li").forEach(i=>{
 csv+=i.innerText.replace(" → ",",")+"\n";
 });
-
-let blob=new Blob([csv],{type:'text/csv'});
-let url=URL.createObjectURL(blob);
-
+let blob=new Blob([csv]);
 let a=document.createElement("a");
-a.href=url;
+a.href=URL.createObjectURL(blob);
 a.download="data.csv";
 a.click();
 }
 
+/* TIMER */
 setInterval(()=>{
 if(running){
 time++;
-document.getElementById("timer").innerHTML=time+" s";
+timer.innerHTML=time+" s";
 }
 },1000);
 
