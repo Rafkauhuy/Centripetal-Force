@@ -26,7 +26,7 @@ radial-gradient(circle at 20% 20%, rgba(56,189,248,0.25), transparent 40%),
 radial-gradient(circle at 80% 30%, rgba(34,197,94,0.2), transparent 40%),
 radial-gradient(circle at 50% 80%, rgba(168,85,247,0.2), transparent 40%);
 filter:blur(60px);
-animation:aurora 15s infinite alternate;
+animation:aurora 18s infinite alternate;
 z-index:-3;
 }
 @keyframes aurora{
@@ -42,33 +42,49 @@ height:100%;
 z-index:-2;
 }
 
-/* 🎬 LOADER */
+/* 🚀 NASA LOADER */
 #loader{
 position:fixed;
 width:100%;
 height:100%;
 background:black;
 display:flex;
-flex-direction:column;
 justify-content:center;
 align-items:center;
 z-index:9999;
+color:#22c55e;
+font-family:monospace;
+transition:0.5s;
 }
-.bar{width:250px;height:10px;background:#111;border-radius:10px;overflow:hidden;}
-.fill{height:100%;width:0%;background:linear-gradient(90deg,#22c55e,#38bdf8);}
+.terminal{
+width:320px;
+border:1px solid #22c55e;
+padding:20px;
+box-shadow:0 0 25px #22c55e;
+text-align:left;
+}
+.scan{
+height:3px;
+background:#22c55e;
+animation:scan 1.5s infinite;
+margin-top:10px;
+}
+@keyframes scan{
+0%{transform:translateX(-100%);}
+100%{transform:translateX(100%);}
+}
 
-/* TEXT */
+/* UI */
 h1{color:#38bdf8;text-shadow:0 0 10px #38bdf8;}
 .team{color:#38bdf8;font-size:13px;}
 .quote{color:#22c55e;font-style:italic;}
-.desc{font-size:13px;color:#cbd5e1;max-width:800px;margin:auto;}
+.desc{font-size:13px;color:#cbd5e1;}
 
-/* 🌌 ORBIT */
 .orbit{
 width:170px;height:170px;margin:20px auto;
 border:2px solid #38bdf8;border-radius:50%;
-position:relative;
 box-shadow:0 0 20px #38bdf8;
+position:relative;
 }
 .dot{
 width:12px;height:12px;
@@ -77,10 +93,8 @@ border-radius:50%;
 position:absolute;
 top:50%;left:50%;
 transform-origin:-75px center;
-box-shadow:0 0 10px #22c55e,0 0 20px #22c55e;
 }
 
-/* BUTTON */
 button{
 padding:10px;margin:5px;
 border:none;border-radius:10px;
@@ -91,7 +105,6 @@ font-weight:bold;cursor:pointer;
 .reset{background:#f59e0b;}
 .sim{background:#6366f1;}
 
-/* CARD */
 .container{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
@@ -107,23 +120,12 @@ transition:0.3s;
 transform:scale(1.05);
 box-shadow:0 0 20px rgba(56,189,248,0.4);
 }
-.card h2{
-color:#22c55e;
-text-shadow:0 0 8px #22c55e;
-}
 
-/* CHART */
 canvas{
 margin:15px;
 background:rgba(255,255,255,0.05);
 border-radius:10px;
 padding:10px;
-}
-
-/* QUALITY */
-#quality{
-font-size:14px;
-color:#facc15;
 }
 </style>
 </head>
@@ -132,9 +134,13 @@ color:#facc15;
 
 <canvas id="particles"></canvas>
 
+<!-- 🚀 LOADER -->
 <div id="loader">
-<h2>⚡ INITIALIZING SYSTEM</h2>
-<div class="bar"><div class="fill" id="fill"></div></div>
+<div class="terminal">
+<h2>🚀 CENTRIPETAL SYSTEM</h2>
+<p id="status">Initializing system...</p>
+<div class="scan"></div>
+</div>
 </div>
 
 <h1>⚡ Gaya Sentripetal IoT AI Lab</h1>
@@ -163,23 +169,17 @@ Analisis gaya sentripetal berbasis IoT + AI + Visualisasi Fisika
 <div class="card">Gram<h2 id="gram">0</h2></div>
 <div class="card">Velocity<h2 id="vel">0</h2></div>
 <div class="card">RPM<h2 id="rpm">0</h2></div>
-<div class="card">Max<h2 id="max">0</h2></div>
-<div class="card">Min<h2 id="min">0</h2></div>
-<div class="card">Avg<h2 id="avg">0</h2></div>
+<div class="card">Max<h2 id="maxEl">0</h2></div>
+<div class="card">Min<h2 id="minEl">0</h2></div>
+<div class="card">Avg<h2 id="avgEl">0</h2></div>
 </div>
 
-<div class="card">
-<h3>📊 Physics Regression</h3>
-<p id="reg"></p>
-</div>
+<div class="card"><h3>📊 Regression</h3><p id="reg"></p></div>
+<div class="card"><h3>🤖 AI Insight</h3><p id="ai"></p></div>
+<div class="card"><h3>📘 Kesimpulan</h3><p id="kes"></p></div>
 
-<div class="card">
-<h3>🧠 Experiment Quality</h3>
-<p id="quality"></p>
-</div>
-
-<canvas id="chart"></canvas>
-<canvas id="chartPhysics"></canvas>
+<canvas id="chart1"></canvas>
+<canvas id="chart2"></canvas>
 
 <script type="module">
 
@@ -193,6 +193,26 @@ databaseURL:"https://centripetal-force-82ef2-default-rtdb.firebaseio.com/"
 
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
+
+/* ELEMENT */
+const loader=document.getElementById("loader");
+const statusText=document.getElementById("status");
+const dot=document.getElementById("dot");
+
+/* STATUS NASA */
+setTimeout(()=>statusText.innerText="Booting sensors...",800);
+setTimeout(()=>statusText.innerText="Connecting Firebase...",1600);
+setTimeout(()=>statusText.innerText="Waiting data...",2400);
+
+/* FALLBACK */
+let loaded=false;
+setTimeout(()=>{
+if(!loaded){
+statusText.innerText="⚠ Offline mode";
+loader.style.opacity="0";
+setTimeout(()=>loader.style.display="none",500);
+}
+},6000);
 
 /* PARTICLES */
 const c=document.getElementById("particles");
@@ -217,40 +237,23 @@ requestAnimationFrame(anim);
 }
 anim();
 
-/* VARIABLES */
-let data=[],labels=[];
-let omega2Arr=[],forceArr=[];
+/* DATA */
+let data=[],omega2Arr=[],forceArr=[];
 let max=0,min=999,sum=0,count=0;
 let running=true,sim=false,angle=0;
 
 /* CHART */
-const chart=new Chart(chart,{
+const chart1=new Chart(document.getElementById("chart1"),{
 type:"line",
-data:{labels:labels,datasets:[{data:data,borderColor:"#38bdf8"}]}
+data:{labels:[],datasets:[{data:data,borderColor:"#38bdf8"}]}
 });
 
-/* LABEL PLUGIN */
-const labelPlugin={
-id:'labelPlugin',
-afterDraw(chart){
-const ctx=chart.ctx;
-ctx.save();
-ctx.fillStyle="#fff";
-ctx.font="14px Segoe UI";
-ctx.fillText(window.eqText||"",50,30);
-ctx.restore();
-}
-};
-
-const chartPhysics=new Chart(chartPhysics,{
+const chart2=new Chart(document.getElementById("chart2"),{
 type:"scatter",
-data:{
-datasets:[
-{label:"Data",data:[],backgroundColor:"#22c55e"},
-{label:"Trendline",data:[],borderWidth:2,pointRadius:0,showLine:true}
-]
-},
-plugins:[labelPlugin]
+data:{datasets:[
+{data:[],backgroundColor:"#22c55e"},
+{data:[],showLine:true}
+]}
 });
 
 /* REGRESSION */
@@ -262,17 +265,7 @@ sxy+=x[i]*y[i];sx2+=x[i]*x[i];
 }
 let m=(n*sxy-sx*sy)/(n*sx2-sx*sx);
 let b=(sy-m*sx)/n;
-
-/* R2 */
-let ssTot=0,ssRes=0,mean=sy/n;
-for(let i=0;i<n;i++){
-let pred=m*x[i]+b;
-ssTot+=(y[i]-mean)**2;
-ssRes+=(y[i]-pred)**2;
-}
-let r2=1-(ssRes/ssTot);
-
-return {m,b,r2};
+return {m,b};
 }
 
 /* FIREBASE */
@@ -280,33 +273,46 @@ onValue(ref(db,"sensor"),snap=>{
 let d=snap.val()||{};
 let f=sim?Math.random()*3:d.force_newton||0;
 let g=d.force_gram||0;
-let v=d.velocity||0;
 let r=d.rpm||0;
 
+/* LOADER FIX */
+if(!loaded){
+statusText.innerText="✅ Data received";
+setTimeout(()=>{
+loader.style.opacity="0";
+setTimeout(()=>loader.style.display="none",400);
+},800);
+loaded=true;
+}
+
 if(!running)return;
+
+/* VELOCITY */
+let radius=0.3;
+let velocity=(r*2*Math.PI*radius)/60;
 
 /* DISPLAY */
 force.innerText=f.toFixed(2);
 gram.innerText=g.toFixed(2);
-vel.innerText=v.toFixed(2);
+vel.innerText=velocity.toFixed(2);
 rpm.innerText=r.toFixed(0);
 
 /* STATS */
 max=Math.max(max,f);
 min=Math.min(min,f);
 sum+=f;count++;
-max.innerText=max.toFixed(2);
-min.innerText=min.toFixed(2);
-avg.innerText=(sum/count).toFixed(2);
+maxEl.innerText=max.toFixed(2);
+minEl.innerText=min.toFixed(2);
+avgEl.innerText=(sum/count).toFixed(2);
 
 /* ORBIT */
 angle+=1+f;
 dot.style.transform=`rotate(${angle}deg) translateX(75px)`;
 
-/* GRAPH TIME */
-if(data.length>25){data.shift();labels.shift();}
-data.push(f);labels.push("");
-chart.update();
+/* GRAPH */
+data.push(f);
+if(data.length>25)data.shift();
+chart1.update();
 
 /* PHYSICS */
 let omega=(r*2*Math.PI)/60;
@@ -315,55 +321,39 @@ let omega2=omega*omega;
 omega2Arr.push(omega2);
 forceArr.push(f);
 
-let points=forceArr.map((val,i)=>({x:omega2Arr[i],y:val}));
-chartPhysics.data.datasets[0].data=points;
+chart2.data.datasets[0].data=forceArr.map((v,i)=>({x:omega2Arr[i],y:v}));
 
-/* TRENDLINE */
 if(forceArr.length>5){
 let rr=reg(omega2Arr,forceArr);
 
-let minX=Math.min(...omega2Arr);
-let maxX=Math.max(...omega2Arr);
-
 let trend=[];
 for(let i=0;i<20;i++){
-let x=minX+(maxX-minX)*(i/20);
+let x=i;
 trend.push({x:x,y:rr.m*x+rr.b});
 }
+chart2.data.datasets[1].data=trend;
 
-chartPhysics.data.datasets[1].data=trend;
+reg.innerText=`F = ${rr.m.toFixed(3)} ω² + ${rr.b.toFixed(3)}`;
 
-/* COLOR */
-let color="#ef4444";
-if(rr.r2>0.95) color="#22c55e";
-else if(rr.r2>0.8) color="#facc15";
+/* AI */
+ai.innerText =
+f<1?"Sistem stabil":
+f<2?"Gaya meningkat":
+"⚠ Gaya tinggi";
 
-chartPhysics.data.datasets[1].borderColor=color;
-
-/* TEXT */
-reg.innerHTML=`F = ${rr.m.toFixed(3)} ω² + ${rr.b.toFixed(3)}<br>R² = ${rr.r2.toFixed(4)}`;
-window.eqText=`F = ${rr.m.toFixed(3)}ω² + ${rr.b.toFixed(3)}`;
-
-/* QUALITY */
-let q="";
-if(rr.r2>0.95) q="🟢 Excellent - sangat sesuai teori";
-else if(rr.r2>0.8) q="🟡 Good - sedikit error";
-else q="🔴 Perlu perbaikan";
-
-quality.innerText=q;
+/* KESIMPULAN */
+kes.innerText =
+rr.m>0?"Sesuai teori F ∝ ω²":"Tidak sesuai teori";
 }
 
-chartPhysics.update();
-
-/* REACTIVE UI */
-document.body.style.boxShadow=`inset 0 0 ${f*10}px rgba(34,197,94,0.2)`;
+chart2.update();
 
 });
 
 /* CONTROL */
 window.start=()=>running=true;
 window.stop=()=>running=false;
-window.reset=()=>{data=[];labels=[];chart.update();}
+window.reset=()=>location.reload();
 window.sim=()=>sim=!sim;
 
 </script>
