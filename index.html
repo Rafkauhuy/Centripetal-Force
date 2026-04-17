@@ -2,345 +2,361 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⚡ Gaya Sentripetal IoT AI Lab</title>
+<title>🚀 LAB • CENTRIPETAL FORCE</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 body{
 margin:0;
-font-family:'Segoe UI';
+font-family:Segoe UI;
+background:radial-gradient(circle,#020617,#000);
 color:white;
-text-align:center;
-background:#020617;
-overflow-x:hidden;
 }
 
-/* 🌌 AURORA */
-body::before{
-content:"";
+#sidebar{
 position:fixed;
-inset:0;
-background:
-radial-gradient(circle at 20% 20%, rgba(56,189,248,0.25), transparent 40%),
-radial-gradient(circle at 80% 30%, rgba(34,197,94,0.2), transparent 40%),
-radial-gradient(circle at 50% 80%, rgba(168,85,247,0.2), transparent 40%);
-filter:blur(60px);
-animation:aurora 18s infinite alternate;
-z-index:-3;
-}
-@keyframes aurora{
-0%{transform:scale(1);}
-100%{transform:scale(1.2) translate(30px,-20px);}
-}
-
-/* ✨ PARTICLES */
-#particles{
-position:fixed;
-width:100%;
-height:100%;
-z-index:-2;
-}
-
-/* 🚀 LOADER NASA */
-#loader{
-position:fixed;
-width:100%;
-height:100%;
-background:black;
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:9999;
-color:#22c55e;
-font-family:monospace;
-transition:0.5s;
-}
-.terminal{
-width:320px;
-border:1px solid #22c55e;
-padding:20px;
-box-shadow:0 0 25px #22c55e;
-text-align:left;
-}
-.scan{
-height:3px;
-background:#22c55e;
-animation:scan 1.5s infinite;
-margin-top:10px;
-}
-@keyframes scan{
-0%{transform:translateX(-100%);}
-100%{transform:translateX(100%);}
-}
-
-/* UI */
-h1{color:#38bdf8;text-shadow:0 0 10px #38bdf8;}
-.team{color:#38bdf8;font-size:13px;}
-.quote{color:#22c55e;font-style:italic;}
-.desc{font-size:13px;color:#cbd5e1;}
-
-.orbit{
-width:170px;height:170px;margin:20px auto;
-border:2px solid #38bdf8;border-radius:50%;
-box-shadow:0 0 20px #38bdf8;
-position:relative;
-}
-.dot{
-width:12px;height:12px;
-background:#22c55e;
-border-radius:50%;
-position:absolute;
-top:50%;left:50%;
-transform-origin:-75px center;
-box-shadow:0 0 10px #22c55e;
-}
-
-/* BUTTON */
-button{
-padding:10px;margin:5px;
-border:none;border-radius:10px;
-font-weight:bold;cursor:pointer;
-}
-.start{background:#22c55e;}
-.stop{background:#ef4444;}
-.reset{background:#f59e0b;}
-.sim{background:#6366f1;}
-
-/* CARD */
-.container{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-gap:10px;padding:10px;
-}
-.card{
-background:rgba(255,255,255,0.06);
-backdrop-filter:blur(10px);
-padding:10px;border-radius:10px;
-transition:0.3s;
-}
-.card:hover{
-transform:scale(1.05);
-box-shadow:0 0 20px rgba(56,189,248,0.4);
-}
-
-/* GRAPH */
-canvas{
-margin:15px;
-background:rgba(255,255,255,0.05);
-border-radius:10px;
+left:0;top:0;
+width:230px;height:100%;
+background:rgba(0,0,0,0.85);
 padding:10px;
+overflow:auto;
+}
+
+button{
+width:100%;
+margin:4px 0;
+padding:8px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+.page{
+position:absolute;
+left:240px;
+top:0;
+width:calc(100% - 240px);
+height:100%;
+overflow:auto;
+padding:12px;
+display:none;
+}
+
+.card{
+background:rgba(255,255,255,0.05);
+padding:12px;
+margin:10px 0;
+border-radius:10px;
+}
+
+#hud{
+position:fixed;
+bottom:10px;
+right:10px;
+background:rgba(0,0,0,0.6);
+padding:6px;
+font-size:12px;
+border-radius:8px;
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="particles"></canvas>
+<!-- SIDEBAR -->
+<div id="sidebar">
+<h3>🚀 LABORATORIUM FISIKA</h3>
 
-<!-- 🚀 LOADER -->
-<div id="loader">
-<div class="terminal">
-<h2>🚀 CENTRIPETAL SYSTEM</h2>
-<p id="status">Initializing system...</p>
-<div class="scan"></div>
+<button onclick="go('home')">HOME</button>
+<button onclick="go('materi')">📘 MATERI</button>
+<button onclick="go('eksperimen')">🧪 EKSPERIMEN</button>
+<button onclick="go('arsip')">📂 ARSIP</button>
+<button onclick="go('ai')">🤖 AI</button>
+<button onclick="go('creator')">👤 CREATOR</button>
+
+RPM <input id="rpm" value="60">
+</div>
+
+<div id="hud">🟢 FULL ACADEMIC MODE ACTIVE</div>
+
+<!-- HOME -->
+<div id="home" class="page" style="display:block">
+<h1>🚀 CENTRIPETAL FORCE LAB</h1>
+<p>Academic Physics Simulation + Regression Analysis System</p>
+</div>
+
+<!-- MATERI AKADEMIK FULL -->
+<div id="materi" class="page">
+
+<div class="card">
+<h2>📘 GAYA SENTRIPETAL </h2>
+
+<p>
+Gaya sentripetal adalah gaya yang bekerja pada benda yang bergerak melingkar dan selalu mengarah ke pusat lintasan.
+Gaya ini menyebabkan perubahan arah kecepatan sehingga benda tetap berada pada lintasan melingkar.
+</p>
+
+<h3>⚡ Konsep Fisika</h3>
+<p>
+Tanpa gaya sentripetal, benda akan bergerak lurus sesuai Hukum I Newton (inersia).
+</p>
+
+<h3>📐 Penurunan Rumus</h3>
+<p>
+Dari:
+<br>F = mv² / r
+</p>
+<p>
+Karena v = ωr, maka:
+<br>F = m(ωr)² / r
+<br>F = mω²r
+</p>
+
+<h3>🔁 Hubungan Penting</h3>
+<p><b>F ∝ ω²</b></p>
+
+<h3>🌍 Aplikasi Dunia Nyata</h3>
+<ul>
+<li>Satelit mengorbit bumi</li>
+<li>Mobil di tikungan (banked curve)</li>
+<li>Centrifuge pemisah darah</li>
+<li>Wahana roller coaster</li>
+</ul>
+
+<h3>🧠 Kesimpulan Teori</h3>
+<p>
+Gaya sentripetal berbanding lurus dengan kuadrat kecepatan sudut.
+</p>
+</div>
+
+</div>
+
+<!-- EKSPERIMEN LENGKAP -->
+<div id="eksperimen" class="page">
+
+<div class="card">
+<h2>🧪 EKSPERIMEN + REGRESI LINEAR</h2>
+
+<canvas id="chart"></canvas>
+
+<h3>📊 HASIL ANALISIS</h3>
+<p id="eq"></p>
+<p id="r2"></p>
+<p id="err"></p>
+<p id="interp"></p>
+
+<h3>📊 STATISTIK DATA</h3>
+<p id="stats"></p>
+
+</div>
+
+</div>
+
+<!-- ARSIP -->
+<div id="arsip" class="page">
+<div class="card">
+<h2>📂 DATA ARSIP</h2>
+<table border="1" width="100%">
+<tbody id="tb"></tbody>
+</table>
 </div>
 </div>
 
-<h1>⚡ Gaya Sentripetal IoT AI Lab</h1>
-
-<div class="team">
-Kelompok 6: MOHAMMAD RIZKY AL HIDAYAH, RAFKA ADE WIRAYUDA, SHESYA ANINDITA, MOHAMMAD RIZQI AHMAD, ADE ZULFADLI
+<!-- AI -->
+<div id="ai" class="page">
+<div class="card">
+<h2>🤖 AI TUTOR</h2>
+<p>Fitur QnA sederhana (upgrade bisa lanjut ke AI API)</p>
+</div>
 </div>
 
-<p class="quote">"Where rotation meets force, physics comes alive"</p>
+<!-- CREATOR -->
+<div id="creator" class="page">
+<div class="card">
+<h2>👤 CREATOR</h2>
+<p>Sistem ini dibuat untuk simulasi eksperimen fisika berbasis data real-time.</p>
+<!-- CREATOR -->
+<div id="creator" class="page">
+<div class="card">
 
-<div class="desc">
-Analisis gaya sentripetal berbasis IoT + AI + Visualisasi Fisika
+<h2>👤 INFORMASI PROYEK</h2>
+
+<p><b>🏫 SMA NEGERI 1 GEGESIK</b></p>
+<p><b>📘:</b> PJBL FISIKA</p>
+
+<hr>
+
+<h3>👨‍🏫 PENGAJAR</h3>
+<p>Bapak Agus Salim, S.Si., M.Pd.</p>
+
+<hr>
+
+<h3>👥 KETUA KELOMPOK</h3>
+<p>Mohammad Rizky Al Hidayah</p>
+
+<h3>🧑‍🤝‍🧑 ANGGOTA</h3>
+<ol>
+<li>Rafka Ade Wirayuda (Coding)</li>
+<li>Shesya Anindita (Bendahara)</li>
+<li>Rizqi Ahmad (Mekanik)</li>
+<li>Ade Zulfadli</li>
+</ol>
+
+<hr>
+
+<h3>🚀 DESKRIPSI PROYEK</h3>
+<p>
+Proyek ini merupakan simulasi eksperimen gaya sentripetal berbasis data real-time
+yang menggabungkan konsep fisika, pemrograman, dan analisis data menggunakan regresi linear.
+</p>
+
+<p>
+Sistem ini dirancang untuk menampilkan hubungan antara gaya sentripetal (F)
+dan kuadrat kecepatan sudut (ω²) secara interaktif dan visual.
+</p>
+
+<hr>
+
+<h3>📊 TUJUAN PROYEK</h3>
+<ul>
+<li>Menganalisis hubungan F dan ω²</li>
+<li>Memvalidasi hukum gaya sentripetal</li>
+<li>Menyajikan data eksperimen secara digital</li>
+<li>Menggunakan regresi linear untuk analisis ilmiah</li>
+</ul>
+
+<hr>
+
+<h3>🧠 CATATAN AKADEMIK</h3>
+<p>
+Proyek ini mendukung pembelajaran berbasis teknologi (STEM)
+dengan integrasi fisika, matematika, dan pemrograman web.
+</p>
+
+</div>
 </div>
 
-<div class="orbit"><div class="dot" id="dot"></div></div>
+<script>
 
-<div>
-<button class="start" onclick="start()">START</button>
-<button class="stop" onclick="stop()">STOP</button>
-<button class="reset" onclick="reset()">RESET</button>
-<button class="sim" onclick="sim()">SIMULASI</button>
-</div>
+/* NAV */
+window.go=(p)=>{
+["home","materi","eksperimen","arsip","ai","creator"]
+.forEach(i=>document.getElementById(i).style.display="none");
 
-<div class="container">
-<div class="card">Force (N)<h2 id="force">0</h2></div>
-<div class="card">Gram<h2 id="gram">0</h2></div>
-<div class="card">Velocity<h2 id="vel">0</h2></div>
-<div class="card">RPM<h2 id="rpm">0</h2></div>
-<div class="card">Max<h2 id="maxEl">0</h2></div>
-<div class="card">Min<h2 id="minEl">0</h2></div>
-<div class="card">Avg<h2 id="avgEl">0</h2></div>
-</div>
-
-<div class="card"><h3>📊 Regression</h3><p id="reg"></p></div>
-<div class="card"><h3>🤖 AI Insight</h3><p id="ai"></p></div>
-<div class="card"><h3>📘 Kesimpulan</h3><p id="kes"></p></div>
-
-<canvas id="chart1"></canvas>
-<canvas id="chart2"></canvas>
-
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
-
-const firebaseConfig={
-apiKey:"AIzaSyCjYmgWEfWBBnkM5LISCgnKU4Du50g00ls",
-databaseURL:"https://centripetal-force-82ef2-default-rtdb.asia-southeast1.firebasedatabase.app/"
-};
-
-const app=initializeApp(firebaseConfig);
-const db=getDatabase(app);
-
-/* LOADER CONTROL */
-const loader=document.getElementById("loader");
-const statusText=document.getElementById("status");
-
-setTimeout(()=>statusText.innerText="Booting sensors...",800);
-setTimeout(()=>statusText.innerText="Connecting Firebase...",1600);
-setTimeout(()=>statusText.innerText="Waiting data...",2400);
-
-/* AUTO HILANG (ANTI MACET) */
-setTimeout(()=>{
-loader.style.opacity="0";
-setTimeout(()=>loader.style.display="none",500);
-},5000);
-
-/* PARTICLES */
-const c=document.getElementById("particles");
-const ctx=c.getContext("2d");
-c.width=innerWidth;
-c.height=innerHeight;
-
-let p=[];
-for(let i=0;i<60;i++){
-p.push({x:Math.random()*c.width,y:Math.random()*c.height,dx:(Math.random()-0.5),dy:(Math.random()-0.5)});
+document.getElementById(p).style.display="block";
 }
-function anim(){
-ctx.clearRect(0,0,c.width,c.height);
-p.forEach(a=>{
-a.x+=a.dx;a.y+=a.dy;
-ctx.beginPath();
-ctx.arc(a.x,a.y,2,0,6.28);
-ctx.fillStyle="#22c55e";
-ctx.fill();
-});
-requestAnimationFrame(anim);
-}
-anim();
 
 /* DATA */
-let data=[],omega2Arr=[],forceArr=[];
-let max=0,min=999,sum=0,count=0;
-let running=true,sim=false,angle=0;
+let Fdata=[];
+let Wdata=[];
 
-/* CHART */
-const chart1=new Chart(document.getElementById("chart1"),{
-type:"line",
-data:{labels:[],datasets:[{data:data,borderColor:"#38bdf8"}]}
-});
+let maxF=-Infinity,minF=Infinity;
+let maxW=-Infinity,minW=Infinity;
 
-const chart2=new Chart(document.getElementById("chart2"),{
+/* CHART FIXED */
+const chart=new Chart(document.getElementById("chart"),{
 type:"scatter",
-data:{datasets:[
-{data:[],backgroundColor:"#22c55e"},
-{data:[],showLine:true}
-]}
+data:{
+datasets:[
+{label:"Data F vs ω²",data:[],showLine:false},
+{label:"Trendline",data:[],type:"line",borderColor:"yellow",pointRadius:0},
+{label:"Outlier",data:[],type:"scatter",backgroundColor:"red",pointRadius:6}
+]
+}
 });
 
 /* REGRESSION */
 function reg(x,y){
 let n=x.length,sx=0,sy=0,sxy=0,sx2=0;
+
 for(let i=0;i<n;i++){
-sx+=x[i];sy+=y[i];
-sxy+=x[i]*y[i];sx2+=x[i]*x[i];
+sx+=x[i]; sy+=y[i];
+sxy+=x[i]*y[i];
+sx2+=x[i]*x[i];
 }
+
 let m=(n*sxy-sx*sy)/(n*sx2-sx*sx);
 let b=(sy-m*sx)/n;
-return {m,b};
+
+let mean=y.reduce((a,b)=>a+b,0)/n;
+let ssT=0,ssR=0;
+
+for(let i=0;i<n;i++){
+let p=m*x[i]+b;
+ssT+=(y[i]-mean)**2;
+ssR+=(y[i]-p)**2;
 }
 
-/* FIREBASE */
-onValue(ref(db,"sensor"),snap=>{
-let d=snap.val()||{};
-let f=sim?Math.random()*3:d.force_newton||0;
-let g=d.force_gram||0;
-let r=d.rpm||0;
+return {m,b,r2:1-ssR/ssT};
+}
 
-if(!running)return;
+/* OUTLIER */
+function detect(x,y,m,b){
+let out=[];
+for(let i=0;i<x.length;i++){
+let err=Math.abs(y[i]-(m*x[i]+b));
+if(err>2) out.push({x:x[i],y:y[i]});
+}
+return out;
+}
 
-/* VELOCITY */
-let radius=0.3;
-let velocity=(r*2*Math.PI*radius)/60;
+/* LOOP */
+setInterval(()=>{
 
-/* DISPLAY */
-force.innerText=f.toFixed(2);
-gram.innerText=g.toFixed(2);
-vel.innerText=velocity.toFixed(2);
-rpm.innerText=r.toFixed(0);
+let rpm=parseFloat(document.getElementById("rpm").value);
+let omega=(rpm*2*Math.PI)/60;
+let w2=omega*omega;
+let F=Math.random()*5+1;
+let v=omega*0.3;
 
-/* STATS */
-max=Math.max(max,f);
-min=Math.min(min,f);
-sum+=f;count++;
-maxEl.innerText=max.toFixed(2);
-minEl.innerText=min.toFixed(2);
-avgEl.innerText=(sum/count).toFixed(2);
+Fdata.push(F);
+Wdata.push(w2);
 
-/* ORBIT */
-angle+=1+f;
-document.getElementById("dot").style.transform=`rotate(${angle}deg) translateX(75px)`;
+maxF=Math.max(maxF,F);
+minF=Math.min(minF,F);
+maxW=Math.max(maxW,w2);
+minW=Math.min(minW,w2);
 
-/* GRAPH */
-data.push(f);
-if(data.length>25)data.shift();
-chart1.update();
+chart.data.datasets[0].data.push({x:w2,y:F});
 
-/* PHYSICS */
-let omega=(r*2*Math.PI)/60;
-let omega2=omega*omega;
+if(Fdata.length>3){
 
-omega2Arr.push(omega2);
-forceArr.push(f);
+let r=reg(Wdata,Fdata);
+let out=detect(Wdata,Fdata,r.m,r.b);
 
-chart2.data.datasets[0].data=forceArr.map((v,i)=>({x:omega2Arr[i],y:v}));
-
-if(forceArr.length>5){
-let rr=reg(omega2Arr,forceArr);
-
+/* TRENDLINE */
 let trend=[];
-for(let i=0;i<20;i++){
-let x=i;
-trend.push({x:x,y:rr.m*x+rr.b});
-}
-chart2.data.datasets[1].data=trend;
-
-reg.innerText=`F = ${rr.m.toFixed(3)} ω² + ${rr.b.toFixed(3)}`;
-
-ai.innerText =
-f<1?"Stabil":
-f<2?"Meningkat":
-"Tinggi";
-
-kes.innerText =
-rr.m>0?"Sesuai teori F ∝ ω²":"Tidak sesuai teori";
+for(let x=0;x<=Math.max(...Wdata);x+=0.1){
+trend.push({x:x,y:r.m*x+r.b});
 }
 
-chart2.update();
+chart.data.datasets[1].data=trend;
+chart.data.datasets[2].data=out;
 
-});
+/* OUTPUT */
+eq.innerText=`F = ${r.m.toFixed(3)}ω² + ${r.b.toFixed(3)}`;
+r2.innerText=`R² = ${r.r2.toFixed(3)}`;
+err.innerText=`Error ${(Math.abs(1-r.m)*100).toFixed(2)}%`;
 
-/* CONTROL */
-window.start=()=>running=true;
-window.stop=()=>running=false;
-window.reset=()=>location.reload();
-window.sim=()=>sim=!sim;
+interp.innerText =
+r.r2>0.9
+? "VALID: hubungan F ∝ ω² kuat"
+: "DATA NOISE / ERROR EXPERIMENTAL";
+
+/* STATISTIK */
+stats.innerText =
+`n=${Fdata.length}
+v=${v.toFixed(2)} m/s
+Fmax=${maxF.toFixed(2)} Fmin=${minF.toFixed(2)}
+ω²max=${maxW.toFixed(2)} ω²min=${minW.toFixed(2)}`;
+
+tb.innerHTML+=`<tr><td>${F.toFixed(2)}</td><td>${w2.toFixed(2)}</td></tr>`;
+}
+
+chart.update();
+
+},1000);
 
 </script>
 
