@@ -2,8 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
-<title>🎓 CentriLab Mobile</title>
+<title>📱 CentriLab App Mode</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -17,51 +16,78 @@ overflow:hidden;
 -webkit-tap-highlight-color:transparent;
 }
 
-/* PAGE MOBILE SCROLL */
+/* PAGE ANIMATION (APP FEEL) */
 .page{
 display:none;
 height:100vh;
 overflow-y:auto;
 padding:14px;
 padding-bottom:90px;
+animation:fade .25s ease;
 }
 .page.active{display:block}
 
-/* CARD MOBILE FRIENDLY */
+@keyframes fade{
+from{opacity:0;transform:translateY(10px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+/* CARD */
 .card{
 background:rgba(255,255,255,0.06);
 padding:14px;
 margin:10px 0;
-border-radius:14px;
-font-size:14px;
-line-height:1.4;
+border-radius:16px;
+backdrop-filter:blur(10px);
+box-shadow:0 0 20px rgba(56,189,248,0.08);
 }
 
-/* TITLE */
-h2{font-size:16px}
-h3{font-size:14px}
-
-/* INPUT MOBILE */
+/* INPUT */
 input{
-width:70%;
+width:65%;
 padding:10px;
-border-radius:10px;
+border-radius:12px;
 border:none;
 background:rgba(255,255,255,0.08);
 color:white;
-font-size:14px;
+outline:none;
 }
 
 button{
 padding:10px 12px;
-border-radius:10px;
+border-radius:12px;
 border:none;
 background:#38bdf8;
 font-weight:bold;
-font-size:13px;
 }
 
-/* NAV MOBILE FIX (SAFE AREA) */
+/* RIPPLE EFFECT */
+button{
+position:relative;
+overflow:hidden;
+}
+
+button:after{
+content:"";
+position:absolute;
+width:100px;
+height:100px;
+background:rgba(255,255,255,0.4);
+border-radius:50%;
+transform:scale(0);
+opacity:0;
+transition:0.4s;
+left:50%;
+top:50%;
+translate:-50% -50%;
+}
+
+button:active:after{
+transform:scale(2);
+opacity:0;
+}
+
+/* BOTTOM APP BAR */
 #nav{
 position:fixed;
 bottom:0;
@@ -69,10 +95,10 @@ left:0;
 width:100%;
 height:65px;
 display:flex;
-background:#0b1220;
+background:rgba(10,15,25,0.95);
+backdrop-filter:blur(10px);
 border-top:1px solid rgba(255,255,255,0.1);
 z-index:999999;
-padding-bottom:env(safe-area-inset-bottom);
 }
 
 #nav button{
@@ -81,11 +107,19 @@ border:none;
 background:none;
 color:#94a3b8;
 font-size:11px;
+transition:.2s;
 }
 
 #nav button.active{
 color:#38bdf8;
-font-weight:bold;
+transform:scale(1.15);
+text-shadow:0 0 10px #38bdf8;
+}
+
+/* GLASS TITLE */
+h2{
+font-size:16px;
+margin:0 0 10px 0;
 }
 </style>
 </head>
@@ -95,8 +129,8 @@ font-weight:bold;
 <!-- HOME -->
 <div id="home" class="page active">
 <div class="card">
-<h2>🎓 CENTRIPETAL LAB (MOBILE)</h2>
-<p id="status">Connecting...</p>
+<h2>📱 CENTRILAB APP MODE</h2>
+<p id="status">Starting system...</p>
 <p id="homeData">-</p>
 </div>
 </div>
@@ -104,30 +138,21 @@ font-weight:bold;
 <!-- MATERI -->
 <div id="materi" class="page">
 <div class="card">
-
 <h2>📘 GAYA SENTRIPETAL</h2>
 
-<p>
-Gaya sentripetal adalah gaya yang selalu menuju pusat lintasan gerak melingkar.
-</p>
+<p>Gaya menuju pusat lintasan pada gerak melingkar.</p>
 
-<h3>⚡ Konsep</h3>
-<p>Gerak melingkar = arah berubah terus → butuh gaya pusat</p>
-
-<h3>📐 Rumus</h3>
 <p>F = mv² / r</p>
 <p>v = ωr</p>
-<p>F = mω²r</p>
-
-<p><b style="color:#38bdf8">F ∝ ω²</b></p>
-
+<p><b style="color:#38bdf8">F = mω²r</b></p>
+<p>F ∝ ω²</p>
 </div>
 </div>
 
 <!-- EKSPERIMEN -->
 <div id="eksperimen" class="page">
 <div class="card">
-<h2>🧪 EXPERIMENT</h2>
+<h2>🧪 LIVE EXPERIMENT</h2>
 <canvas id="chart"></canvas>
 <p id="eq"></p>
 </div>
@@ -136,7 +161,7 @@ Gaya sentripetal adalah gaya yang selalu menuju pusat lintasan gerak melingkar.
 <!-- ARSIP -->
 <div id="arsip" class="page">
 <div class="card">
-<h2>📂 DATA</h2>
+<h2>📂 DATA LOG</h2>
 <table border="1" width="100%">
 <tbody id="tb"></tbody>
 </table>
@@ -146,9 +171,9 @@ Gaya sentripetal adalah gaya yang selalu menuju pusat lintasan gerak melingkar.
 <!-- AI -->
 <div id="ai" class="page">
 <div class="card">
-<h2>🤖 AI DOSEN</h2>
-<input id="q" placeholder="Tanya..." />
-<button onclick="ask()">OK</button>
+<h2>🤖 AI LAB ASSISTANT</h2>
+<input id="q" placeholder="Tanya analisis..." />
+<button onclick="ask()">ASK</button>
 <p id="a"></p>
 </div>
 </div>
@@ -157,18 +182,18 @@ Gaya sentripetal adalah gaya yang selalu menuju pusat lintasan gerak melingkar.
 <div id="creator" class="page">
 <div class="card">
 <h2>👤 CREATOR</h2>
-<p>CentriLab dibuat untuk eksperimen fisika berbasis IoT & data science.</p>
+<p>CentriLab App Mode dibuat untuk eksperimen fisika real-time berbasis IoT.</p>
 <p><b>Fokus:</b> F ∝ ω²</p>
 </div>
 </div>
 
-<!-- NAV -->
+<!-- NAV APP BAR -->
 <div id="nav">
-<button onclick="go('home',this)" class="active">🏠</button>
-<button onclick="go('materi',this)">📘</button>
-<button onclick="go('eksperimen',this)">🧪</button>
-<button onclick="go('arsip',this)">📂</button>
-<button onclick="go('ai',this)">🤖</button>
+<button onclick="go('home',this)" class="active">🏠 Home</button>
+<button onclick="go('materi',this)">📘 Materi</button>
+<button onclick="go('eksperimen',this)">🧪 Lab</button>
+<button onclick="go('arsip',this)">📂 Data</button>
+<button onclick="go('ai',this)">🤖 AI</button>
 <button onclick="go('creator',this)">👤</button>
 </div>
 
@@ -177,6 +202,7 @@ Gaya sentripetal adalah gaya yang selalu menuju pusat lintasan gerak melingkar.
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
+/* INIT */
 let db=null;
 
 try{
@@ -190,7 +216,7 @@ db=getDatabase(app);
 /* DATA */
 window.labData={dataset:[],rpm:0,force:0,omega2:0,slope:0,r2:0};
 
-/* NAV */
+/* NAV APP SWITCH */
 window.go=(id,el)=>{
 document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
 document.getElementById(id).classList.add("active");
@@ -218,8 +244,8 @@ sx2+=p.x*p.x;
 return (d.length*sxy - sx*sy)/(d.length*sx2 - sx*sx);
 }
 
-/* R2 */
 function mean(a){return a.reduce((x,y)=>x+y,0)/a.length;}
+
 function r2(d){
 if(d.length<3) return 0;
 let xs=d.map(p=>p.x), ys=d.map(p=>p.y);
@@ -230,11 +256,10 @@ num+=(xs[i]-mx)*(ys[i]-my);
 dx+=(xs[i]-mx)**2;
 dy+=(ys[i]-mx)**2;
 }
-let r=num/Math.sqrt(dx*dy);
-return r*r;
+return (num/Math.sqrt(dx*dy))**2;
 }
 
-/* FIREBASE */
+/* FIREBASE LIVE */
 if(db){
 onValue(ref(db,"sensor"),snap=>{
 const d=snap.val()||{};
@@ -246,7 +271,7 @@ let omega=(rpm*2*Math.PI)/60;
 let w2=omega*omega;
 
 labData.dataset.push({x:w2,y:F});
-if(labData.dataset.length>50) labData.dataset.shift();
+if(labData.dataset.length>60) labData.dataset.shift();
 
 labData.rpm=rpm;
 labData.force=F;
@@ -255,14 +280,14 @@ labData.slope=regression(labData.dataset);
 labData.r2=r2(labData.dataset);
 
 /* UI */
-document.getElementById("status").innerText="LIVE";
+document.getElementById("status").innerText="🟢 LIVE SYSTEM";
 document.getElementById("homeData").innerText=`RPM: ${rpm}`;
 
 chart.data.datasets[0].data=labData.dataset;
 chart.update();
 
 document.getElementById("eq").innerHTML=
-`F ≈ ${labData.slope.toFixed(3)}·ω²<br>R²=${labData.r2.toFixed(4)}`;
+`F ≈ ${labData.slope.toFixed(3)}·ω²<br>R² = ${labData.r2.toFixed(4)}`;
 });
 }
 
@@ -274,16 +299,14 @@ let a=document.getElementById("a");
 if(!q) return a.innerText="Tulis pertanyaan.";
 
 if(q.includes("data"))
-return a.innerText=
-`RPM:${labData.rpm}
+return a.innerText=`RPM:${labData.rpm}
 F:${labData.force}
 ω²:${labData.omega2.toFixed(2)}`;
 
 if(q.includes("rumus")) return a.innerText="F = mω²r";
 
-a.innerText="AI membaca data...";
+a.innerText="AI menganalisis...";
 }
-
 </script>
 
 </body>
