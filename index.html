@@ -12,6 +12,7 @@ margin:0;
 font-family:Segoe UI;
 background:linear-gradient(180deg,#020617,#000);
 color:white;
+padding-bottom:90px;
 }
 
 /* PAGE */
@@ -54,20 +55,26 @@ display:flex;
 background:#020617;
 border-top:1px solid #334155;
 z-index:9999;
-backdrop-filter:blur(10px);
+height:75px;
+padding-bottom:env(safe-area-inset-bottom);
 }
 
 #nav button{
 flex:1;
-padding:14px 5px;
+padding:8px 2px;
 border:none;
 background:none;
-color:#94a3b8;
-font-size:12px;
+color:#cbd5f5;
+font-size:11px;
 display:flex;
 flex-direction:column;
 align-items:center;
-transition:0.2s;
+justify-content:center;
+}
+
+#nav button.active{
+color:#38bdf8;
+font-weight:bold;
 }
 
 #nav button.active{
