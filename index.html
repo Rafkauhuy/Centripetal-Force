@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🚀 SMART PHYSICS LAB</title>
+<title>🚀 CENTRIPETAL SMART LAB • PREMIUM</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -10,45 +10,96 @@
 body{
 margin:0;
 font-family:Segoe UI;
-background:radial-gradient(circle,#020617,#000);
+background:linear-gradient(180deg,#020617,#000);
 color:white;
 }
 
-.page{display:none;padding:12px;padding-bottom:100px}
+/* PAGE */
+.page{
+display:none;
+padding:14px;
+padding-bottom:130px;
+min-height:100vh;
+animation:fade 0.3s ease;
+}
 .page.active{display:block}
 
-.card{
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(10px);
-padding:14px;
-margin:10px 0;
-border-radius:16px;
+@keyframes fade{
+from{opacity:0;transform:translateY(10px)}
+to{opacity:1}
 }
 
-/* NAV */
+/* CARD */
+.card{
+background:rgba(255,255,255,0.06);
+padding:16px;
+margin:12px 0;
+border-radius:16px;
+box-shadow:0 0 20px rgba(0,0,0,0.5);
+}
+
+/* TITLE GLOW */
+h2{
+color:#38bdf8;
+text-shadow:0 0 10px #38bdf8;
+}
+
+/* NAV PREMIUM */
 #nav{
 position:fixed;
 bottom:0;
+left:0;
 width:100%;
 display:flex;
-background:rgba(0,0,0,0.95);
+background:#020617;
+border-top:1px solid #334155;
+z-index:9999;
+backdrop-filter:blur(10px);
 }
 
 #nav button{
 flex:1;
-padding:16px 6px;
+padding:14px 5px;
 border:none;
 background:none;
-color:white;
-font-size:14px;
+color:#94a3b8;
+font-size:12px;
+display:flex;
+flex-direction:column;
+align-items:center;
+transition:0.2s;
 }
 
-/* ANIM */
-#anim{
-display:block;
-margin:auto;
-background:rgba(255,255,255,0.05);
-border-radius:50%;
+#nav button.active{
+color:#38bdf8;
+transform:scale(1.1);
+}
+
+#nav button:active{
+background:#1e293b;
+}
+
+/* ICON STYLE */
+.icon{
+font-size:18px;
+}
+
+/* BUTTON */
+button{
+padding:10px;
+border:none;
+border-radius:10px;
+background:#1e293b;
+color:white;
+}
+
+/* INPUT */
+input{
+width:100%;
+padding:10px;
+border-radius:10px;
+border:none;
+margin-top:5px;
 }
 </style>
 </head>
@@ -57,13 +108,30 @@ border-radius:50%;
 
 <!-- HOME -->
 <div id="home" class="page active">
+
 <div class="card">
 <h2>🚀 CENTRIPETAL LAB</h2>
-<p>SMART PHYSICS SYSTEM + FIREBASE</p>
-</div>
+<p>Smart Physics System + Firebase + AI</p>
 </div>
 
-<!-- MATERI FULL -->
+<div class="card">
+<h3>📡 STATUS</h3>
+<p id="statusHome">🟡 Connecting...</p>
+</div>
+
+<div class="card">
+<h3>⚡ DATA TERAKHIR</h3>
+<p id="homeData">-</p>
+</div>
+
+<div class="card">
+<h3>📈 HASIL CEPAT</h3>
+<p id="homeResult">-</p>
+</div>
+
+</div>
+
+<!-- MATERI -->
 <div id="materi" class="page">
 <div class="card">
 <h2>📘 GAYA SENTRIPETAL (FULL AKADEMIK DETAIL)</h2>
@@ -161,52 +229,140 @@ Secara matematis, gaya ini bergantung pada massa, jari-jari, dan kuadrat kecepat
 <p style="color:#38bdf8"><b>F = mω²r → inti dari seluruh eksperimen</b></p>
 
 </div>
-
 <!-- EKSPERIMEN -->
 <div id="eksperimen" class="page">
+
 <div class="card">
+<h2>🧪 EKSPERIMEN GAYA SENTRIPETAL (FULL A+ AKADEMIK)</h2>
 
-<h2>🧪 SMART LAB EKSPERIMEN</h2>
+<h3>🎯 1. Tujuan Eksperimen</h3>
+<p>
+Mengetahui hubungan antara gaya sentripetal (F) dengan kuadrat kecepatan sudut (ω²) serta membuktikan bahwa F berbanding lurus dengan ω².
+</p>
 
-<p id="statusSensor">🟡 Menunggu data...</p>
+<h3>📌 2. Variabel Penelitian</h3>
+<ul>
+<li><b>Variabel bebas:</b> Kecepatan sudut (ω) / RPM</li>
+<li><b>Variabel terikat:</b> Gaya sentripetal (F)</li>
+<li><b>Variabel kontrol:</b> massa (m) dan jari-jari (r)</li>
+</ul>
 
-<h3>🌀 Visual Gaya</h3>
-<canvas id="anim" width="300" height="300"></canvas>
+<h3>🧰 3. Alat & Bahan</h3>
+<ul>
+<li>ESP32</li>
+<li>HX711 (modul penguat load cell)</li>
+<li>Load cell (sensor gaya)</li>
+<li>Kabel jumper</li>
+<li>Breadboard</li>
+<li>Statif dan klem laboratorium</li>
+<li>Tali</li>
+<li>Beban (massa)</li>
+</ul>
 
-<h3>📊 Data Real-Time</h3>
-<p id="dataLengkap"></p>
+<h3>⚙️ 4. Cara Kerja Alat</h3>
+<p>
+Beban diputar menggunakan sistem rotasi sehingga menghasilkan gerak melingkar.
+Gerakan tersebut menimbulkan gaya sentripetal yang bekerja menuju pusat lintasan.
+Gaya ini menyebabkan tegangan pada tali yang terhubung dengan load cell.
+</p>
 
-<canvas id="chart"></canvas>
+<p>
+Load cell mendeteksi besar gaya (tegangan) yang terjadi dan menghasilkan sinyal analog.
+Sinyal tersebut diperkuat dan dikonversi menjadi data digital oleh modul HX711.
+</p>
 
-<p id="eq"></p>
-<p id="r2"></p>
-<p id="interp"></p>
-<p id="stats"></p>
+<p>
+ESP32 membaca data digital dari HX711, kemudian mengolah dan mengirimkan data tersebut ke Firebase melalui koneksi WiFi.
+</p>
 
-<h3>📋 Tabel Data</h3>
-<table border="1" width="100%">
-<tbody id="tableData"></tbody>
-</table>
+<p>
+Data yang dikirim akan ditampilkan secara real-time pada website dalam bentuk:
+</p>
 
-<button onclick="resetData()">🔄 Reset</button>
-<button onclick="exportCSV()">📥 Download</button>
+<ul>
+<li>Nilai numerik (gaya, RPM, kecepatan, dll)</li>
+<li>Grafik hubungan F terhadap ω²</li>
+<li>Analisis regresi linear otomatis</li>
+</ul>
+
+<h3>🧪 5. Hipotesis</h3>
+<p>
+Semakin besar kecepatan sudut (ω), maka gaya sentripetal akan meningkat secara kuadrat.
+</p>
+
+<h3>📊 6. Tabel Variabel (Real-time dari Sistem)</h3>
+<ul>
+<li>n = jumlah data</li>
+<li>RPM</li>
+<li>massa (gram)</li>
+<li>kecepatan linear (v)</li>
+<li>ω²</li>
+<li>gaya (F)</li>
+</ul>
+
+<h3>📈 7. Analisis Data</h3>
+<p>Hubungan diuji menggunakan regresi linear:</p>
+
+<p style="color:#38bdf8"><b>F = mω² + b</b></p>
+
+<p>
+Jika nilai R² mendekati 1, maka hubungan antara gaya sentripetal dan kecepatan sudut sangat kuat dan sesuai dengan teori fisika.
+</p>
+
+<h3>⚠️ 8. Analisis Error</h3>
+<p>
+Error dihitung dari perbedaan antara nilai teoritis dan hasil eksperimen:
+</p>
+
+<p>
+Error (%) = |F_teori − F_eksperimen| / F_teori × 100%
+</p>
+
+<p>
+Semakin kecil nilai error, maka semakin akurat hasil eksperimen.
+</p>
+
+<h3>📊 9. Interpretasi Hasil</h3>
+<p id="interp">
+Jika R² > 0.9 → eksperimen VALID dan sesuai hukum F ∝ ω²  
+Jika R² < 0.9 → terdapat noise atau kesalahan pengukuran
+</p>
+
+<h3>🧠 10. Kesimpulan</h3>
+<p>
+Eksperimen ini membuktikan bahwa gaya sentripetal berbanding lurus dengan kuadrat kecepatan sudut (F ∝ ω²), sesuai dengan teori fisika Newton.
+</p>
 
 </div>
-</div>
-
 <!-- ARSIP -->
 <div id="arsip" class="page">
 <div class="card">
 <h2>📂 ARSIP DATA</h2>
-
 <table border="1" width="100%">
 <thead>
 <tr>
-<th>n</th><th>RPM</th><th>Gram</th><th>v</th><th>ω²</th><th>F</th>
+<th>n</th>
+<th>RPM</th>
+<th>gram</th>
+<th>v</th>
+<th>ω²</th>
+<th>F</th>
 </tr>
 </thead>
 <tbody id="tb"></tbody>
 </table>
+</div>
+</div>
+
+<!-- AI -->
+<div id="ai" class="page">
+<div class="card">
+<h2>🤖 AI TUTOR</h2>
+
+<input id="q" placeholder="Tanya soal fisika...">
+<button onclick="ask()">TANYA</button>
+
+<p id="a"></p>
 
 </div>
 </div>
@@ -214,7 +370,6 @@ Secara matematis, gaya ini bergantung pada massa, jari-jari, dan kuadrat kecepat
 <!-- CREATOR -->
 <div id="creator" class="page">
 <div class="card">
-
 <h2>👤 INFORMASI PROYEK</h2>
 
 <p><b>SMA NEGERI 1 GEGESIK</b></p>
@@ -222,7 +377,7 @@ Secara matematis, gaya ini bergantung pada massa, jari-jari, dan kuadrat kecepat
 
 <br>
 
-<p><b>KETUA:</b></p>
+<p><b>KETUA KELOMPOK:</b></p>
 <p>MOHAMMAD RIZKY AL HIDAYAH</p>
 
 <br>
@@ -241,15 +396,32 @@ Secara matematis, gaya ini bergantung pada massa, jari-jari, dan kuadrat kecepat
 <p>Bapak Agus Salim S.Si, M.Pd</p>
 
 </div>
-</div>
 
 <!-- NAV -->
 <div id="nav">
-<button onclick="go('home')">🏠<br>Home</button>
-<button onclick="go('materi')">📘<br>Materi</button>
-<button onclick="go('eksperimen')">🧪<br>Lab</button>
-<button onclick="go('arsip')">📂<br>Data</button>
-<button onclick="go('creator')">👤<br>Info</button>
+<button onclick="go('home',this)" class="active">
+<div class="icon">🏠</div>Home
+</button>
+
+<button onclick="go('materi',this)">
+<div class="icon">📘</div>Materi
+</button>
+
+<button onclick="go('eksperimen',this)">
+<div class="icon">🧪</div>Lab
+</button>
+
+<button onclick="go('arsip',this)">
+<div class="icon">📂</div>Data
+</button>
+
+<button onclick="go('ai',this)">
+<div class="icon">🤖</div>AI
+</button>
+
+<button onclick="go('creator',this)">
+<div class="icon">👤</div>Info
+</button>
 </div>
 
 <script type="module">
@@ -258,45 +430,50 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebas
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
 /* CONFIG */
-const firebaseConfig = {
-apiKey: "AIzaSyCjYmgWEfWBBnkM5LISCgnKU4Du50g00ls",
-databaseURL: "https://centripetal-force-82ef2-default-rtdb.asia-southeast1.firebasedatabase.app"
+const firebaseConfig={
+apiKey:"ISI_API_KEY",
+databaseURL:"ISI_DATABASE_URL"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+const app=initializeApp(firebaseConfig);
+const db=getDatabase(app);
 
 /* NAV */
-window.go=(id)=>{
+window.go=(id,el)=>{
 document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
 document.getElementById(id).classList.add("active");
-};
+
+document.querySelectorAll("#nav button").forEach(b=>b.classList.remove("active"));
+el.classList.add("active");
+}
 
 /* DATA */
-let Fdata=[],Wdata=[],rpmData=[],gramData=[],vData=[];
-let currentRPM=60;
+let Fdata=[],Wdata=[];
 
 /* CHART */
 const chart=new Chart(document.getElementById("chart"),{
 type:"scatter",
-data:{datasets:[
-{label:"Data",data:[]},
-{label:"Trendline",data:[],type:"line"}
-]}
+data:{
+datasets:[
+{label:"F vs ω²",data:[]},
+{label:"Trend",data:[],type:"line",borderColor:"yellow",pointRadius:0}
+]
+}
 });
 
 /* REGRESI */
 function reg(x,y){
 let n=x.length,sx=0,sy=0,sxy=0,sx2=0;
 for(let i=0;i<n;i++){
-sx+=x[i];sy+=y[i];sxy+=x[i]*y[i];sx2+=x[i]*x[i];
+sx+=x[i];sy+=y[i];
+sxy+=x[i]*y[i];
+sx2+=x[i]*x[i];
 }
 let m=(n*sxy-sx*sy)/(n*sx2-sx*sx);
 let b=(sy-m*sx)/n;
 
 let mean=y.reduce((a,b)=>a+b,0)/n;
 let ssT=0,ssR=0;
-
 for(let i=0;i<n;i++){
 let p=m*x[i]+b;
 ssT+=(y[i]-mean)**2;
@@ -306,38 +483,30 @@ return {m,b,r2:1-ssR/ssT};
 }
 
 /* FIREBASE */
-onValue(ref(db,"sensor"),(snap)=>{
+onValue(ref(db,"sensor"),snap=>{
 
 let d=snap.val()||{};
-document.getElementById("statusSensor").innerText="🟢 Connected";
-
-/* ambil data */
 let rpm=d.rpm||0;
 let gram=d.gram||0;
-let r=d.radius||0.3;
 let F=d.force||0;
+let r=0.3;
 
-/* hitung */
-currentRPM=rpm;
 let omega=(rpm*2*Math.PI)/60;
 let w2=omega*omega;
 let v=omega*r;
 
-/* simpan */
+/* store */
 Fdata.push(F);
 Wdata.push(w2);
-rpmData.push(rpm);
-gramData.push(gram);
-vData.push(v);
 
-/* tampil */
-dataLengkap.innerText=
-`n=${Fdata.length} | RPM=${rpm} | gram=${gram} | v=${v.toFixed(2)}`;
+/* HOME */
+statusHome.innerText="🟢 Connected";
+homeData.innerText=`RPM=${rpm} | gram=${gram} | v=${v.toFixed(2)}`;
 
 /* chart */
 chart.data.datasets[0].data.push({x:w2,y:F});
 
-/* ARSIP (FIX) */
+/* arsip */
 tb.innerHTML+=`
 <tr>
 <td>${Fdata.length}</td>
@@ -348,94 +517,39 @@ tb.innerHTML+=`
 <td>${F.toFixed(2)}</td>
 </tr>`;
 
-/* tabel */
-tableData.innerHTML+=`
-<tr>
-<td>${Fdata.length}</td>
-<td>${rpm}</td>
-<td>${gram}</td>
-<td>${v.toFixed(2)}</td>
-<td>${w2.toFixed(2)}</td>
-<td>${F.toFixed(2)}</td>
-</tr>`;
-
-/* regresi */
+/* analisis */
 if(Fdata.length>3){
+
 let rgs=reg(Wdata,Fdata);
 
-/* trendline */
-let trend=[];
+/* trend */
+let t=[];
 for(let x=0;x<=Math.max(...Wdata);x+=0.1){
-trend.push({x:x,y:rgs.m*x+rgs.b});
+t.push({x:x,y:rgs.m*x+rgs.b});
 }
-chart.data.datasets[1].data=trend;
+chart.data.datasets[1].data=t;
 
 eq.innerText=`F = ${rgs.m.toFixed(3)}ω² + ${rgs.b.toFixed(3)}`;
 r2.innerText=`R² = ${rgs.r2.toFixed(3)}`;
-interp.innerText=rgs.r2>0.9?"VALID (F ∝ ω²)":"DATA NOISE";
-stats.innerText=`DATA = ${Fdata.length}`;
+interp.innerText=rgs.r2>0.9?"VALID":"NOISE";
+homeResult.innerText=`R²=${rgs.r2.toFixed(3)}`;
+
+stats.innerText=`Data=${Fdata.length}`;
 }
 
 chart.update();
+
 });
 
-/* RESET */
-window.resetData=()=>{
-Fdata=[];Wdata=[];
-chart.data.datasets.forEach(d=>d.data=[]);
-tableData.innerHTML="";
-tb.innerHTML="";
-chart.update();
-};
+/* AI */
+window.ask=()=>{
+let q=document.getElementById("q").value.toLowerCase();
+let a=document.getElementById("a");
 
-/* EXPORT */
-window.exportCSV=()=>{
-let csv="n,RPM,gram,v,ω²,F\n";
-for(let i=0;i<Fdata.length;i++){
-csv+=`${i+1},${rpmData[i]},${gramData[i]},${vData[i]},${Wdata[i]},${Fdata[i]}\n`;
+if(q.includes("gaya")) a.innerText="F = mω²r";
+else if(q.includes("omega")) a.innerText="ω = 2πf";
+else a.innerText="Gunakan F ∝ ω²";
 }
-let blob=new Blob([csv]);
-let a=document.createElement("a");
-a.href=URL.createObjectURL(blob);
-a.download="data_lab.csv";
-a.click();
-};
-
-/* ANIMASI */
-const c=document.getElementById("anim");
-const ctx=c.getContext("2d");
-let angle=0;
-
-function draw(){
-ctx.clearRect(0,0,300,300);
-
-let cx=150,cy=150,r=100;
-let omega=(currentRPM*2*Math.PI)/60;
-angle+=omega*0.05;
-
-let x=cx+r*Math.cos(angle);
-let y=cy+r*Math.sin(angle);
-
-/* orbit */
-ctx.beginPath();
-ctx.arc(cx,cy,r,0,Math.PI*2);
-ctx.stroke();
-
-/* benda */
-ctx.beginPath();
-ctx.arc(x,y,8,0,Math.PI*2);
-ctx.fill();
-
-/* gaya */
-ctx.beginPath();
-ctx.moveTo(x,y);
-ctx.lineTo(cx,cy);
-ctx.strokeStyle="red";
-ctx.stroke();
-
-requestAnimationFrame(draw);
-}
-draw();
 
 </script>
 
