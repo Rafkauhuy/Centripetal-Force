@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🚀 CENTRIPETAL SMART LAB • PREMIUM</title>
+<title>🚀 CENTRIPETAL SMART LAB • GOD MODE</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -12,23 +12,17 @@ margin:0;
 font-family:Segoe UI;
 background:linear-gradient(180deg,#020617,#000);
 color:white;
-padding-bottom:90px;
+padding-bottom:100px;
 }
 
 /* PAGE */
 .page{
 display:none;
 padding:14px;
-padding-bottom:130px;
+padding-bottom:140px;
 min-height:100vh;
-animation:fade 0.3s ease;
 }
 .page.active{display:block}
-
-@keyframes fade{
-from{opacity:0;transform:translateY(10px)}
-to{opacity:1}
-}
 
 /* CARD */
 .card{
@@ -36,35 +30,26 @@ background:rgba(255,255,255,0.06);
 padding:16px;
 margin:12px 0;
 border-radius:16px;
-box-shadow:0 0 20px rgba(0,0,0,0.5);
 }
 
-/* TITLE GLOW */
-h2{
-color:#38bdf8;
-text-shadow:0 0 10px #38bdf8;
-}
-
-/* NAV PREMIUM */
+/* NAV FIX (INI YANG BIKIN TOMBOL MUNCUL) */
 #nav{
 position:fixed;
 bottom:0;
 left:0;
 width:100%;
+height:75px;
 display:flex;
 background:#020617;
 border-top:1px solid #334155;
-z-index:9999;
-height:75px;
-padding-bottom:env(safe-area-inset-bottom);
+z-index:999999;
 }
 
 #nav button{
 flex:1;
-padding:8px 2px;
 border:none;
 background:none;
-color:#cbd5f5;
+color:#94a3b8;
 font-size:11px;
 display:flex;
 flex-direction:column;
@@ -77,37 +62,7 @@ color:#38bdf8;
 font-weight:bold;
 }
 
-#nav button.active{
-color:#38bdf8;
-transform:scale(1.1);
-}
-
-#nav button:active{
-background:#1e293b;
-}
-
-/* ICON STYLE */
-.icon{
-font-size:18px;
-}
-
-/* BUTTON */
-button{
-padding:10px;
-border:none;
-border-radius:10px;
-background:#1e293b;
-color:white;
-}
-
-/* INPUT */
-input{
-width:100%;
-padding:10px;
-border-radius:10px;
-border:none;
-margin-top:5px;
-}
+.icon{font-size:18px;}
 </style>
 </head>
 
@@ -115,27 +70,16 @@ margin-top:5px;
 
 <!-- HOME -->
 <div id="home" class="page active">
-
 <div class="card">
 <h2>🚀 CENTRIPETAL LAB</h2>
 <p>Smart Physics System + Firebase + AI</p>
 </div>
 
 <div class="card">
-<h3>📡 STATUS</h3>
 <p id="statusHome">🟡 Connecting...</p>
-</div>
-
-<div class="card">
-<h3>⚡ DATA TERAKHIR</h3>
 <p id="homeData">-</p>
-</div>
-
-<div class="card">
-<h3>📈 HASIL CEPAT</h3>
 <p id="homeResult">-</p>
 </div>
-
 </div>
 
 <!-- MATERI -->
@@ -238,7 +182,6 @@ Secara matematis, gaya ini bergantung pada massa, jari-jari, dan kuadrat kecepat
 </div>
 <!-- EKSPERIMEN -->
 <div id="eksperimen" class="page">
-
 <div class="card">
 <h2>🧪 EKSPERIMEN GAYA SENTRIPETAL (FULL A+ AKADEMIK)</h2>
 
@@ -344,18 +287,8 @@ Eksperimen ini membuktikan bahwa gaya sentripetal berbanding lurus dengan kuadra
 <!-- ARSIP -->
 <div id="arsip" class="page">
 <div class="card">
-<h2>📂 ARSIP DATA</h2>
+<h2>📂 DATA</h2>
 <table border="1" width="100%">
-<thead>
-<tr>
-<th>n</th>
-<th>RPM</th>
-<th>gram</th>
-<th>v</th>
-<th>ω²</th>
-<th>F</th>
-</tr>
-</thead>
 <tbody id="tb"></tbody>
 </table>
 </div>
@@ -364,13 +297,9 @@ Eksperimen ini membuktikan bahwa gaya sentripetal berbanding lurus dengan kuadra
 <!-- AI -->
 <div id="ai" class="page">
 <div class="card">
-<h2>🤖 AI TUTOR</h2>
-
-<input id="q" placeholder="Tanya soal fisika...">
+<input id="q" placeholder="Tanya...">
 <button onclick="ask()">TANYA</button>
-
 <p id="a"></p>
-
 </div>
 </div>
 
@@ -403,32 +332,14 @@ Eksperimen ini membuktikan bahwa gaya sentripetal berbanding lurus dengan kuadra
 <p>Bapak Agus Salim S.Si, M.Pd</p>
 
 </div>
-
 <!-- NAV -->
 <div id="nav">
-<button onclick="go('home',this)" class="active">
-<div class="icon">🏠</div>Home
-</button>
-
-<button onclick="go('materi',this)">
-<div class="icon">📘</div>Materi
-</button>
-
-<button onclick="go('eksperimen',this)">
-<div class="icon">🧪</div>Lab
-</button>
-
-<button onclick="go('arsip',this)">
-<div class="icon">📂</div>Data
-</button>
-
-<button onclick="go('ai',this)">
-<div class="icon">🤖</div>AI
-</button>
-
-<button onclick="go('creator',this)">
-<div class="icon">👤</div>Info
-</button>
+<button onclick="go('home',this)" class="active"><div class="icon">🏠</div></button>
+<button onclick="go('materi',this)"><div class="icon">📘</div></button>
+<button onclick="go('eksperimen',this)"><div class="icon">🧪</div></button>
+<button onclick="go('arsip',this)"><div class="icon">📂</div></button>
+<button onclick="go('ai',this)"><div class="icon">🤖</div></button>
+<button onclick="go('creator',this)"><div class="icon">👤</div></button>
 </div>
 
 <script type="module">
@@ -463,7 +374,7 @@ type:"scatter",
 data:{
 datasets:[
 {label:"F vs ω²",data:[]},
-{label:"Trend",data:[],type:"line",borderColor:"yellow",pointRadius:0}
+{label:"Trend",data:[],type:"line",borderColor:"yellow"}
 ]
 }
 });
@@ -478,15 +389,7 @@ sx2+=x[i]*x[i];
 }
 let m=(n*sxy-sx*sy)/(n*sx2-sx*sx);
 let b=(sy-m*sx)/n;
-
-let mean=y.reduce((a,b)=>a+b,0)/n;
-let ssT=0,ssR=0;
-for(let i=0;i<n;i++){
-let p=m*x[i]+b;
-ssT+=(y[i]-mean)**2;
-ssR+=(y[i]-p)**2;
-}
-return {m,b,r2:1-ssR/ssT};
+return {m,b};
 }
 
 /* FIREBASE */
@@ -496,21 +399,19 @@ let d=snap.val()||{};
 let rpm=d.rpm||0;
 let gram=d.gram||0;
 let F=d.force||0;
-let r=0.3;
 
 let omega=(rpm*2*Math.PI)/60;
 let w2=omega*omega;
-let v=omega*r;
+let v=omega*0.3;
 
 /* store */
 Fdata.push(F);
 Wdata.push(w2);
 
-/* HOME */
+/* UI */
 statusHome.innerText="🟢 Connected";
-homeData.innerText=`RPM=${rpm} | gram=${gram} | v=${v.toFixed(2)}`;
+homeData.innerText=`RPM=${rpm} | v=${v.toFixed(2)}`;
 
-/* chart */
 chart.data.datasets[0].data.push({x:w2,y:F});
 
 /* arsip */
@@ -524,24 +425,10 @@ tb.innerHTML+=`
 <td>${F.toFixed(2)}</td>
 </tr>`;
 
-/* analisis */
+/* regresi */
 if(Fdata.length>3){
-
-let rgs=reg(Wdata,Fdata);
-
-/* trend */
-let t=[];
-for(let x=0;x<=Math.max(...Wdata);x+=0.1){
-t.push({x:x,y:rgs.m*x+rgs.b});
-}
-chart.data.datasets[1].data=t;
-
-eq.innerText=`F = ${rgs.m.toFixed(3)}ω² + ${rgs.b.toFixed(3)}`;
-r2.innerText=`R² = ${rgs.r2.toFixed(3)}`;
-interp.innerText=rgs.r2>0.9?"VALID":"NOISE";
-homeResult.innerText=`R²=${rgs.r2.toFixed(3)}`;
-
-stats.innerText=`Data=${Fdata.length}`;
+let r=reg(Wdata,Fdata);
+eq.innerText=`F = ${r.m.toFixed(2)}ω² + ${r.b.toFixed(2)}`;
 }
 
 chart.update();
@@ -550,12 +437,8 @@ chart.update();
 
 /* AI */
 window.ask=()=>{
-let q=document.getElementById("q").value.toLowerCase();
-let a=document.getElementById("a");
-
-if(q.includes("gaya")) a.innerText="F = mω²r";
-else if(q.includes("omega")) a.innerText="ω = 2πf";
-else a.innerText="Gunakan F ∝ ω²";
+let q=document.getElementById("q").value;
+a.innerText="F = mω²r";
 }
 
 </script>
