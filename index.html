@@ -13,13 +13,65 @@
 <style>
 :root { --accent: #38bdf8; --glow: #67e8f9; --glass: rgba(255,255,255,0.095); }
 body { margin:0; font-family:system-ui; background: radial-gradient(circle at center, #0a1428, #00040f); color:#f1f5f9; height:100vh; overflow:hidden; }
-#preloader { position:fixed; inset:0; z-index:9999; background: radial-gradient(circle at center, #0a1428, #00040f); display:flex; align-items:center; justify-content:center; flex-direction:column; transition:opacity 1.2s ease; }
-.nebula { position:absolute; inset:0; overflow:hidden; opacity:0.85; }
-.nebula-particle { position:absolute; background:#fff; border-radius:50%; box-shadow:0 0 10px var(--glow); animation:twinkle 3s infinite alternate; }
-.loading-bar { width:280px; height:12px; background:rgba(255,255,255,0.12); border-radius:9999px; overflow:hidden; margin-top:30px; position:relative; box-shadow:0 0 25px #67e8f9; }
-.loading-progress { width:0%; height:100%; background:linear-gradient(90deg,#38bdf8,#a5f3fc); animation:loadingAnim 2.8s linear forwards; position:relative; }
-@keyframes loadingAnim { to { width:100%; } }
-@keyframes twinkle { 0%{opacity:0.3} 100%{opacity:1} }
+
+#preloader {
+    position:fixed; inset:0; z-index:9999;
+    background: radial-gradient(circle at center, #0a1428, #00040f);
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+    transition: opacity 1.6s ease, transform 1.3s ease;
+}
+.nebula { position:absolute; inset:0; overflow:hidden; opacity:0.9; }
+.nebula-particle {
+    position:absolute; background:#fff; border-radius:50%;
+    box-shadow: 0 0 12px var(--glow);
+    animation: twinkle 4s infinite alternate ease-in-out;
+}
+.loading-bar {
+    width: 320px; height: 14px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 9999px;
+    overflow: hidden;
+    margin-top: 30px;
+    position: relative;
+    box-shadow: 0 0 30px rgba(103,232,249,0.6);
+}
+.loading-progress {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #38bdf8, #67e8f9, #a5f3fc);
+    animation: loadingAnim 3s linear forwards;
+    position: relative;
+    box-shadow: 0 0 25px #67e8f9;
+}
+.loading-progress::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.9) 50%, transparent 70%);
+    animation: shimmer 1.2s linear infinite;
+}
+.loading-bar::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(to bottom, transparent, rgba(103,232,249,0.4), transparent);
+    animation: scanline 1.8s linear infinite;
+}
+.rocket {
+    position: absolute;
+    right: -28px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 38px;
+    filter: drop-shadow(0 0 20px #ff9500);
+    animation: rocketThrust 0.4s ease-in-out infinite alternate;
+}
+@keyframes loadingAnim { to { width: 100%; } }
+@keyframes shimmer { 0% { transform: translateX(-150%); } 100% { transform: translateX(300%); } }
+@keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(300%); } }
+@keyframes rocketThrust { from { transform: translateY(-50%) scale(1); } to { transform: translateY(-50%) scale(1.18); } }
+@keyframes twinkle { 0% { opacity: 0.4; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.1); } }
 
 .header, .bottom-nav { position:fixed; background:rgba(15,23,42,0.95); backdrop-filter:blur(16px); }
 .header { top:0; left:0; right:0; z-index:999; padding:12px 20px; display:flex; align-items:center; gap:12px; border-bottom:1px solid rgba(56,189,248,0.3); }
@@ -37,25 +89,26 @@ body { margin:0; font-family:system-ui; background: radial-gradient(circle at ce
 </head>
 <body>
 
-<!-- PRELOADER + LOGO SEKOLAH -->
+<!-- PRELOADER DENGAN ANIMASI SMOOTH -->
 <div id="preloader">
     <div class="nebula" id="nebula"></div>
-    <div style="position:relative; text-align:center; z-index:2; width:100%; max-width:320px;">
-        <div style="margin-bottom:28px; position:relative; display:inline-flex; align-items:center; gap:12px;">
-            <!-- GANTI DENGAN LINK RAW LOGO KAMU -->
+    <div style="position:relative; text-align:center; z-index:2; width:100%; max-width:340px;">
+        <div style="margin-bottom:28px; display:inline-flex; align-items:center; gap:12px;">
+            <!-- GANTI DENGAN LINK RAW LOGO KAMU (tidak kotak) -->
             <img src="https://raw.githubusercontent.com/USERNAME/REPO/main/logo-sma1gegesik.png" 
                  alt="Logo SMA Negeri 1 Gegesik" 
-                 style="width:120px; height:120px; border-radius:8px; border:4px solid #67e8f9; box-shadow:0 0 40px #67e8f9;">
+                 style="width:125px; height:145px; border-radius:25px; border:4px solid #67e8f9; box-shadow:0 0 40px #67e8f9; object-fit:contain; background:#0a1428;">
             <div style="background:#0a1428;color:#67e8f9;font-size:22px;font-weight:900;padding:8px 20px;border-radius:9999px;border:3px solid #67e8f9;box-shadow:0 0 25px #67e8f9;">XI FIS</div>
         </div>
-        <div style="font-size:1.9rem;font-weight:700;letter-spacing:1px;color:#67e8f9;text-shadow:0 0 25px #67e8f9;">Centripetal Force Lab</div>
+        <div style="font-size:1.95rem;font-weight:700;letter-spacing:1.5px;color:#67e8f9;text-shadow:0 0 30px #67e8f9;">Centripetal Force Lab</div>
         <p style="margin-top:8px;opacity:0.9;font-size:1.05rem;font-weight:600;">SMA Negeri 1 Gegesik • Kelas XI Fisika</p>
+        <div style="margin-top:20px; font-size:1.1rem; color:#67e8f9; letter-spacing:2px;">Loading Lab Digital...</div>
         <div class="loading-bar">
             <div class="loading-progress">
-                <span class="rocket" style="position:absolute;right:-22px;top:50%;transform:translateY(-50%);font-size:34px;">🛰️</span>
+                <span class="rocket">🛰️</span>
             </div>
         </div>
-        <p style="margin-top:18px;font-size:1.05rem;font-weight:700;letter-spacing:3px;color:#67e8f9;">KELOMPOK 6</p>
+        <p style="margin-top:20px;font-size:1.05rem;font-weight:700;letter-spacing:3px;color:#67e8f9;">KELOMPOK 6</p>
     </div>
 </div>
 
@@ -63,7 +116,7 @@ body { margin:0; font-family:system-ui; background: radial-gradient(circle at ce
 <div class="header">
     <!-- GANTI DENGAN LINK RAW LOGO KAMU -->
     <img src="https://raw.githubusercontent.com/USERNAME/REPO/main/logo-sma1gegesik.png" 
-         alt="Logo" style="width:45px;height:45px;border-radius:8px;border:2px solid #67e8f9;">
+         alt="Logo" style="width:48px; height:56px; border-radius:12px; border:2px solid #67e8f9; object-fit:contain; background:#0a1428;">
     <span style="font-size:26px;">🛰️</span>
     <div style="font-weight:600;">Centripetal Force Lab</div>
     <div style="margin-left:auto;font-size:13px;opacity:0.6;text-align:right;">SMA Negeri 1 Gegesik<br><span style="color:var(--glow);">2026</span></div>
@@ -98,50 +151,44 @@ body { margin:0; font-family:system-ui; background: radial-gradient(circle at ce
         <h3>⚡ 1. Konsep Fisika (Lebih Dalam)</h3>
         <p>Dalam gerak melingkar, meskipun besar kecepatan bisa tetap, arah kecepatan selalu berubah. Perubahan arah ini membutuhkan gaya yang arahnya menuju pusat lintasan. Jika gaya ini hilang, benda akan bergerak lurus sesuai hukum inersia (Hukum I Newton).</p>
         <p>Inilah alasan mengapa benda yang diikat lalu diputar tidak terlempar keluar, tetapi tetap melingkar.</p>
-        <h3>📐 2. Penurunan Rumus (STEP BY STEP)</h3>
-        <p><b>Mulai dari gaya sentripetal dasar:</b> F = mv² / r</p>
-        <p><b>Karena kecepatan linear:</b> v = ωr</p>
-        <p><b>Substitusi:</b> F = m(ωr)² / r = mω²r</p>
+        <h3>📐 2. Penurunan Rumus</h3>
+        <p><b>F = mv² / r</b> → <b>v = ωr</b> → <b>F = mω²r</b></p>
         <p style="color:#38bdf8"><b>F ∝ ω²</b> (jika m dan r konstan)</p>
-        <h3>🌍 3. Contoh Kehidupan Nyata</h3>
+        <h3>🌍 Contoh Kehidupan Nyata</h3>
         <ul>
-            <li><b>Mobil di tikungan:</b> ban membutuhkan gaya gesek sebagai gaya sentripetal agar tidak keluar jalur</li>
-            <li><b>Satelit mengorbit bumi:</b> gaya gravitasi berfungsi sebagai gaya sentripetal</li>
-            <li><b>Mesin cuci (spin dryer):</b> air terdorong keluar karena benda berusaha bergerak lurus</li>
-            <li><b>Roller coaster loop:</b> gaya normal + gravitasi menjaga lintasan melingkar</li>
+            <li>Mobil di tikungan: gaya gesek sebagai gaya sentripetal</li>
+            <li>Satelit: gaya gravitasi sebagai gaya sentripetal</li>
+            <li>Mesin cuci: air terdorong keluar karena inersia</li>
+            <li>Roller coaster loop</li>
         </ul>
-        <h3>🧠 5. Contoh Soal</h3>
-        <p>Sebuah benda bermassa 0.5 kg bergerak melingkar dengan jari-jari 0.4 m dan kecepatan sudut 10 rad/s.<br><b>F = 0.5 × 100 × 0.4 = 20 N</b></p>
-        <h3>🧠 6. Kesimpulan Materi</h3>
-        <p style="color:#38bdf8"><b>F = mω²r → inti dari seluruh eksperimen</b></p>
+        <h3>🧠 Contoh Soal</h3>
+        <p>Benda 0.5 kg, r = 0.4 m, ω = 10 rad/s → <b>F = 20 N</b></p>
+        <h3>🧠 Kesimpulan</h3>
+        <p style="color:#38bdf8"><b>F = mω²r → inti eksperimen</b></p>
     </div>
 </div>
 
-<!-- PAGE 2: EKSPERIMEN FULL -->
+<!-- PAGE 2: EKSPERIMEN -->
 <div id="page-2" class="page">
     <div class="card">
         <h2>🧪 EKSPERIMEN GAYA SENTRIPETAL (FULL A+ AKADEMIK)</h2>
-        <h3>🎯 1. Tujuan Eksperimen</h3>
-        <p>Mengetahui hubungan antara gaya sentripetal (F) dengan kuadrat kecepatan sudut (ω
-²) serta membuktikan bahwa F berbanding lurus dengan ω².</p>
-        <h3>📌 2. Variabel Penelitian</h3>
+        <h3>🎯 Tujuan</h3>
+        <p>Membuktikan F berbanding lurus dengan ω².</p>
+        <h3>📌 Variabel</h3>
         <ul>
-            <li><b>Variabel bebas:</b> Kecepatan sudut (ω) / RPM</li>
-            <li><b>Variabel terikat:</b> Gaya sentripetal (F)</li>
-            <li><b>Variabel kontrol:</b> massa (m) dan jari-jari (r)</li>
+            <li>Bebas: ω / RPM</li>
+            <li>Terikat: F</li>
+            <li>Kontrol: m & r</li>
         </ul>
-        <h3>🧰 3. Alat & Bahan</h3>
+        <h3>🧰 Alat & Bahan</h3>
         <ul>
-            <li>ESP32</li>
-            <li>HX711 (modul penguat load cell)</li>
-            <li>Load cell (sensor gaya)</li>
-            <li>Kabel jumper, Breadboard, Statif, Tali, Beban</li>
+            <li>ESP32, HX711, Load cell, Tali, Beban, Statif</li>
         </ul>
-        <h3>⚙️ 4. Cara Kerja Alat</h3>
-        <p>Beban diputar → gaya sentripetal → tegangan tali → load cell → HX711 → ESP32 → Firebase → tampil real-time.</p>
-        <h3>🧠 10. Kesimpulan</h3>
-        <p>Eksperimen ini membuktikan bahwa gaya sentripetal berbanding lurus dengan kuadrat kecepatan sudut (F ∝ ω
-²), sesuai dengan teori fisika Newton.</p>
+        <h3>⚙️ Cara Kerja</h3>
+        <p>Data dari hardware dikirim ke Firebase dan ditampilkan real-time.</p>
+        <h3>🧠 Kesimpulan</h3>
+        <p>Eksperimen membuktikan F ∝ ω
+² sesuai teori Newton.</p>
     </div>
 
     <!-- SIMULASI 3D -->
@@ -183,7 +230,7 @@ body { margin:0; font-family:system-ui; background: radial-gradient(circle at ce
 <div id="page-4" class="page">
     <div class="card">
         <h2 style="color:var(--glow);">🤖 AI Assistant</h2>
-        <p>Tekan tombol suara di kanan bawah untuk mendengar penjelasan AI tentang gaya sentripetal.</p>
+        <p>Tekan tombol suara untuk mendengar penjelasan.</p>
         <button onclick="speakAI()" style="width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:9999px;margin-top:20px;font-weight:bold;">🔊 Dengarkan Penjelasan AI</button>
     </div>
 </div>
@@ -195,11 +242,7 @@ body { margin:0; font-family:system-ui; background: radial-gradient(circle at ce
         <p><b>SMA NEGERI 1 GEGESIK</b></p>
         <p>PJBL FISIKA</p>
         <p><b>KETUA KELOMPOK:</b> MOHAMMAD RIZKY AL HIDAYAH</p>
-        <p><b>ANGGOTA:</b><br>
-        1. RAFKA ADE WIRAYUDA (CODING)<br>
-        2. SHESYA ANINDITA (BENDAHARA)<br>
-        3. RIZQI AHMAD (MEKANIK)<br>
-        4. ADE ZULFADLI</p>
+        <p><b>ANGGOTA:</b><br>1. RAFKA ADE WIRAYUDA (CODING)<br>2. SHESYA ANINDITA (BENDAHARA)<br>3. RIZQI AHMAD (MEKANIK)<br>4. ADE ZULFADLI</p>
         <p><b>PENGAJAR:</b> Bapak Agus Salim S.Si, M.Pd</p>
     </div>
 </div>
@@ -212,34 +255,32 @@ let animationFrame, threeInitialized = false;
 let dataRecords = [];
 let chartInstance = null;
 
-// SUARA AI
 const utterance = new SpeechSynthesisUtterance();
 utterance.lang = 'id-ID';
 utterance.rate = 0.92;
 
 function speakAI() {
-    const texts = ["Halo, selamat datang di Laboratorium Gaya Sentripetal SMA Negeri 1 Gegesik.","Gaya sentripetal adalah gaya yang diperlukan untuk menjaga benda bergerak dalam lintasan melingkar.","Rumus utamanya adalah F sama dengan m omega kuadrat r."];
+    const texts = ["Halo, selamat datang di Laboratorium Gaya Sentripetal.","Gaya sentripetal menjaga benda bergerak melingkar.","Rumus: F = m ω² r."];
     utterance.text = texts[Math.floor(Math.random()*texts.length)];
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
 }
 
-// NEBULA
 function createNebula() {
     const container = document.getElementById('nebula');
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 120; i++) {
         const p = document.createElement('div');
         p.className = 'nebula-particle';
         const size = Math.random() * 5 + 2;
         p.style.width = p.style.height = `${size}px`;
         p.style.left = `${Math.random()*100}%`;
         p.style.top = `${Math.random()*100}%`;
-        p.style.animationDelay = `-${Math.random()*5}s`;
+        p.style.animationDelay = `-${Math.random()*6}s`;
         container.appendChild(p);
     }
 }
 
-// THREE.JS
+// THREE.JS (simulasi 3D)
 function initThree() {
     if (threeInitialized) return;
     const container = document.getElementById('sim-container');
@@ -287,19 +328,9 @@ function animateThree() {
 }
 
 function updateSliders() {
-    document.getElementById('slider-m').oninput = function() {
-        currentM = parseFloat(this.value);
-        document.getElementById('val-m').textContent = currentM.toFixed(2) + ' kg';
-    };
-    document.getElementById('slider-r').oninput = function() {
-        currentR = parseFloat(this.value);
-        document.getElementById('val-r').textContent = currentR.toFixed(1) + ' m';
-        if (pathCircle) pathCircle.scale.set(currentR/5, 1, currentR/5);
-    };
-    document.getElementById('slider-omega').oninput = function() {
-        currentOmega = parseFloat(this.value);
-        document.getElementById('val-omega').textContent = currentOmega.toFixed(1) + ' rad/s';
-    };
+    document.getElementById('slider-m').oninput = function() { currentM = parseFloat(this.value); document.getElementById('val-m').textContent = currentM.toFixed(2) + ' kg'; };
+    document.getElementById('slider-r').oninput = function() { currentR = parseFloat(this.value); document.getElementById('val-r').textContent = currentR.toFixed(1) + ' m'; if (pathCircle) pathCircle.scale.set(currentR/5, 1, currentR/5); };
+    document.getElementById('slider-omega').oninput = function() { currentOmega = parseFloat(this.value); document.getElementById('val-omega').textContent = currentOmega.toFixed(1) + ' rad/s'; };
 }
 
 // Chart & Regresi
@@ -318,7 +349,8 @@ function createChart() {
     if (chartInstance) chartInstance.destroy();
     const scatterData = dataRecords.map(d => ({x: d.omegaSq, y: d.force}));
     const reg = calculateRegression(scatterData);
-    const equation = `F = ${reg.slope.toFixed(3)} ω² + ${reg.intercept.toFixed(3)}`;
+    const equation = `F = ${reg.slope.toFixed(3)} ω
+² + ${reg.intercept.toFixed(3)}`;
 
     const minX = Math.min(...scatterData.map(p=>p.x));
     const maxX = Math.max(...scatterData.map(p=>p.x));
@@ -326,20 +358,12 @@ function createChart() {
 
     chartInstance = new Chart(ctx, {
         type: 'scatter',
-        data: {
-            datasets: [
-                {label:'Data Eksperimen', data:scatterData, backgroundColor:'#67e8f9', borderColor:'#38bdf8', pointRadius:6},
-                {type:'line', label:'Trendline', data:lineData, borderColor:'#ff9500', borderWidth:3, pointRadius:0}
-            ]
-        },
-        options: {
-            responsive:true, maintainAspectRatio:false,
-            scales: {
-                x: {title:{display:true, text:'ω² (rad²/s
-²)', color:'#cbd5e1'}},
-                y: {title:{display:true, text:'F (N)', color:'#cbd5e1'}}
-            }
-        }
+        data: { datasets: [
+            {label:'Data Eksperimen', data:scatterData, backgroundColor:'#67e8f9', borderColor:'#38bdf8', pointRadius:6},
+            {type:'line', label:'Trendline', data:lineData, borderColor:'#ff9500', borderWidth:3, pointRadius:0}
+        ]},
+        options: { responsive:true, maintainAspectRatio:false,
+            scales: { x: {title:{display:true, text:'ω² (rad²/s²)', color:'#cbd5e1'}}, y: {title:{display:true, text:'F (N)', color:'#cbd5e1'}} }}
     });
     document.getElementById('regression-result').innerHTML = `<strong>Regresi Linear:</strong><br>${equation}`;
 }
@@ -383,14 +407,11 @@ function switchPage(n) {
     document.getElementById('page-' + n).classList.add('active');
     document.querySelectorAll('.nav-item').forEach((el,i) => el.classList.toggle('active', i===n));
 
-    if (n === 2 && !threeInitialized) {
-        setTimeout(() => { initThree(); updateSliders(); }, 150);
-    }
+    if (n === 2 && !threeInitialized) setTimeout(() => { initThree(); updateSliders(); }, 150);
     if (n === 3) createChart();
 }
 
-// ================== 🔥 FIREBASE CONFIG ==================
-// GANTI DENGAN CONFIG FIREBASE KAMU
+// ================== FIREBASE ==================
 const firebaseConfig = {
     apiKey: "MASUKKAN_API_KEY_ANDA",
     authDomain: "nama-project-anda.firebaseapp.com",
@@ -431,8 +452,9 @@ window.addEventListener('load', () => {
     setTimeout(() => {
         const pre = document.getElementById('preloader');
         pre.style.opacity = '0';
-        setTimeout(() => pre.remove(), 1200);
-    }, 2800);
+        pre.style.transform = 'scale(0.95)';
+        setTimeout(() => pre.remove(), 1600);
+    }, 3200);
     initFirebase();
 });
 </script>
