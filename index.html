@@ -1,62 +1,78 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🚀 CENTRIPETAL SMART LAB • ULTRA MODE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<title>🎓 CentriLab Mobile</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 body{
 margin:0;
-font-family:Segoe UI;
-background:linear-gradient(180deg,#020617,#000);
+font-family:system-ui;
+background:#05070f;
 color:white;
-padding-bottom:110px;
+overflow:hidden;
+-webkit-tap-highlight-color:transparent;
 }
 
-/* PAGE */
+/* PAGE MOBILE SCROLL */
 .page{
 display:none;
-padding:16px;
-min-height:100vh;
-opacity:0;
-transform:translateY(20px);
-transition:0.4s;
+height:100vh;
+overflow-y:auto;
+padding:14px;
+padding-bottom:90px;
 }
-.page.active{
-display:block;
-opacity:1;
-transform:translateY(0);
-}
+.page.active{display:block}
 
-/* CARD */
+/* CARD MOBILE FRIENDLY */
 .card{
-background:rgba(255,255,255,0.05);
-padding:18px;
-margin:12px 0;
-border-radius:18px;
-box-shadow:0 0 20px rgba(0,0,0,0.6);
-transition:0.3s;
-}
-.card:hover{
-transform:translateY(-5px);
-box-shadow:0 0 25px #38bdf8;
+background:rgba(255,255,255,0.06);
+padding:14px;
+margin:10px 0;
+border-radius:14px;
+font-size:14px;
+line-height:1.4;
 }
 
-/* NAV */
+/* TITLE */
+h2{font-size:16px}
+h3{font-size:14px}
+
+/* INPUT MOBILE */
+input{
+width:70%;
+padding:10px;
+border-radius:10px;
+border:none;
+background:rgba(255,255,255,0.08);
+color:white;
+font-size:14px;
+}
+
+button{
+padding:10px 12px;
+border-radius:10px;
+border:none;
+background:#38bdf8;
+font-weight:bold;
+font-size:13px;
+}
+
+/* NAV MOBILE FIX (SAFE AREA) */
 #nav{
 position:fixed;
-bottom:10px;
-left:50%;
-transform:translateX(-50%);
-width:95%;
-height:70px;
+bottom:0;
+left:0;
+width:100%;
+height:65px;
 display:flex;
-background:rgba(15,23,42,0.8);
-backdrop-filter:blur(10px);
-border-radius:20px;
+background:#0b1220;
+border-top:1px solid rgba(255,255,255,0.1);
 z-index:999999;
+padding-bottom:env(safe-area-inset-bottom);
 }
 
 #nav button{
@@ -65,32 +81,11 @@ border:none;
 background:none;
 color:#94a3b8;
 font-size:11px;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
 }
 
 #nav button.active{
 color:#38bdf8;
-transform:scale(1.1);
-text-shadow:0 0 10px #38bdf8;
-}
-
-.icon{font-size:20px}
-
-/* SPIN */
-#spin{
-width:80px;
-height:80px;
-border-radius:50%;
-border:5px solid #38bdf8;
-margin:auto;
-animation:spin 2s linear infinite;
-}
-@keyframes spin{
-from{transform:rotate(0)}
-to{transform:rotate(360deg)}
+font-weight:bold;
 }
 </style>
 </head>
@@ -100,19 +95,9 @@ to{transform:rotate(360deg)}
 <!-- HOME -->
 <div id="home" class="page active">
 <div class="card">
-<h2>🚀 CENTRIPETAL LAB</h2>
-<p>Smart Physics System + Firebase</p>
-</div>
-
-<div class="card">
-<p id="statusHome">🟡 Connecting...</p>
+<h2>🎓 CENTRIPETAL LAB (MOBILE)</h2>
+<p id="status">Connecting...</p>
 <p id="homeData">-</p>
-<p id="homeResult">-</p>
-</div>
-
-<div class="card">
-<h3>🌀 SIMULASI</h3>
-<div id="spin"></div>
 </div>
 </div>
 
@@ -120,33 +105,32 @@ to{transform:rotate(360deg)}
 <div id="materi" class="page">
 <div class="card">
 
-<h2>📘 GAYA SENTRIPETAL (FULL AKADEMIK)</h2>
+<h2>📘 GAYA SENTRIPETAL</h2>
 
+<p>
+Gaya sentripetal adalah gaya yang selalu menuju pusat lintasan gerak melingkar.
+</p>
+
+<h3>⚡ Konsep</h3>
+<p>Gerak melingkar = arah berubah terus → butuh gaya pusat</p>
+
+<h3>📐 Rumus</h3>
 <p>F = mv² / r</p>
 <p>v = ωr</p>
 <p>F = mω²r</p>
 
-<p style="color:#38bdf8"><b>F ∝ ω²</b></p>
+<p><b style="color:#38bdf8">F ∝ ω²</b></p>
 
 </div>
 </div>
 
 <!-- EKSPERIMEN -->
 <div id="eksperimen" class="page">
-
 <div class="card">
-<h2>🧪 EKSPERIMEN GAYA SENTRIPETAL</h2>
-
-<p>Grafik realtime + regresi otomatis</p>
-
+<h2>🧪 EXPERIMENT</h2>
 <canvas id="chart"></canvas>
-
 <p id="eq"></p>
-<p id="r2"></p>
-<p id="interp"></p>
-
 </div>
-
 </div>
 
 <!-- ARSIP -->
@@ -162,8 +146,9 @@ to{transform:rotate(360deg)}
 <!-- AI -->
 <div id="ai" class="page">
 <div class="card">
-<input id="q" placeholder="Tanya...">
-<button onclick="ask()">TANYA</button>
+<h2>🤖 AI DOSEN</h2>
+<input id="q" placeholder="Tanya..." />
+<button onclick="ask()">OK</button>
 <p id="a"></p>
 </div>
 </div>
@@ -171,19 +156,20 @@ to{transform:rotate(360deg)}
 <!-- CREATOR -->
 <div id="creator" class="page">
 <div class="card">
-<h2>👤 INFO</h2>
-<p>SMA NEGERI 1 GEGESIK</p>
+<h2>👤 CREATOR</h2>
+<p>CentriLab dibuat untuk eksperimen fisika berbasis IoT & data science.</p>
+<p><b>Fokus:</b> F ∝ ω²</p>
 </div>
 </div>
 
 <!-- NAV -->
 <div id="nav">
-<button onclick="go('home',this)" class="active"><div class="icon">🏠</div></button>
-<button onclick="go('materi',this)"><div class="icon">📘</div></button>
-<button onclick="go('eksperimen',this)"><div class="icon">🧪</div></button>
-<button onclick="go('arsip',this)"><div class="icon">📂</div></button>
-<button onclick="go('ai',this)"><div class="icon">🤖</div></button>
-<button onclick="go('creator',this)"><div class="icon">👤</div></button>
+<button onclick="go('home',this)" class="active">🏠</button>
+<button onclick="go('materi',this)">📘</button>
+<button onclick="go('eksperimen',this)">🧪</button>
+<button onclick="go('arsip',this)">📂</button>
+<button onclick="go('ai',this)">🤖</button>
+<button onclick="go('creator',this)">👤</button>
 </div>
 
 <script type="module">
@@ -191,13 +177,18 @@ to{transform:rotate(360deg)}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
-const firebaseConfig={
+let db=null;
+
+try{
+const app=initializeApp({
 apiKey:"ISI_API_KEY",
 databaseURL:"ISI_DATABASE_URL"
-};
+});
+db=getDatabase(app);
+}catch(e){}
 
-const app=initializeApp(firebaseConfig);
-const db=getDatabase(app);
+/* DATA */
+window.labData={dataset:[],rpm:0,force:0,omega2:0,slope:0,r2:0};
 
 /* NAV */
 window.go=(id,el)=>{
@@ -208,80 +199,89 @@ document.querySelectorAll("#nav button").forEach(b=>b.classList.remove("active")
 el.classList.add("active");
 }
 
-/* DATA */
-let Fdata=[],Wdata=[];
-
 /* CHART */
-const chart=new Chart(document.getElementById("chart"),{
+window.chart=new Chart(document.getElementById("chart"),{
 type:"scatter",
-data:{
-datasets:[
-{label:"F vs ω²",data:[]},
-{label:"Trend",data:[],type:"line",borderColor:"#38bdf8",tension:0.4}
-]
-}
+data:{datasets:[{label:"F vs ω²",data:[]}]},
+options:{animation:false}
 });
 
-/* REGRESI */
-function reg(x,y){
-let n=x.length,sx=0,sy=0,sxy=0,sx2=0;
-for(let i=0;i<n;i++){
-sx+=x[i];sy+=y[i];
-sxy+=x[i]*y[i];
-sx2+=x[i]*x[i];
+/* REGRESSION */
+function regression(d){
+if(d.length<2) return 0;
+let sx=0,sy=0,sxy=0,sx2=0;
+for(let p of d){
+sx+=p.x; sy+=p.y;
+sxy+=p.x*p.y;
+sx2+=p.x*p.x;
 }
-let m=(n*sxy-sx*sy)/(n*sx2-sx*sx);
-let b=(sy-m*sx)/n;
-return {m,b};
+return (d.length*sxy - sx*sy)/(d.length*sx2 - sx*sx);
+}
+
+/* R2 */
+function mean(a){return a.reduce((x,y)=>x+y,0)/a.length;}
+function r2(d){
+if(d.length<3) return 0;
+let xs=d.map(p=>p.x), ys=d.map(p=>p.y);
+let mx=mean(xs), my=mean(ys);
+let num=0,dx=0,dy=0;
+for(let i=0;i<d.length;i++){
+num+=(xs[i]-mx)*(ys[i]-my);
+dx+=(xs[i]-mx)**2;
+dy+=(ys[i]-mx)**2;
+}
+let r=num/Math.sqrt(dx*dy);
+return r*r;
 }
 
 /* FIREBASE */
+if(db){
 onValue(ref(db,"sensor"),snap=>{
+const d=snap.val()||{};
 
-let d=snap.val()||{};
 let rpm=d.rpm||0;
 let F=d.force||0;
 
 let omega=(rpm*2*Math.PI)/60;
 let w2=omega*omega;
 
-/* store */
-Fdata.push(F);
-Wdata.push(w2);
+labData.dataset.push({x:w2,y:F});
+if(labData.dataset.length>50) labData.dataset.shift();
+
+labData.rpm=rpm;
+labData.force=F;
+labData.omega2=w2;
+labData.slope=regression(labData.dataset);
+labData.r2=r2(labData.dataset);
 
 /* UI */
-statusHome.innerText="🟢 Connected";
-homeData.innerText=`RPM=${rpm}`;
+document.getElementById("status").innerText="LIVE";
+document.getElementById("homeData").innerText=`RPM: ${rpm}`;
 
-/* chart */
-chart.data.datasets[0].data.push({x:w2,y:F});
-if(chart.data.datasets[0].data.length>50){
-chart.data.datasets[0].data.shift();
-}
+chart.data.datasets[0].data=labData.dataset;
+chart.update();
 
-/* arsip */
-tb.innerHTML+=`
-<tr>
-<td>${Fdata.length}</td>
-<td>${rpm}</td>
-<td>${w2.toFixed(2)}</td>
-<td>${F.toFixed(2)}</td>
-</tr>`;
-
-/* regresi */
-if(Fdata.length>3){
-let r=reg(Wdata,Fdata);
-eq.innerText=`F = ${r.m.toFixed(2)}ω² + ${r.b.toFixed(2)}`;
-}
-
-/* update */
-chart.update('active');
-
+document.getElementById("eq").innerHTML=
+`F ≈ ${labData.slope.toFixed(3)}·ω²<br>R²=${labData.r2.toFixed(4)}`;
 });
+}
 
 /* AI */
 window.ask=()=>{
-a.innerText="F = mω²r";
+let q=document.getElementById("q").value.toLowerCase();
+let a=document.getElementById("a");
+
+if(!q) return a.innerText="Tulis pertanyaan.";
+
+if(q.includes("data"))
+return a.innerText=
+`RPM:${labData.rpm}
+F:${labData.force}
+ω²:${labData.omega2.toFixed(2)}`;
+
+if(q.includes("rumus")) return a.innerText="F = mω²r";
+
+a.innerText="AI membaca data...";
 }
 
 </script>
