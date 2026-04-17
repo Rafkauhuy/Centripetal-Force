@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🚀 LABORATORIUM FISIKA •</title>
+<title>🚀 CENTRIPETAL LAB • FINAL MASTER MODE</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -14,166 +14,258 @@ background:radial-gradient(circle,#020617,#000);
 color:white;
 }
 
-/* PAGE SYSTEM */
 .page{
 display:none;
 padding:12px;
+padding-bottom:90px;
 min-height:100vh;
 }
+.page.active{display:block}
 
-.page.active{
-display:block;
-}
-
-/* CARD */
 .card{
-background:rgba(255,255,255,0.05);
+background:rgba(255,255,255,0.06);
 padding:12px;
 margin:10px 0;
-border-radius:12px;
+border-radius:14px;
 }
 
-/* DESKTOP NAV (hidden on mobile) */
-#desktopNav{
-position:fixed;
-left:0;top:0;
-width:220px;
-height:100%;
-background:rgba(0,0,0,0.85);
-padding:10px;
-overflow:auto;
-}
-
-#desktopNav button{
-width:100%;
-margin:5px 0;
-padding:8px;
-}
-
-/* MOBILE BOTTOM NAV */
-#bottomNav{
-display:none;
-}
-
-/* HUD */
-#hud{
-position:fixed;
-bottom:10px;
-right:10px;
-font-size:12px;
-background:rgba(0,0,0,0.6);
-padding:6px;
-border-radius:8px;
-z-index:999;
-}
-
-/* RESPONSIVE MODE */
-@media (max-width:768px){
-
-#desktopNav{
-display:none;
-}
-
-#bottomNav{
-display:flex;
+#nav{
 position:fixed;
 bottom:0;
 left:0;
 width:100%;
-background:rgba(0,0,0,0.9);
-justify-content:space-around;
-padding:10px 0;
-z-index:999;
+display:flex;
+background:rgba(0,0,0,0.95);
+border-top:1px solid rgba(255,255,255,0.1);
 }
 
-#bottomNav button{
+#nav button{
 flex:1;
-font-size:18px;
-padding:10px;
-}
-
-.page{
-padding-bottom:80px;
-}
-
-body{
-font-size:14px;
-}
+padding:12px;
+border:none;
+background:none;
+color:white;
+font-size:12px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- DESKTOP NAV -->
-<div id="desktopNav">
-<h3>🚀 LABORATORIUM FISIKA</h3>
-<button onclick="go('home')">HOME</button>
-<button onclick="go('materi')">MATERI</button>
-<button onclick="go('eksperimen')">EKSPERIMEN</button>
-<button onclick="go('arsip')">ARSIP</button>
-<button onclick="go('ai')">AI</button>
-<button onclick="go('creator')">CREATOR</button>
-</div>
-
-<div id="hud">🟢 SYSTEM ACTIVE</div>
-
 <!-- HOME -->
 <div id="home" class="page active">
-<h1>🚀 LABORATORIUM FISIKA</h1>
-<p>Simulasi Gaya Sentripetal + Analisis Regresi Linear</p>
+<div class="card">
+<h2>🚀 CENTRIPETAL FORCE LAB</h2>
+<p>FULL DATA + FIREBASE + REGRESI + AKADEMIK MODE</p>
+</div>
 </div>
 
-<!-- MATERI -->
+<!-- MATERI FULL -->
 <div id="materi" class="page">
 <div class="card">
-<h2>📘 Gaya Sentripetal</h2>
+<h2>📘 GAYA SENTRIPETAL (FULL AKADEMIK DETAIL)</h2>
 
 <p>
-Gaya sentripetal adalah gaya yang selalu menuju pusat lintasan melingkar.
-Tanpa gaya ini, benda akan bergerak lurus sesuai hukum inersia.
+Gaya sentripetal adalah gaya yang selalu bekerja menuju pusat lintasan melingkar dan menyebabkan perubahan arah kecepatan benda, sehingga benda dapat tetap bergerak melingkar.
 </p>
 
-<h3>📐 Rumus</h3>
+<h3>⚡ 1. Konsep Fisika (Lebih Dalam)</h3>
+<p>
+Dalam gerak melingkar, meskipun besar kecepatan bisa tetap, arah kecepatan selalu berubah.
+Perubahan arah ini membutuhkan gaya yang arahnya menuju pusat lintasan.
+Jika gaya ini hilang, benda akan bergerak lurus sesuai hukum inersia (Hukum I Newton).
+</p>
+
+<p>
+Inilah alasan mengapa benda yang diikat lalu diputar tidak terlempar keluar, tetapi tetap melingkar.
+</p>
+
+<h3>📐 2. Penurunan Rumus (STEP BY STEP)</h3>
+
+<p><b>Mulai dari gaya sentripetal dasar:</b></p>
 <p>F = mv² / r</p>
-<p>F = mω²r</p>
+
+<p><b>Karena kecepatan linear:</b></p>
 <p>v = ωr</p>
 
-<h3>🔁 Hubungan</h3>
-<p><b>F ∝ ω²</b></p>
+<p><b>Substitusi ke rumus awal:</b></p>
+<p>F = m(ωr)² / r</p>
 
-<h3>🌍 Aplikasi</h3>
+<p>F = m(ω² r²) / r</p>
+
+<p><b>Sederhanakan:</b></p>
+<p>F = mω²r</p>
+
+<br>
+
+<p><b>Kesimpulan penting:</b></p>
+<p style="color:#38bdf8"><b>F ∝ ω²</b> (jika m dan r konstan)</p>
+
+<p>
+Artinya gaya sentripetal berbanding lurus dengan kuadrat kecepatan sudut.
+</p>
+
+<h3>🌍 3. Contoh Kehidupan Nyata (Lebih Realistis)</h3>
+
 <ul>
-<li>Orbit satelit</li>
-<li>Mobil belok</li>
-<li>Centrifuge</li>
+<li><b>Mobil di tikungan:</b> ban membutuhkan gaya gesek sebagai gaya sentripetal agar tidak keluar jalur</li>
+
+<li><b>Satelit mengorbit bumi:</b> gaya gravitasi berfungsi sebagai gaya sentripetal</li>
+
+<li><b>Mesin cuci (spin dryer):</b> air terdorong keluar karena benda berusaha bergerak lurus</li>
+
+<li><b>Roller coaster loop:</b> gaya normal + gravitasi menjaga lintasan melingkar</li>
 </ul>
 
-<h3>🧠 Kesimpulan</h3>
-<p>Semakin besar ω, semakin besar gaya sentripetal.</p>
+<h3>📊 4. Grafik Teori</h3>
+<p>
+Hubungan antara gaya sentripetal dan kuadrat kecepatan sudut berbentuk garis lurus:
+</p>
+
+<p><b>Grafik F vs ω² → linear (garis lurus)</b></p>
+
+<p>
+Jika eksperimen benar, maka titik data akan membentuk garis lurus dengan R² mendekati 1.
+</p>
+
+<h3>🧠 5. Contoh Soal Singkat</h3>
+
+<p>
+Sebuah benda bermassa 0.5 kg bergerak melingkar dengan jari-jari 0.4 m dan kecepatan sudut 10 rad/s.
+</p>
+
+<p><b>Ditanya: gaya sentripetal?</b></p>
+
+<p>
+Gunakan rumus:
+F = mω²r
+</p>
+
+<p>
+F = 0.5 × (10)² × 0.4  
+F = 0.5 × 100 × 0.4  
+F = 20 N
+</p>
+
+<p><b>Jawaban: 20 Newton</b></p>
+
+<h3>🧠 6. Kesimpulan Materi</h3>
+<p>
+Gaya sentripetal muncul akibat kebutuhan perubahan arah gerak benda dalam lintasan melingkar.
+Secara matematis, gaya ini bergantung pada massa, jari-jari, dan kuadrat kecepatan sudut.
+</p>
+
+<p style="color:#38bdf8"><b>F = mω²r → inti dari seluruh eksperimen</b></p>
+
+</div>
 </div>
 </div>
 
-<!-- EKSPERIMEN -->
+<!-- EKSPERIMEN FULL DATA -->
 <div id="eksperimen" class="page">
+
 <div class="card">
-<h2>🧪 Eksperimen + Regresi</h2>
+<div class="card">
+<h2>🧪 EKSPERIMEN GAYA SENTRIPETAL (FULL A+ AKADEMIK)</h2>
 
-<canvas id="chart"></canvas>
+<h3>🎯 1. Tujuan Eksperimen</h3>
+<p>
+Mengetahui hubungan antara gaya sentripetal (F) dengan kuadrat kecepatan sudut (ω²) serta membuktikan bahwa F berbanding lurus dengan ω².
+</p>
 
-<p id="eq"></p>
-<p id="r2"></p>
-<p id="err"></p>
-<p id="interp"></p>
-<p id="stats"></p>
+<h3>📌 2. Variabel Penelitian</h3>
+<ul>
+<li><b>Variabel bebas:</b> Kecepatan sudut (ω) / RPM</li>
+<li><b>Variabel terikat:</b> Gaya sentripetal (F)</li>
+<li><b>Variabel kontrol:</b> massa (m) dan jari-jari (r)</li>
+</ul>
 
+<h3>🧰 3. Alat & Bahan</h3>
+<ul>
+<li>Sensor RPM (Hall Effect)</li>
+<li>HX711</li>
+<li>Load cell (sensor gaya)</li>
+<li>Arduino / ESP32</li>
+<li>Beban (massa)</li>
+<li>Tali / lengan rotasi</li>
+<li>Rangka Statif dan Klem Lab</li>
+<li>Kabel Jumper</li>
+<li>Beardboard</li>
+<li>Kabel Micro USB</li>
+</ul>
+
+<h3>⚙️ 4. Cara Kerja Alat</h3>
+<ol>
+<li>Beban diputar sehingga menghasilkan gerak melingkar/li>
+<li>Gerakan tersebut menimbulkan gaya sentripetal/li>
+<li>Gaya ini menyebabkan tegangan pada tali</li>
+<li>Load Cell mendeteksi tegangan tersebut</li>
+<li>HX711 mengubah sinyal analog menjadi digital</li>
+<li>ESP32 membaca dan mengirim data ke Firebase melalui WiFi</li>
+<li>Data ditampilkan secara real time di website dalam bentuk angka dan grafik</li>
+</ol>
+
+<h3>🧪 5. Hipotesis</h3>
+<p>
+Semakin besar kecepatan sudut (ω), maka gaya sentripetal akan meningkat secara kuadrat.
+</p>
+
+<h3>📊 6. Tabel Variabel (Real-time dari Sistem)</h3>
+<p>
+Sistem akan mencatat:
+</p>
+<ul>
+<li>n = jumlah data</li>
+<li>RPM</li>
+<li>massa (gram)</li>
+<li>kecepatan linear (v)</li>
+<li>ω²</li>
+<li>gaya (F)</li>
+</ul>
+
+<h3>📈 7. Analisis Data</h3>
+<p>
+Hubungan diuji menggunakan regresi linear:
+</p>
+
+<p style="color:#38bdf8"><b>F = mω² + b</b></p>
+
+<p>
+Jika R² mendekati 1, maka hubungan sangat kuat dan sesuai teori fisika.
+</p>
+
+<h3>⚠️ 8. Analisis Error</h3>
+<p>
+Error dihitung dari perbedaan antara nilai teoritis dan eksperimen:
+</p>
+
+<p>
+Error (%) = |F_teori − F_eksperimen| / F_teori × 100%
+</p>
+
+<p>
+Semakin kecil error, semakin akurat hasil eksperimen.
+</p>
+
+<h3>📊 9. Interpretasi Hasil</h3>
+<p id="interp">
+Jika R² > 0.9 → eksperimen VALID dan sesuai hukum F ∝ ω²  
+Jika R² < 0.9 → terdapat noise atau error pengukuran
+</p>
+
+<h3>🧠 10. Kesimpulan</h3>
+<p>
+Eksperimen membuktikan bahwa gaya sentripetal berbanding lurus dengan kuadrat kecepatan sudut (F ∝ ω²), sesuai teori fisika Newtonian.
+</p>
+
+</div>
 </div>
 </div>
 
 <!-- ARSIP -->
 <div id="arsip" class="page">
 <div class="card">
-<h2>📂 Data Arsip</h2>
+<h2>📂 ARSIP DATA</h2>
 <table border="1" width="100%">
 <tbody id="tb"></tbody>
 </table>
@@ -184,36 +276,33 @@ Tanpa gaya ini, benda akan bergerak lurus sesuai hukum inersia.
 <div id="ai" class="page">
 <div class="card">
 <h2>🤖 AI TUTOR</h2>
-<p>Sistem AI bisa dikembangkan ke API nanti</p>
+<p>Siap upgrade ke AI jawaban otomatis</p>
 </div>
 </div>
 
 <!-- CREATOR -->
 <div id="creator" class="page">
 <div class="card">
-<h2>👤 Creator</h2>
+<h2>👤 INFORMASI PROYEK</h2>
 
 <p><b>SMA NEGERI 1 GEGESIK</b></p>
-<p>PJBL Fisika</p>
+<p>PJBL FISIKA</p>
 
-<hr>
-
-<p><b>Ketua:</b> Mohammad Rizky Al Hidayah</p>
-
-<p><b>Anggota:</b></p>
 <ul>
-<li>Rafka Ade Wirayuda (Coding)</li>
-<li>Shesya Anindita (Bendahara)</li>
-<li>Rizqi Ahmad (Mekanik)</li>
-<li>Ade Zulfadli</li>
+<li>KETUA: MOHAMMAD RIZKY AL HIDAYAT</li>
+<li>RAFKA ADE WIRAYUDA (CODING)</li>
+<li>SHESYA ANINDITA (BENDAHARA)</li>
+<li>RIZQI AHMAD (MEKANIK)</li>
+<li>ADE ZULFADLI</li>
 </ul>
 
-<p><b>Guru:</b> Agus Salim, S.Si., M.Pd</p>
+<p><b>GURU:</b> Agus Salim S.Si, M.Pd</p>
+
 </div>
 </div>
 
-<!-- MOBILE NAV -->
-<div id="bottomNav">
+<!-- NAV -->
+<div id="nav">
 <button onclick="go('home')">🏠</button>
 <button onclick="go('materi')">📘</button>
 <button onclick="go('eksperimen')">🧪</button>
@@ -222,40 +311,49 @@ Tanpa gaya ini, benda akan bergerak lurus sesuai hukum inersia.
 <button onclick="go('creator')">👤</button>
 </div>
 
-<script>
+<script type="module">
 
-/* NAV SYSTEM */
-function go(page){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.getElementById(page).classList.add('active');
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyCjYmgWEfWBBnkM5LISCgnKU4Du50g00ls",
+databaseURL: "https://centripetal-force-82ef2-default-rtdb.asia-southeast1.firebasedatabase.app"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+/* NAV */
+function go(id){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.getElementById(id).classList.add("active");
 }
+window.go = go;
 
-/* DATA */
-let Fdata=[];
-let Wdata=[];
+/* DATA ARRAY */
+let Fdata=[], Wdata=[], rpmData=[], gramData=[], vData=[];
 
 /* CHART */
-const chart=new Chart(document.getElementById("chart"),{
+const chart = new Chart(document.getElementById("chart"),{
 type:"scatter",
 data:{
 datasets:[
-{label:"Data",data:[],showLine:false},
-{label:"Trendline",data:[],type:"line",borderColor:"yellow",pointRadius:0},
-{label:"Outlier",data:[],type:"scatter",backgroundColor:"red",pointRadius:6}
+{label:"F vs ω²",data:[],showLine:false},
+{label:"Trendline",data:[],type:"line",borderColor:"yellow",pointRadius:0}
 ]
 }
 });
 
-/* REGRESSION */
+/* REGRESI */
 function reg(x,y){
 let n=x.length,sx=0,sy=0,sxy=0,sx2=0;
-
 for(let i=0;i<n;i++){
-sx+=x[i]; sy+=y[i];
+sx+=x[i];
+sy+=y[i];
 sxy+=x[i]*y[i];
 sx2+=x[i]*x[i];
 }
-
 let m=(n*sxy-sx*sy)/(n*sx2-sx*sx);
 let b=(sy-m*sx)/n;
 
@@ -267,50 +365,66 @@ let p=m*x[i]+b;
 ssT+=(y[i]-mean)**2;
 ssR+=(y[i]-p)**2;
 }
-
 return {m,b,r2:1-ssR/ssT};
 }
 
-/* SIMULATION LOOP */
-setInterval(()=>{
+/* FIREBASE REALTIME */
+onValue(ref(db,"sensor"),(snap)=>{
 
-let rpm=60;
-let omega=(rpm*2*Math.PI)/60;
-let w2=omega*omega;
+let d = snap.val()||{};
 
-let F=Math.random()*5+1;
+let rpm = d.rpm || 0;
+let gram = d.gram || 0;
+let radius = d.radius || 0.3;
+let F = d.force || 0;
 
+/* physics */
+let omega = (rpm*2*Math.PI)/60;
+let w2 = omega*omega;
+let v = omega * radius;
+
+/* store */
 Fdata.push(F);
 Wdata.push(w2);
+rpmData.push(rpm);
+gramData.push(gram);
+vData.push(v);
 
+/* chart */
 chart.data.datasets[0].data.push({x:w2,y:F});
 
+/* output info */
+dataInfo.innerText =
+`n=${Fdata.length} | RPM=${rpm} | gram=${gram}g | v=${v.toFixed(2)} m/s`;
+
+/* regression */
 if(Fdata.length>3){
 
-let r=reg(Wdata,Fdata);
+let r = reg(Wdata,Fdata);
 
-/* trend */
+/* trendline */
 let trend=[];
 for(let x=0;x<=Math.max(...Wdata);x+=0.1){
 trend.push({x:x,y:r.m*x+r.b});
 }
 
-chart.data.datasets[1].data=trend;
+chart.data.datasets[1].data = trend;
 
-/* output */
-eq.innerText=`F = ${r.m.toFixed(3)}ω² + ${r.b.toFixed(3)}`;
-r2.innerText=`R² = ${r.r2.toFixed(3)}`;
-err.innerText=`Model error ${(Math.abs(1-r.m)*100).toFixed(2)}%`;
-interp.innerText=r.r2>0.9?"VALID":"NOISE";
+/* OUTPUT */
+eq.innerText = `F = ${r.m.toFixed(3)}ω² + ${r.b.toFixed(3)}`;
+r2.innerText = `R² = ${r.r2.toFixed(3)}`;
+interp.innerText = r.r2>0.9 ? "VALID MODEL (F ∝ ω²)" : "NOISE DATA";
 
-stats.innerText=`n=${Fdata.length}`;
-
-tb.innerHTML+=`<tr><td>${F.toFixed(2)}</td><td>${w2.toFixed(2)}</td></tr>`;
+stats.innerText =
+`DATA: ${Fdata.length}
+MAX F: ${Math.max(...Fdata).toFixed(2)}
+MIN F: ${Math.min(...Fdata).toFixed(2)}
+MAX ω²: ${Math.max(...Wdata).toFixed(2)}
+MIN ω²: ${Math.min(...Wdata).toFixed(2)}`;
 }
 
 chart.update();
-
-},1000);
+});
 
 </script>
 
