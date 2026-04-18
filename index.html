@@ -1,4 +1,4 @@
-i<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
@@ -121,7 +121,7 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
     </div>
 </div>
 
-<!-- TABS -->
+<!-- TABS (4 HALAMAN SENDIRI) -->
 <div class="tabs">
     <div onclick="switchPage(0)" class="tab active" id="tab-0">MATERI</div>
     <div onclick="switchPage(1)" class="tab" id="tab-1">EKSPERIMEN</div>
@@ -150,7 +150,8 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
         <p>F = m(ω² r²) / r</p>
         <p><b>Sederhanakan:</b></p>
         <p>F = mω²r</p>
-        <p style="color:#1e3a8a"><b>F ∝ ω²</b> (jika m dan r konstan)</p>
+        <p style="color:#1e3a8a"><b>F ∝ ω
+²</b> (jika m dan r konstan)</p>
         <p>Artinya gaya sentripetal berbanding lurus dengan kuadrat kecepatan sudut.</p>
         
 
@@ -183,7 +184,7 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
     </div>
 </div>
 
-<!-- ================== HALAMAN EKSPERIMEN ================== -->
+<!-- ================== HALAMAN EKSPERIMEN (SENDIRI LAGI) ================== -->
 <div class="page" id="page-1">
     <div class="card">
         <h2> EKSPERIMEN GAYA SENTRIPETAL (FULL A+ AKADEMIK)</h2>
@@ -230,14 +231,16 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
             <li>RPM</li>
             <li>massa (gram)</li>
             <li>kecepatan linear (v)</li>
-            <li>ω²</li>
+            <li>ω
+²</li>
             <li>gaya (F)</li>
         </ul>
 
         <h3> 7. Analisis Data</h3>
         <p>Hubungan diuji menggunakan regresi linear:</p>
         <p style="color:#1e3a8a"><b>F = mω² + b</b></p>
-        <p>Jika nilai R² mendekati 1, maka hubungan antara gaya sentripetal dan kecepatan sudut sangat kuat dan sesuai dengan teori fisika.</p>
+        <p>Jika nilai R
+² mendekati 1, maka hubungan antara gaya sentripetal dan kecepatan sudut sangat kuat dan sesuai dengan teori fisika.</p>
 
         <h3> 8. Analisis Error</h3>
         <p>Error dihitung dari perbedaan antara nilai teoritis dan hasil eksperimen:</p>
@@ -245,8 +248,7 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
         <p>Semakin kecil nilai error, maka semakin akurat hasil eksperimen.</p>
 
         <h3> 9. Interpretasi Hasil</h3>
-        <p>Jika R² > 0.9 → eksperimen VALID dan sesuai hukum F ∝ ω
-²<br>
+        <p>Jika R² > 0.9 → eksperimen VALID dan sesuai hukum F ∝ ω²<br>
            Jika R² < 0.9 → terdapat noise atau kesalahan pengukuran</p>
 
         <h3> 10. Kesimpulan</h3>
@@ -325,7 +327,7 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
 </div>
 
 <script>
-// ================== FIREBASE CONFIG (Hanya API Key + Database URL) ==================
+// ================== FIREBASE CONFIG ==================
 const firebaseConfig = {
     apiKey: "AIzaSyCjYmgWEfWBBnkM5LISCgnKU4Du50g00ls",
     databaseURL: "https://centripetal-force-82ef2-default-rtdb.asia-southeast1.firebasedatabase.app"
@@ -342,7 +344,7 @@ function initFirebase() {
 
 function startListening() {
     alert("START aktif.\nData dari ESP32 akan muncul otomatis di ARSIP.");
-    // Kode listener Firebase bisa ditambahkan nanti sesuai kebutuhan
+    // Kode listener Firebase bisa ditambahkan nanti
 }
 
 function stopListening() {
@@ -374,7 +376,6 @@ function updateTableAndChart() {
         tbody.appendChild(tr);
     });
 
-    // ================== GRAFIK DENGAN TRENDLINE ==================
     if (chartInstance) chartInstance.destroy();
     const ctx = document.getElementById('dataChart').getContext('2d');
 
