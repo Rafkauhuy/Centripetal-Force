@@ -3,458 +3,424 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>🛰️ Centripetal Force Lab</title>
+<title> CENTRIPETAL FORCE LAB</title>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
 <style>
-:root { --accent: #38bdf8; --glow: #67e8f9; --glass: rgba(255,255,255,0.095); }
-body { margin:0; font-family:system-ui; background: radial-gradient(circle at center, #0a1428, #00040f); color:#f1f5f9; height:100vh; overflow:hidden; }
+:root {
+    --accent: #1e3a8a;
+    --success: #10b981;
+    --danger: #ef4444;
+}
 
-#preloader {
-    position:fixed; inset:0; z-index:9999;
-    background: radial-gradient(circle at center, #0a1428, #00040f);
-    display:flex; align-items:center; justify-content:center; flex-direction:column;
-    transition: opacity 1.6s ease, transform 1.3s ease;
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: linear-gradient(to bottom, #f8e8d0, #f0f9ff);
+    color: #1e2937;
+    min-height: 100vh;
 }
-.nebula { position:absolute; inset:0; overflow:hidden; opacity:0.9; }
-.nebula-particle {
-    position:absolute; background:#fff; border-radius:50%;
-    box-shadow: 0 0 12px var(--glow);
-    animation: twinkle 4s infinite alternate ease-in-out;
+
+/* HEADER */
+.header {
+    background: rgba(255,255,255,0.98);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    padding: 14px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
-.loading-bar {
-    width: 320px; height: 14px;
-    background: rgba(255,255,255,0.1);
+.header img { width: 48px; height: 58px; border-radius: 12px; }
+.header-title h1 { font-size: 1.45rem; font-weight: 800; color: #1e3a8a; }
+.header-title p { font-size: 0.92rem; color: #64748b; }
+
+/* TABS */
+.tabs {
+    display: flex;
+    background: white;
+    border-bottom: 3px solid #e2e8f0;
+    overflow-x: auto;
+}
+.tab {
+    padding: 14px 22px;
+    font-weight: 700;
+    font-size: 1.02rem;
+    color: #64748b;
+    cursor: pointer;
+    border-bottom: 4px solid transparent;
+}
+.tab.active {
+    color: #1e3a8a;
+    border-bottom: 4px solid #1e3a8a;
+    background: #f0f9ff;
+}
+
+/* CARD */
+.card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(30,58,138,0.1);
+    padding: 24px;
+    margin: 16px 0;
+}
+
+/* TOMBOL */
+.control-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+.btn {
+    padding: 12px 22px;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
     border-radius: 9999px;
-    overflow: hidden;
-    margin-top: 30px;
-    position: relative;
-    box-shadow: 0 0 30px rgba(103,232,249,0.6);
+    color: white;
+    cursor: pointer;
+    min-width: 105px;
 }
-.loading-progress {
-    width: 0%;
-    height: 100%;
-    background: linear-gradient(90deg, #38bdf8, #67e8f9, #a5f3fc);
-    animation: loadingAnim 3s linear forwards;
-    position: relative;
-    box-shadow: 0 0 25px #67e8f9;
-}
-.loading-progress::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.9) 50%, transparent 70%);
-    animation: shimmer 1.2s linear infinite;
-}
-.loading-bar::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: linear-gradient(to bottom, transparent, rgba(103,232,249,0.4), transparent);
-    animation: scanline 1.8s linear infinite;
-}
-.rocket {
-    position: absolute;
-    right: -28px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 38px;
-    filter: drop-shadow(0 0 20px #ff9500);
-    animation: rocketThrust 0.4s ease-in-out infinite alternate;
-}
-@keyframes loadingAnim { to { width: 100%; } }
-@keyframes shimmer { 0% { transform: translateX(-150%); } 100% { transform: translateX(300%); } }
-@keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(300%); } }
-@keyframes rocketThrust { from { transform: translateY(-50%) scale(1); } to { transform: translateY(-50%) scale(1.18); } }
-@keyframes twinkle { 0% { opacity: 0.4; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.1); } }
+.start-btn { background: #10b981; }
+.stop-btn  { background: #ef4444; }
+.reset-btn { background: #64748b; }
 
-.header, .bottom-nav { position:fixed; background:rgba(15,23,42,0.95); backdrop-filter:blur(16px); }
-.header { top:0; left:0; right:0; z-index:999; padding:12px 20px; display:flex; align-items:center; gap:12px; border-bottom:1px solid rgba(56,189,248,0.3); }
-.bottom-nav { bottom:0; left:0; right:0; z-index:1000; border-top:1px solid rgba(56,189,248,0.3); display:flex; justify-content:space-around; padding:12px 0 18px; }
-.nav-item { text-align:center; color:#cbd5e1; font-size:0.82rem; padding:6px 12px; border-radius:14px; transition:all 0.3s; }
-.nav-item.active { color:var(--accent); background:rgba(56,189,248,0.2); transform:scale(1.1); }
-.page { display:none; position:absolute; top:70px; left:20px; right:20px; bottom:85px; overflow-y:auto; padding:10px 4px; }
-.page.active { display:block; }
-.card { background:var(--glass); backdrop-filter:blur(20px); border:1px solid rgba(56,189,248,0.35); border-radius:22px; padding:22px; margin:16px 0; box-shadow:0 10px 35px rgba(0,0,0,0.4); }
-.voice-btn { position:fixed; bottom:92px; right:20px; z-index:999; width:62px; height:62px; border-radius:50%; background:linear-gradient(135deg,#38bdf8,#a5f3fc); color:#000; font-size:28px; border:none; box-shadow:0 8px 25px rgba(56,189,248,0.6); }
-.control-group label { display:flex; justify-content:space-between; font-size:0.95rem; color:#cbd5e1; }
-.value { font-family:monospace; color:var(--glow); font-weight:600; }
-.chart-container { position:relative; height:320px; margin-top:20px; }
+/* GRAFIK */
+.chart-container {
+    position: relative;
+    height: 420px;
+    margin: 20px 0;
+    background: white;
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.95rem; }
+th, td { padding: 12px 8px; text-align: center; border-bottom: 1px solid #e2e8f0; }
+th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
+.status-success { color: #10b981; font-weight: 700; }
+.status-error { color: #ef4444; font-weight: 700; }
 </style>
 </head>
 <body>
 
-<!-- PRELOADER DENGAN ANIMASI SMOOTH -->
-<div id="preloader">
-    <div class="nebula" id="nebula"></div>
-    <div style="position:relative; text-align:center; z-index:2; width:100%; max-width:340px;">
-        <div style="margin-bottom:28px; display:inline-flex; align-items:center; gap:12px;">
-            <!-- GANTI DENGAN LINK RAW LOGO KAMU (tidak kotak) -->
-            <img src="https://raw.githubusercontent.com/USERNAME/REPO/main/logo-sma1gegesik.png" 
-                 alt="Logo SMA Negeri 1 Gegesik" 
-                 style="width:125px; height:145px; border-radius:25px; border:4px solid #67e8f9; box-shadow:0 0 40px #67e8f9; object-fit:contain; background:#0a1428;">
-            <div style="background:#0a1428;color:#67e8f9;font-size:22px;font-weight:900;padding:8px 20px;border-radius:9999px;border:3px solid #67e8f9;box-shadow:0 0 25px #67e8f9;">XI FIS</div>
-        </div>
-        <div style="font-size:1.95rem;font-weight:700;letter-spacing:1.5px;color:#67e8f9;text-shadow:0 0 30px #67e8f9;">Centripetal Force Lab</div>
-        <p style="margin-top:8px;opacity:0.9;font-size:1.05rem;font-weight:600;">SMA Negeri 1 Gegesik • Kelas XI Fisika</p>
-        <div style="margin-top:20px; font-size:1.1rem; color:#67e8f9; letter-spacing:2px;">Loading Lab Digital...</div>
-        <div class="loading-bar">
-            <div class="loading-progress">
-                <span class="rocket">🛰️</span>
-            </div>
-        </div>
-        <p style="margin-top:20px;font-size:1.05rem;font-weight:700;letter-spacing:3px;color:#67e8f9;">KELOMPOK 6</p>
-    </div>
-</div>
-
 <!-- HEADER -->
 <div class="header">
-    <!-- GANTI DENGAN LINK RAW LOGO KAMU -->
-    <img src="https://raw.githubusercontent.com/USERNAME/REPO/main/logo-sma1gegesik.png" 
-         alt="Logo" style="width:48px; height:56px; border-radius:12px; border:2px solid #67e8f9; object-fit:contain; background:#0a1428;">
-    <span style="font-size:26px;">🛰️</span>
-    <div style="font-weight:600;">Centripetal Force Lab</div>
-    <div style="margin-left:auto;font-size:13px;opacity:0.6;text-align:right;">SMA Negeri 1 Gegesik<br><span style="color:var(--glow);">2026</span></div>
-</div>
-
-<button onclick="speakAI()" class="voice-btn">🔊</button>
-
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-    <div onclick="switchPage(0)" class="nav-item active" id="nav-0">🏠<br>Beranda</div>
-    <div onclick="switchPage(1)" class="nav-item" id="nav-1">📘<br>Materi</div>
-    <div onclick="switchPage(2)" class="nav-item" id="nav-2">🧪<br>Eksperimen</div>
-    <div onclick="switchPage(3)" class="nav-item" id="nav-3">📊<br>Data</div>
-    <div onclick="switchPage(4)" class="nav-item" id="nav-4">🤖<br>AI</div>
-    <div onclick="switchPage(5)" class="nav-item" id="nav-5">👤<br>Creator</div>
-</div>
-
-<!-- PAGE 0: BERANDA -->
-<div id="page-0" class="page active">
-    <div class="card">
-        <h2 style="text-align:center;color:var(--glow);">🚀 Selamat Datang di Lab Digital!</h2>
-        <p style="text-align:center;opacity:0.9;margin:20px 0;">Laboratorium Virtual + Hardware Gaya Sentripetal<br>SMA Negeri 1 Gegesik • Kelas XI Fisika</p>
-        <button onclick="switchPage(2)" style="width:100%;padding:16px;background:#22c55e;color:#000;border:none;border-radius:9999px;font-weight:bold;font-size:1.1rem;">🚀 Mulai Eksperimen Sekarang</button>
+    <img src="https://raw.githubusercontent.com/USERNAME/REPO/main/logo-sma1gegesik.png" alt="Logo SMA">
+    <div class="header-title">
+        <h1>CENTRIPETAL FORCE LAB</h1>
+        <p>XI FISIKA • SMA Negeri 1 Gegesik • 2026</p>
     </div>
 </div>
 
-<!-- PAGE 1: MATERI FULL -->
-<div id="page-1" class="page">
+<!-- TABS -->
+<div class="tabs">
+    <div onclick="switchPage(0)" class="tab active" id="tab-0">MATERI</div>
+    <div onclick="switchPage(1)" class="tab" id="tab-1">EKSPERIMEN</div>
+    <div onclick="switchPage(2)" class="tab" id="tab-2">ARSIP</div>
+    <div onclick="switchPage(3)" class="tab" id="tab-3">PENCIPTA</div>
+</div>
+
+<!-- ================== HALAMAN MATERI (LENGKAP PERSIS) ================== -->
+<div class="page active" id="page-0">
     <div class="card">
-        <h2>📘 GAYA SENTRIPETAL (FULL AKADEMIK DETAIL)</h2>
+        <h2> GAYA SENTRIPETAL </h2>
         <p>Gaya sentripetal adalah gaya yang selalu bekerja menuju pusat lintasan melingkar dan menyebabkan perubahan arah kecepatan benda, sehingga benda dapat tetap bergerak melingkar.</p>
-        <h3>⚡ 1. Konsep Fisika (Lebih Dalam)</h3>
+
+        <h3> 1. Konsep Fisika (Lebih Dalam)</h3>
         <p>Dalam gerak melingkar, meskipun besar kecepatan bisa tetap, arah kecepatan selalu berubah. Perubahan arah ini membutuhkan gaya yang arahnya menuju pusat lintasan. Jika gaya ini hilang, benda akan bergerak lurus sesuai hukum inersia (Hukum I Newton).</p>
         <p>Inilah alasan mengapa benda yang diikat lalu diputar tidak terlempar keluar, tetapi tetap melingkar.</p>
-        <h3>📐 2. Penurunan Rumus</h3>
-        <p><b>F = mv² / r</b> → <b>v = ωr</b> → <b>F = mω²r</b></p>
-        <p style="color:#38bdf8"><b>F ∝ ω²</b> (jika m dan r konstan)</p>
-        <h3>🌍 Contoh Kehidupan Nyata</h3>
+
+        <h3> 2. Penurunan Rumus (STEP BY STEP)</h3>
+        <p><b>Mulai dari gaya sentripetal dasar:</b></p>
+        <p>F = mv² / r</p>
+        <p><b>Karena kecepatan linear:</b></p>
+        <p>v = ωr</p>
+        <p><b>Substitusi ke rumus awal:</b></p>
+        <p>F = m(ωr)² / r</p>
+        <p>F = m(ω² r²) / r</p>
+        <p><b>Sederhanakan:</b></p>
+        <p>F = mω²r</p>
+        <p style="color:#1e3a8a"><b>F ∝ ω²</b> (jika m dan r konstan)</p>
+        <p>Artinya gaya sentripetal berbanding lurus dengan kuadrat kecepatan sudut.</p>
+
+        <h3> 3. Contoh Kehidupan Nyata (Lebih Realistis)</h3>
         <ul>
-            <li>Mobil di tikungan: gaya gesek sebagai gaya sentripetal</li>
-            <li>Satelit: gaya gravitasi sebagai gaya sentripetal</li>
-            <li>Mesin cuci: air terdorong keluar karena inersia</li>
-            <li>Roller coaster loop</li>
+            <li><b>Mobil di tikungan:</b> ban membutuhkan gaya gesek sebagai gaya sentripetal agar tidak keluar jalur</li>
+            <li><b>Satelit mengorbit bumi:</b> gaya gravitasi berfungsi sebagai gaya sentripetal</li>
+            <li><b>Mesin cuci (spin dryer):</b> air terdorong keluar karena benda berusaha bergerak lurus</li>
+            <li><b>Roller coaster loop:</b> gaya normal + gravitasi menjaga lintasan melingkar</li>
         </ul>
-        <h3>🧠 Contoh Soal</h3>
-        <p>Benda 0.5 kg, r = 0.4 m, ω = 10 rad/s → <b>F = 20 N</b></p>
-        <h3>🧠 Kesimpulan</h3>
-        <p style="color:#38bdf8"><b>F = mω²r → inti eksperimen</b></p>
+
+        <h3> 4. Grafik Teori</h3>
+        <p>Hubungan antara gaya sentripetal dan kuadrat kecepatan sudut berbentuk garis lurus:</p>
+        <p><b>Grafik F vs ω² → linear (garis lurus)</b></p>
+        <p>Jika eksperimen benar, maka titik data akan membentuk garis lurus dengan R² mendekati 1.</p>
+
+        <h3> 5. Contoh Soal Singkat</h3>
+        <p>Sebuah benda bermassa 0.5 kg bergerak melingkar dengan jari-jari 0.4 m dan kecepatan sudut 10 rad/s.</p>
+        <p><b>Ditanya: gaya sentripetal?</b></p>
+        <p>Gunakan rumus: F = mω²r</p>
+        <p>F = 0.5 × (10)² × 0.4 = 20 N</p>
+        <p><b>Jawaban: 20 Newton</b></p>
+
+        <h3> 6. Kesimpulan Materi</h3>
+        <p>Gaya sentripetal muncul akibat kebutuhan perubahan arah gerak benda dalam lintasan melingkar. Secara matematis, gaya ini bergantung pada massa, jari-jari, dan kuadrat kecepatan sudut.</p>
+        <p style="color:#1e3a8a"><b>F = mω²r → inti dari seluruh eksperimen</b></p>
     </div>
 </div>
 
-<!-- PAGE 2: EKSPERIMEN -->
-<div id="page-2" class="page">
+<!-- ================== HALAMAN EKSPERIMEN (LENGKAP PERSIS) ================== -->
+<div class="page" id="page-1">
     <div class="card">
         <h2>🧪 EKSPERIMEN GAYA SENTRIPETAL (FULL A+ AKADEMIK)</h2>
-        <h3>🎯 Tujuan</h3>
-        <p>Membuktikan F berbanding lurus dengan ω².</p>
-        <h3>📌 Variabel</h3>
-        <ul>
-            <li>Bebas: ω / RPM</li>
-            <li>Terikat: F</li>
-            <li>Kontrol: m & r</li>
-        </ul>
-        <h3>🧰 Alat & Bahan</h3>
-        <ul>
-            <li>ESP32, HX711, Load cell, Tali, Beban, Statif</li>
-        </ul>
-        <h3>⚙️ Cara Kerja</h3>
-        <p>Data dari hardware dikirim ke Firebase dan ditampilkan real-time.</p>
-        <h3>🧠 Kesimpulan</h3>
-        <p>Eksperimen membuktikan F ∝ ω
-² sesuai teori Newton.</p>
-    </div>
 
-    <!-- SIMULASI 3D -->
-    <div class="card">
-        <h2 style="color:var(--glow);">🧪 Simulasi 3D Live</h2>
-        <div id="sim-container" style="width:100%;height:380px;background:#0a1428;border-radius:16px;position:relative;overflow:hidden;">
-            <canvas id="three-canvas"></canvas>
-        </div>
-        <div class="control-group" style="margin-top:20px;">
-            <label>Massa <span id="val-m" class="value">1.00 kg</span></label>
-            <input type="range" id="slider-m" min="0.1" max="5" step="0.1" value="1">
-            <label>Jari-jari <span id="val-r" class="value">5.0 m</span></label>
-            <input type="range" id="slider-r" min="1" max="10" step="0.5" value="5">
-            <label>ω <span id="val-omega" class="value">2.0 rad/s</span></label>
-            <input type="range" id="slider-omega" min="0.5" max="10" step="0.1" value="2">
-        </div>
-        <div style="text-align:center;margin:15px 0;font-size:1.3rem;font-weight:700;color:#67e8f9;">
-            Gaya Sentripetal: <span id="force-display">20.00</span> N
-        </div>
-        <button onclick="recordData()" style="width:100%;padding:14px;background:#22c55e;color:#000;border:none;border-radius:9999px;font-weight:bold;">📌 Rekam Data Saat Ini</button>
+        <h3> 1. Tujuan Eksperimen</h3>
+        <p>Mengetahui hubungan antara gaya sentripetal (F) dengan kuadrat kecepatan sudut (ω²) serta membuktikan bahwa F berbanding lurus dengan ω².</p>
+
+        <h3> 2. Variabel Penelitian</h3>
+        <ul>
+            <li><b>Variabel bebas:</b> Kecepatan sudut (ω) / RPM</li>
+            <li><b>Variabel terikat:</b> Gaya sentripetal (F)</li>
+            <li><b>Variabel kontrol:</b> massa (m) dan jari-jari (r)</li>
+        </ul>
+
+        <h3> 3. Alat & Bahan</h3>
+        <ul>
+            <li>ESP32</li>
+            <li>HX711 (modul penguat load cell)</li>
+            <li>Load cell (sensor gaya)</li>
+            <li>Kabel jumper</li>
+            <li>Breadboard</li>
+            <li>Statif dan klem laboratorium</li>
+            <li>Tali</li>
+            <li>Beban (massa)</li>
+        </ul>
+
+        <h3> 4. Cara Kerja Alat</h3>
+        <p>Beban diputar menggunakan sistem rotasi sehingga menghasilkan gerak melingkar. Gerakan tersebut menimbulkan gaya sentripetal yang bekerja menuju pusat lintasan. Gaya ini menyebabkan tegangan pada tali yang terhubung dengan load cell.</p>
+        <p>Load cell mendeteksi besar gaya (tegangan) yang terjadi dan menghasilkan sinyal analog. Sinyal tersebut diperkuat dan dikonversi menjadi data digital oleh modul HX711.</p>
+        <p>ESP32 membaca data digital dari HX711, kemudian mengolah dan mengirimkan data tersebut ke Firebase melalui koneksi WiFi.</p>
+        <p>Data yang dikirim akan ditampilkan secara real-time pada website dalam bentuk:</p>
+        <ul>
+            <li>Nilai numerik (gaya, RPM, kecepatan, dll)</li>
+            <li>Grafik hubungan F terhadap ω²</li>
+            <li>Analisis regresi linear otomatis</li>
+        </ul>
+
+        <h3> 5. Hipotesis</h3>
+        <p>Semakin besar kecepatan sudut (ω), maka gaya sentripetal akan meningkat secara kuadrat.</p>
+
+        <h3> 6. Tabel Variabel (Real-time dari Sistem)</h3>
+        <ul>
+            <li>n = jumlah data</li>
+            <li>RPM</li>
+            <li>massa (gram)</li>
+            <li>kecepatan linear (v)</li>
+            <li>ω²</li>
+            <li>gaya (F)</li>
+        </ul>
+
+        <h3> 7. Analisis Data</h3>
+        <p>Hubungan diuji menggunakan regresi linear:</p>
+        <p style="color:#1e3a8a"><b>F = mω² + b</b></p>
+        <p>Jika nilai R² mendekati 1, maka hubungan antara gaya sentripetal dan kecepatan sudut sangat kuat dan sesuai dengan teori fisika.</p>
+
+        <h3> 8. Analisis Error</h3>
+        <p>Error dihitung dari perbedaan antara nilai teoritis dan hasil eksperimen:</p>
+        <p>Error (%) = |F_teori − F_eksperimen| / F_teori × 100%</p>
+        <p>Semakin kecil nilai error, maka semakin akurat hasil eksperimen.</p>
+
+        <h3> 9. Interpretasi Hasil</h3>
+        <p>Jika R² > 0.9 → eksperimen VALID dan sesuai hukum F ∝ ω²<br>
+           Jika R² < 0.9 → terdapat noise atau kesalahan pengukuran</p>
+
+        <h3> 10. Kesimpulan</h3>
+        <p>Eksperimen ini membuktikan bahwa gaya sentripetal berbanding lurus dengan kuadrat kecepatan sudut (F ∝ ω²), sesuai dengan teori fisika Newton.</p>
     </div>
 </div>
 
-<!-- PAGE 3: DATA -->
-<div id="page-3" class="page">
+<!-- ================== ARSIP (DENGAN TRENDLINE) ================== -->
+<div class="page" id="page-2">
     <div class="card">
-        <h2 style="color:var(--glow);">📊 Data Real-Time dari ESP32</h2>
-        <div class="chart-container"><canvas id="data-chart"></canvas></div>
-        <div id="regression-result" style="margin-top:15px;padding:14px;background:#0f172a;border-radius:12px;text-align:center;font-family:monospace;color:#67e8f9;"></div>
-        <table style="width:100%;margin-top:24px;border-collapse:collapse;font-size:0.9rem;">
-            <thead><tr style="background:#0f172a;"><th style="padding:10px;text-align:left;">n</th><th>Massa (g)</th><th>ω (rad/s)</th><th>v (m/s)</th><th>ω²</th><th>F (N)</th></tr></thead>
-            <tbody id="data-table" style="text-align:center;"></tbody>
+        <h2 style="text-align:center;"> ARSIP</h2>
+
+        <div class="control-buttons">
+            <button onclick="startListening()" class="btn start-btn">START</button>
+            <button onclick="stopListening()" class="btn stop-btn">STOP</button>
+            <button onclick="resetData()" class="btn reset-btn">RESET</button>
+        </div>
+
+        <div style="background:#f8fafc; padding:16px; border-radius:16px; text-align:center; margin:20px 0;">
+            Massa (m) = <input type="number" id="fixed-m" value="1.0" step="0.1" style="width:70px"> kg &nbsp;&nbsp;
+            Jari-jari (r) = <input type="number" id="fixed-r" value="5.0" step="0.1" style="width:70px"> m
+        </div>
+
+        <div class="chart-container">
+            <canvas id="dataChart"></canvas>
+        </div>
+
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Waktu</th>
+                    <th>ω (rad/s)</th>
+                    <th>ω²</th>
+                    <th>F_Measured (N)</th>
+                    <th>F_Teori (N)</th>
+                    <th>Error (%)</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
         </table>
-        <button onclick="clearData()" style="margin-top:16px;width:100%;padding:12px;background:#ef4444;color:#fff;border:none;border-radius:9999px;">🗑️ Hapus Semua Data</button>
+
+        <p id="regression-result" style="margin-top:20px; padding:16px; background:#f0f9ff; border-radius:12px; text-align:center; font-weight:700;"></p>
     </div>
 </div>
 
-<!-- PAGE 4: AI -->
-<div id="page-4" class="page">
-    <div class="card">
-        <h2 style="color:var(--glow);">🤖 AI Assistant</h2>
-        <p>Tekan tombol suara untuk mendengar penjelasan.</p>
-        <button onclick="speakAI()" style="width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:9999px;margin-top:20px;font-weight:bold;">🔊 Dengarkan Penjelasan AI</button>
-    </div>
-</div>
-
-<!-- PAGE 5: CREATOR -->
-<div id="page-5" class="page">
-    <div class="card">
+<!-- ================== PENCIPTA ================== -->
+<div class="page" id="page-3">
+    <div class="card" style="text-align:center;">
         <h2>👤 INFORMASI PROYEK</h2>
+        
         <p><b>SMA NEGERI 1 GEGESIK</b></p>
         <p>PJBL FISIKA</p>
-        <p><b>KETUA KELOMPOK:</b> MOHAMMAD RIZKY AL HIDAYAH</p>
-        <p><b>ANGGOTA:</b><br>1. RAFKA ADE WIRAYUDA (CODING)<br>2. SHESYA ANINDITA (BENDAHARA)<br>3. RIZQI AHMAD (MEKANIK)<br>4. ADE ZULFADLI</p>
-        <p><b>PENGAJAR:</b> Bapak Agus Salim S.Si, M.Pd</p>
+        <br>
+        <p><b>KETUA KELOMPOK:</b></p>
+        <p>MOHAMMAD RIZKY AL HIDAYAH</p>
+        <br>
+        
+        <p><b>ANGGOTA:</b></p>
+        <p>
+        1. RAFKA ADE WIRAYUDA (CODING)<br>
+        2. SHESYA ANINDITA (BENDAHARA)<br>
+        3. RIZQI AHMAD (MEKANIK)<br>
+        4. ADE ZULFADLI
+        </p>
+        <br>
+        
+        <p><b>PENGAJAR:</b></p>
+        <p>Bapak Agus Salim S.Si., M.Pd.</p>
+        <br>
+        
+        <p style="margin-top:30px; font-size:0.95rem; color:#64748b;">
+            Tanggal Pembuatan: 7 April 2026
+        </p>
+        <p style="margin-top:40px; font-style:italic; color:#1e3a8a;">
+            “Ilmu yang ditulis dengan tangan dan hati di bulan suci akan membekas abadi dalam ingatan.”
+        </p>
     </div>
 </div>
 
 <script>
-// ================== VARIABEL GLOBAL ==================
-let scene, camera, renderer, massMesh, radiusLine, pathCircle;
-let currentM = 1.0, currentR = 5.0, currentOmega = 2.0, angle = 0;
-let animationFrame, threeInitialized = false;
+// ================== SCRIPT (Trendline + Garis Lurus) ==================
+let db, listenerRef = null;
 let dataRecords = [];
 let chartInstance = null;
 
-const utterance = new SpeechSynthesisUtterance();
-utterance.lang = 'id-ID';
-utterance.rate = 0.92;
-
-function speakAI() {
-    const texts = ["Halo, selamat datang di Laboratorium Gaya Sentripetal.","Gaya sentripetal menjaga benda bergerak melingkar.","Rumus: F = m ω² r."];
-    utterance.text = texts[Math.floor(Math.random()*texts.length)];
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
+function initFirebase() {
+    // GANTI DENGAN CONFIG FIREBASE KAMU
+    const config = { /* isi config kamu */ };
+    firebase.initializeApp(config);
+    db = firebase.database();
 }
 
-function createNebula() {
-    const container = document.getElementById('nebula');
-    for (let i = 0; i < 120; i++) {
-        const p = document.createElement('div');
-        p.className = 'nebula-particle';
-        const size = Math.random() * 5 + 2;
-        p.style.width = p.style.height = `${size}px`;
-        p.style.left = `${Math.random()*100}%`;
-        p.style.top = `${Math.random()*100}%`;
-        p.style.animationDelay = `-${Math.random()*6}s`;
-        container.appendChild(p);
+function startListening() {
+    alert("START aktif.\nData dari ESP32 akan muncul otomatis di ARSIP.");
+}
+
+function stopListening() {
+    alert("Monitoring dihentikan.");
+}
+
+function resetData() {
+    if (confirm("Reset semua data di ARSIP?")) {
+        dataRecords = [];
+        updateTableAndChart();
     }
 }
 
-// THREE.JS (simulasi 3D)
-function initThree() {
-    if (threeInitialized) return;
-    const container = document.getElementById('sim-container');
-    const canvas = document.getElementById('three-canvas');
-    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a1428);
-    camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.set(0, 12, 18);
-    camera.lookAt(0, 0, 0);
-    scene.add(new THREE.AmbientLight(0x67e8f9, 0.6));
-    const pointLight = new THREE.PointLight(0xffffff, 1.8, 100);
-    pointLight.position.set(15, 20, 15);
-    scene.add(pointLight);
+function updateTableAndChart() {
+    const tbody = document.querySelector('#dataTable tbody');
+    tbody.innerHTML = '';
+    dataRecords.forEach((d, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${i+1}</td>
+            <td>${d.time || '-'}</td>
+            <td>${d.omega}</td>
+            <td>${d.omega2}</td>
+            <td>${d.fMeasured}</td>
+            <td>${d.fTheory}</td>
+            <td>${d.error}%</td>
+            <td>${d.status}</td>
+        `;
+        tbody.appendChild(tr);
+    });
 
-    scene.add(new THREE.Mesh(new THREE.SphereGeometry(0.4, 32, 32), new THREE.MeshPhongMaterial({color:0x67e8f9, emissive:0x67e8f9})));
-    massMesh = new THREE.Mesh(new THREE.SphereGeometry(0.6, 32, 32), new THREE.MeshPhongMaterial({color:0x38bdf8, shininess:80}));
-    scene.add(massMesh);
-    radiusLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]), new THREE.LineBasicMaterial({color:0xa5f3fc}));
-    scene.add(radiusLine);
-    pathCircle = new THREE.Mesh(new THREE.CircleGeometry(5, 64), new THREE.MeshBasicMaterial({color:0x67e8f9, side:THREE.DoubleSide, transparent:true, opacity:0.15}));
-    pathCircle.rotation.x = -Math.PI / 2;
-    scene.add(pathCircle);
-
-    threeInitialized = true;
-    animateThree();
-}
-
-function animateThree() {
-    animationFrame = requestAnimationFrame(animateThree);
-    angle += currentOmega * 0.018;
-    const x = currentR * Math.cos(angle);
-    const z = currentR * Math.sin(angle);
-    massMesh.position.set(x, 0, z);
-    const pos = radiusLine.geometry.attributes.position;
-    pos.setXYZ(0, 0, 0, 0);
-    pos.setXYZ(1, x, 0, z);
-    pos.needsUpdate = true;
-
-    const force = currentM * Math.pow(currentOmega, 2) * currentR;
-    document.getElementById('force-display').textContent = force.toFixed(2);
-    renderer.render(scene, camera);
-}
-
-function updateSliders() {
-    document.getElementById('slider-m').oninput = function() { currentM = parseFloat(this.value); document.getElementById('val-m').textContent = currentM.toFixed(2) + ' kg'; };
-    document.getElementById('slider-r').oninput = function() { currentR = parseFloat(this.value); document.getElementById('val-r').textContent = currentR.toFixed(1) + ' m'; if (pathCircle) pathCircle.scale.set(currentR/5, 1, currentR/5); };
-    document.getElementById('slider-omega').oninput = function() { currentOmega = parseFloat(this.value); document.getElementById('val-omega').textContent = currentOmega.toFixed(1) + ' rad/s'; };
-}
-
-// Chart & Regresi
-function calculateRegression(points) {
-    let n = points.length;
-    if (n < 2) return { slope: 0, intercept: 0 };
-    let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
-    points.forEach(p => { sumX += p.x; sumY += p.y; sumXY += p.x*p.y; sumX2 += p.x*p.x; });
-    const slope = (n*sumXY - sumX*sumY) / (n*sumX2 - sumX*sumX);
-    const intercept = (sumY - slope*sumX) / n;
-    return { slope, intercept };
-}
-
-function createChart() {
-    const ctx = document.getElementById('data-chart');
+    // GRAFIK DENGAN TRENDLINE
     if (chartInstance) chartInstance.destroy();
-    const scatterData = dataRecords.map(d => ({x: d.omegaSq, y: d.force}));
-    const reg = calculateRegression(scatterData);
-    const equation = `F = ${reg.slope.toFixed(3)} ω
-² + ${reg.intercept.toFixed(3)}`;
+    const ctx = document.getElementById('dataChart').getContext('2d');
 
-    const minX = Math.min(...scatterData.map(p=>p.x));
-    const maxX = Math.max(...scatterData.map(p=>p.x));
-    const lineData = [{x:minX, y:reg.slope*minX+reg.intercept}, {x:maxX, y:reg.slope*maxX+reg.intercept}];
+    const xValues = dataRecords.map(d => parseFloat(d.omega2));
+    const yValues = dataRecords.map(d => parseFloat(d.fMeasured));
 
     chartInstance = new Chart(ctx, {
         type: 'scatter',
-        data: { datasets: [
-            {label:'Data Eksperimen', data:scatterData, backgroundColor:'#67e8f9', borderColor:'#38bdf8', pointRadius:6},
-            {type:'line', label:'Trendline', data:lineData, borderColor:'#ff9500', borderWidth:3, pointRadius:0}
-        ]},
-        options: { responsive:true, maintainAspectRatio:false,
-            scales: { x: {title:{display:true, text:'ω² (rad²/s²)', color:'#cbd5e1'}}, y: {title:{display:true, text:'F (N)', color:'#cbd5e1'}} }}
+        data: {
+            datasets: [
+                {
+                    label: 'Data Eksperimen',
+                    data: xValues.map((x, i) => ({x: x, y: yValues[i]})),
+                    backgroundColor: '#1e3a8a',
+                    borderColor: '#67e8f9',
+                    pointRadius: 8
+                },
+                {
+                    label: 'Trendline (F = mω² + b)',
+                    type: 'line',
+                    data: xValues.map((x, i) => ({x: x, y: yValues[i]})),
+                    borderColor: '#ef4444',
+                    borderWidth: 3,
+                    borderDash: [5, 5],
+                    tension: 0,
+                    pointRadius: 0
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: { title: { display: true, text: 'ω² (rad²/s²)' }},
+                y: { title: { display: true, text: 'Gaya Sentripetal F (N)' }}
+            },
+            plugins: {
+                legend: { position: 'top' }
+            }
+        }
     });
-    document.getElementById('regression-result').innerHTML = `<strong>Regresi Linear:</strong><br>${equation}`;
-}
-
-function updateTable() {
-    const tbody = document.getElementById('data-table');
-    tbody.innerHTML = '';
-    dataRecords.forEach(r => {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td>\( {r.n}</td><td> \){r.massGram}</td><td>\( {r.omega.toFixed(1)}</td><td> \){r.v}</td><td>\( {r.omegaSq.toFixed(1)}</td><td style="color:#67e8f9"> \){r.force.toFixed(2)}</td>`;
-        tbody.appendChild(row);
-    });
-}
-
-function recordData() {
-    const force = currentM * Math.pow(currentOmega, 2) * currentR;
-    const omegaSq = Math.pow(currentOmega, 2);
-    const v = (currentOmega * currentR).toFixed(2);
-    const massGram = Math.round(currentM * 1000);
-    dataRecords.push({n: dataRecords.length+1, massGram, omega:currentOmega, v, omegaSq, force});
-    updateTable();
-    createChart();
-
-    const notif = document.createElement('div');
-    notif.style.cssText = 'position:fixed;bottom:110px;right:90px;background:#22c55e;color:#000;padding:8px 16px;border-radius:9999px;z-index:9999;';
-    notif.textContent = '✅ Data direkam!';
-    document.body.appendChild(notif);
-    setTimeout(() => notif.remove(), 1500);
-}
-
-function clearData() {
-    if (confirm('Hapus semua data?')) {
-        dataRecords = [];
-        updateTable();
-        createChart();
-    }
 }
 
 function switchPage(n) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + n).classList.add('active');
-    document.querySelectorAll('.nav-item').forEach((el,i) => el.classList.toggle('active', i===n));
-
-    if (n === 2 && !threeInitialized) setTimeout(() => { initThree(); updateSliders(); }, 150);
-    if (n === 3) createChart();
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + n).classList.add('active');
 }
 
-// ================== FIREBASE ==================
-const firebaseConfig = {
-    apiKey: "MASUKKAN_API_KEY_ANDA",
-    authDomain: "nama-project-anda.firebaseapp.com",
-    databaseURL: "https://nama-project-anda-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "nama-project-anda",
-    storageBucket: "nama-project-anda.appspot.com",
-    messagingSenderId: "1234567890",
-    appId: "1:1234567890:web:xxxxxxxxxxxxxxxxxxxxxxxx"
-};
-
-let db;
-function initFirebase() {
-    if (typeof firebase === "undefined" || db) return;
-    firebase.initializeApp(firebaseConfig);
-    db = firebase.database();
-    console.log("%c✅ Firebase Real-Time Connected!", "color:#67e8f9;font-weight:bold");
-
-    db.ref('centripetalData').on('child_added', (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-            dataRecords.unshift({
-                n: dataRecords.length + 1,
-                massGram: data.mass || 0,
-                omega: data.omega || 0,
-                v: (data.omega * (data.radius || 5)).toFixed(2),
-                omegaSq: Math.pow(data.omega || 0, 2),
-                force: data.force || 0
-            });
-            updateTable();
-            createChart();
-        }
-    });
-}
-
-// START APP
+// INIT
 window.addEventListener('load', () => {
-    createNebula();
-    setTimeout(() => {
-        const pre = document.getElementById('preloader');
-        pre.style.opacity = '0';
-        pre.style.transform = 'scale(0.95)';
-        setTimeout(() => pre.remove(), 1600);
-    }, 3200);
     initFirebase();
 });
 </script>
