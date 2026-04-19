@@ -106,23 +106,6 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
-
-#loading-spinner {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: linear-gradient(135deg, rgba(30,58,138,0.94), rgba(59,130,246,0.88));
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    opacity: 0;
-    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-#loading-spinner.show {
-    display: flex;
-    opacity: 1;
-}
 </style>
 </head>
 <body>
@@ -144,17 +127,17 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
     <div onclick="switchPage(3)" class="tab" id="tab-3">PENCIPTA</div>
 </div>
 
-<!-- ================== MATERI FULL ================== -->
+<!-- ================== FULL MATERI ================== -->
 <div class="page active" id="page-0">
     <div class="card">
-        <h2> GAYA SENTRIPETAL </h2>
+        <h2>GAYA SENTRIPETAL</h2>
         <p>Gaya sentripetal adalah gaya yang selalu bekerja menuju pusat lintasan melingkar dan menyebabkan perubahan arah kecepatan benda, sehingga benda dapat tetap bergerak melingkar.</p>
 
-        <h3> 1. Konsep Fisika (Lebih Dalam)</h3>
+        <h3>1. Konsep Fisika (Lebih Dalam)</h3>
         <p>Dalam gerak melingkar, meskipun besar kecepatan bisa tetap, arah kecepatan selalu berubah. Perubahan arah ini membutuhkan gaya yang arahnya menuju pusat lintasan. Jika gaya ini hilang, benda akan bergerak lurus sesuai hukum inersia (Hukum I Newton).</p>
         <p>Inilah alasan mengapa benda yang diikat lalu diputar tidak terlempar keluar, tetapi tetap melingkar.</p>
 
-        <h3> 2. Penurunan Rumus (STEP BY STEP)</h3>
+        <h3>2. Penurunan Rumus (STEP BY STEP)</h3>
         <p><b>Mulai dari gaya sentripetal dasar:</b></p>
         <p>F = mv² / r</p>
         <p><b>Karena kecepatan linear:</b></p>
@@ -163,14 +146,13 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
         <p>F = m(ωr)² / r</p>
         <p>F = m(ω² r²) / r</p>
         <p><b>Sederhanakan:</b></p>
-        <p>F = mω
-²r</p>
+        <p>F = mω²r</p>
         <br>
         <p><b>Kesimpulan penting:</b></p>
         <p style="color:#38bdf8"><b>F ∝ ω²</b> (jika m dan r konstan)</p>
         <p>Artinya gaya sentripetal berbanding lurus dengan kuadrat kecepatan sudut.</p>
 
-        <h3> 3. Contoh Kehidupan Nyata (Lebih Realistis)</h3>
+        <h3>3. Contoh Kehidupan Nyata (Lebih Realistis)</h3>
         <ul>
             <li><b>Mobil di tikungan:</b> ban membutuhkan gaya gesek sebagai gaya sentripetal agar tidak keluar jalur</li>
             <li><b>Satelit mengorbit bumi:</b> gaya gravitasi berfungsi sebagai gaya sentripetal</li>
@@ -178,33 +160,40 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
             <li><b>Roller coaster loop:</b> gaya normal + gravitasi menjaga lintasan melingkar</li>
         </ul>
 
-        <h3> 5. Contoh Soal Singkat</h3>
+        <h3>4. Grafik Teori</h3>
+        <p>Hubungan antara gaya sentripetal dan kuadrat kecepatan sudut berbentuk garis lurus:</p>
+        <p><b>Grafik F vs ω² → linear (garis lurus)</b></p>
+        <p>Jika eksperimen benar, maka titik data akan membentuk garis lurus dengan R² mendekati 1.</p>
+
+        <h3>5. Contoh Soal Singkat</h3>
         <p>Sebuah benda bermassa 0.5 kg bergerak melingkar dengan jari-jari 0.4 m dan kecepatan sudut 10 rad/s.</p>
+        <p><b>Ditanya: gaya sentripetal?</b></p>
+        <p>Gunakan rumus: F = mω²r</p>
         <p>F = 0.5 × (10)² × 0.4 = 20 N</p>
         <p><b>Jawaban: 20 Newton</b></p>
 
-        <h3> 6. Kesimpulan Materi</h3>
+        <h3>6. Kesimpulan Materi</h3>
         <p>Gaya sentripetal muncul akibat kebutuhan perubahan arah gerak benda dalam lintasan melingkar. Secara matematis, gaya ini bergantung pada massa, jari-jari, dan kuadrat kecepatan sudut.</p>
         <p style="color:#38bdf8"><b>F = mω²r → inti dari seluruh eksperimen</b></p>
     </div>
 </div>
 
-<!-- ================== EKSPERIMEN FULL ================== -->
+<!-- ================== FULL EKSPERIMEN ================== -->
 <div class="page" id="page-1">
     <div class="card">
-        <h2> EKSPERIMEN GAYA SENTRIPETAL </h2>
+        <h2>EKSPERIMEN GAYA SENTRIPETAL</h2>
 
-        <h3> 1. Tujuan Eksperimen</h3>
+        <h3>1. Tujuan Eksperimen</h3>
         <p>Mengetahui hubungan antara gaya sentripetal (F) dengan kuadrat kecepatan sudut (ω²) serta membuktikan bahwa F berbanding lurus dengan ω².</p>
 
-        <h3> 2. Variabel Penelitian</h3>
+        <h3>2. Variabel Penelitian</h3>
         <ul>
             <li><b>Variabel bebas:</b> Kecepatan sudut (ω) / RPM</li>
             <li><b>Variabel terikat:</b> Gaya sentripetal (F)</li>
             <li><b>Variabel kontrol:</b> massa (m) dan jari-jari (r)</li>
         </ul>
 
-        <h3> 3. Alat & Bahan</h3>
+        <h3>3. Alat & Bahan</h3>
         <ul>
             <li>ESP32</li>
             <li>HX711 (modul penguat load cell)</li>
@@ -216,10 +205,51 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
             <li>Beban (massa)</li>
         </ul>
 
-        <h3> 4. Cara Kerja Alat</h3>
+        <h3>4. Cara Kerja Alat</h3>
         <p>Beban diputar menggunakan sistem rotasi sehingga menghasilkan gerak melingkar. Gerakan tersebut menimbulkan gaya sentripetal yang bekerja menuju pusat lintasan. Gaya ini menyebabkan tegangan pada tali yang terhubung dengan load cell.</p>
 
-        <h3> 10. Kesimpulan</h3>
+        <p>Load cell mendeteksi besar gaya (tegangan) yang terjadi dan menghasilkan sinyal analog. Sinyal tersebut diperkuat dan dikonversi menjadi data digital oleh modul HX711.</p>
+
+        <p>ESP32 membaca data digital dari HX711, kemudian mengolah dan mengirimkan data tersebut ke Firebase melalui koneksi WiFi.</p>
+
+        <p>Data yang dikirim akan ditampilkan secara real-time pada website dalam bentuk:</p>
+        <ul>
+            <li>Nilai numerik (gaya, RPM, kecepatan, dll)</li>
+            <li>Grafik hubungan F terhadap ω²</li>
+            <li>Analisis regresi linear otomatis</li>
+        </ul>
+
+        <h3>5. Hipotesis</h3>
+        <p>Semakin besar kecepatan sudut (ω), maka gaya sentripetal akan meningkat secara kuadrat.</p>
+
+        <h3>6. Tabel Variabel (Real-time dari Sistem)</h3>
+        <ul>
+            <li>n = jumlah data</li>
+            <li>RPM</li>
+            <li>massa (gram)</li>
+            <li>kecepatan linear (v)</li>
+            <li>ω²</li>
+            <li>gaya (F)</li>
+        </ul>
+
+        <h3>7. Analisis Data</h3>
+        <p>Hubungan diuji menggunakan regresi linear:</p>
+        <p style="color:#38bdf8"><b>F = mω² + b</b></p>
+        <p>Jika nilai R² mendekati 1, maka hubungan antara gaya sentripetal dan kecepatan sudut sangat kuat dan sesuai dengan teori fisika.</p>
+
+        <h3>8. Analisis Error</h3>
+        <p>Error dihitung dari perbedaan antara nilai teoritis dan hasil eksperimen:</p>
+        <p>Error (%) = |F_teori − F_eksperimen| / F_teori × 100%</p>
+        <p>Semakin kecil nilai error, maka semakin akurat hasil eksperimen.</p>
+
+        <h3>9. Interpretasi Hasil</h3>
+        <p id="interp">
+            Jika R² > 0.9 → eksperimen VALID dan sesuai hukum F ∝ ω
+²<br>
+            Jika R² < 0.9 → terdapat noise atau kesalahan pengukuran
+        </p>
+
+        <h3>10. Kesimpulan</h3>
         <p>Eksperimen ini membuktikan bahwa gaya sentripetal berbanding lurus dengan kuadrat kecepatan sudut (F ∝ ω²), sesuai dengan teori fisika Newton.</p>
     </div>
 </div>
@@ -236,7 +266,7 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
         <div class="chart-container">
             <canvas id="dataChart"></canvas>
         </div>
-        <div id="regression-result">Menunggu data real-time dari Firebase...</div>
+        <div id="regression-result" style="margin:15px 0; padding:15px; background:#f1f5f9; border-radius:12px;"></div>
         
         <div class="table-wrapper">
             <table id="dataTable">
@@ -285,25 +315,14 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
         <p style="margin-top:30px; font-size:0.95rem; color:#64748b;">
             Tanggal Pembuatan: 8 April 2026
         </p>
-        <p style="margin-top:40px; font-style:italic; color:#1e3a8a;">
+        <p style="margin-top:40px; font-style:italic; color:#1e3a8a; line-height:1.6;">
             “Ilmu yang ditulis dengan tangan dan hati di bulan suci akan membekas abadi dalam ingatan.”
         </p>
     </div>
 </div>
 
-<!-- LOADING SPINNER -->
-<div id="loading-spinner">
-    <div class="loading-card">
-        <div class="spinner-container">
-            <div class="spinner"></div>
-        </div>
-        <p class="loading-text">MEMUAT HALAMAN...</p>
-        <p class="loading-subtext">CENTRIPETAL FORCE LAB</p>
-    </div>
-</div>
-
 <script>
-// ================== SCRIPT LENGKAP ==================
+// ================== FIREBASE & CHART ==================
 const firebaseConfig = {
     apiKey: "AIzaSyCjYmgWEfWBBnkM5LISCgnKU4Du50g00ls",
     databaseURL: "https://centripetal-force-82ef2-default-rtdb.asia-southeast1.firebasedatabase.app"
@@ -316,13 +335,6 @@ let isListening = false;
 
 function initFirebase() {
     firebase.initializeApp(firebaseConfig);
-}
-
-function showLoading() { 
-    document.getElementById('loading-spinner').classList.add('show'); 
-}
-function hideLoading() { 
-    document.getElementById('loading-spinner').classList.remove('show'); 
 }
 
 function calculateRegression(x, y) {
@@ -354,6 +366,8 @@ function updateTableAndChart() {
         const fM = parseFloat(d.fMeasured) || 0;
         const fT = parseFloat(d.fTheory) || 0;
         const selisih = fM - fT;
+        const color = selisih >= 0 ? '#10b981' : '#ef4444';
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${i+1}</td>
@@ -364,7 +378,7 @@ function updateTableAndChart() {
             <td>${(parseFloat(d.v) || 0).toFixed(2)}</td>
             <td>${fM.toFixed(2)}</td>
             <td>${fT.toFixed(2)}</td>
-            <td style="color: \( {selisih >= 0 ? '#10b981' : '#ef4444'}"> \){selisih.toFixed(2)}</td>
+            <td style="color:\( {color}"> \){selisih.toFixed(2)}</td>
             <td>${(parseFloat(d.error) || 0).toFixed(1)}%</td>
             <td>${d.status || 'OK'}</td>`;
         tbody.appendChild(tr);
@@ -372,17 +386,17 @@ function updateTableAndChart() {
 
     if (chartInstance) chartInstance.destroy();
 
-    const xValues = dataRecords.map(d => parseFloat(d.omega2)||0);
-    const yValues = dataRecords.map(d => parseFloat(d.fMeasured)||0);
+    const ctx = document.getElementById('dataChart').getContext('2d');
+    const xValues = dataRecords.map(d => parseFloat(d.omega2) || 0);
+    const yValues = dataRecords.map(d => parseFloat(d.fMeasured) || 0);
     const reg = calculateRegression(xValues, yValues);
 
     document.getElementById('regression-result').innerHTML = `
         <strong>📊 Analisis Regresi Linear</strong><br>
         Persamaan: F = ${reg.slope.toFixed(3)} ω² + ${reg.intercept.toFixed(3)}<br>
-        R² = ${reg.r2.toFixed(4)}
+        R² = <strong>${reg.r2.toFixed(4)}</strong>
     `;
 
-    const ctx = document.getElementById('dataChart').getContext('2d');
     chartInstance = new Chart(ctx, {
         type: 'scatter',
         data: {
@@ -396,6 +410,8 @@ function updateTableAndChart() {
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 x: { title: { display: true, text: 'ω² (rad²/s²)' } },
                 y: { title: { display: true, text: 'F (N)' } }
@@ -416,7 +432,7 @@ function startListening() {
             updateTableAndChart();
         }
     });
-    alert("✅ REAL-TIME AKTIF! Data dari ESP32 akan muncul otomatis.");
+    alert("✅ REAL-TIME AKTIF!");
 }
 
 function stopListening() {
@@ -433,29 +449,24 @@ function resetData() {
 }
 
 function switchPage(n) {
-    showLoading();
     document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-    const activeTab = document.getElementById(`tab-${n}`);
-    if (activeTab) activeTab.classList.add('active');
+    document.getElementById(`tab-${n}`).classList.add('active');
 
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-
-    setTimeout(() => {
-        const targetPage = document.getElementById(`page-${n}`);
-        if (targetPage) targetPage.classList.add('active');
-        hideLoading();
-    }, 850);
+    document.getElementById(`page-${n}`).classList.add('active');
 }
 
 window.addEventListener('load', () => {
     initFirebase();
+    
     dataRecords = [
         {time:"10:05", massGram:1000, omega:8.50, omega2:72.25, v:42.50, fMeasured:18.20, fTheory:18.00, error:1.1, status:"OK"},
         {time:"10:07", massGram:1000, omega:10.20, omega2:104.04, v:51.00, fMeasured:26.10, fTheory:26.00, error:0.4, status:"OK"},
         {time:"10:09", massGram:1000, omega:12.00, omega2:144.00, v:60.00, fMeasured:36.50, fTheory:36.00, error:1.4, status:"OK"}
     ];
+    
     updateTableAndChart();
-    console.log("%c✅ CENTRIPETAL FORCE LAB SIAP - FULL & REAL TIME", "color:#1e3a8a; font-weight:bold");
+    console.log("%c✅ FULL FINAL CODE - SEMUA HALAMAN LENGKAP!", "color:#1e3a8a; font-weight:bold");
 });
 </script>
 </body>
