@@ -380,7 +380,7 @@ function startListening() {
         const data = snapshot.val();
         if (data) {
             dataRecords.unshift(data);
-            if (dataRecords.length > 30) dataRecords.pop();
+            if (dataRecords.length > 5) dataRecords.pop();
             updateTableAndChart();
         }
     });
