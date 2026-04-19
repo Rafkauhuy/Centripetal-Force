@@ -313,6 +313,7 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
 
 <script>
 // ================== FIREBASE & CHART ==================
+// ================== FIREBASE ==================
 const firebaseConfig = {
     apiKey: "AIzaSyCjYmgWEfWBBnkM5LISCgnKU4Du50g00ls",
     databaseURL: "https://centripetal-force-82ef2-default-rtdb.asia-southeast1.firebasedatabase.app"
@@ -320,103 +321,184 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+// ================== GLOBAL ==================
 let dataRecords = [];
 let chartInstance = null;
 let dbRef = null;
 let isListening = false;
+const MAX_DATA = 100;
 
+// ================== REGRESI ==================
+function calculateRegression(x, y) {
+    const n = x.length;
+    if (n < 2) return null;
+
+    let sumX=0,sumY=0,sumXY=0,sumX2=0;
+
+    for(let i=0;i<n;i++){
+        sumX+=x[i];
+        sumY+=y[i];
+        sumXY+=x[i]*y[i];
+        sumX2+=x[i]*x[i];
+    }
+
+    const slope=(n*sumXY - sumX*sumY)/(n*sumX2 - sumX*sumX);
+    const intercept=(sumY - slope*sumX)/n;
+
+    let ssTot=0, ssRes=0;
+    const meanY=sumY/n;
+
+    for(let i=0;i<n;i++){
+        let pred=slope*x[i]+intercept;
+        ssTot+=(y[i]-meanY)**2;
+        ssRes+=(y[i]-pred)**2;
+    }
+
+    const r2=1-(ssRes/ssTot);
+
+    return {slope,intercept,r2};
+}
+
+// ================== UPDATE UI ==================
 function updateTableAndChart() {
     const tbody = document.getElementById('tableBody');
     tbody.innerHTML = '';
 
-    dataRecords.forEach((d, i) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${i+1}</td>
-            <td>${d.time || '-'}</td>
-            <td>${parseFloat(d.omega || 0).toFixed(2)}</td>
-            <td>${parseFloat(d.omega2 || 0).toFixed(2)}</td>
-            <td>${parseFloat(d.fMeasured || 0).toFixed(2)}</td>
-            <td>${parseFloat(d.fTheory || 0).toFixed(2)}</td>
-            <td>${parseFloat(d.error || 0).toFixed(1)}%</td>
+    dataRecords.forEach((d,i)=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML=`
+        <td>${i+1}</td>
+        <td>${d.time||'-'}</td>
+        <td>${(+d.omega||0).toFixed(2)}</td>
+        <td>${(+d.omega2||0).toFixed(2)}</td>
+        <td>${(+d.fMeasured||0).toFixed(2)}</td>
+        <td>${(+d.fTheory||0).toFixed(2)}</td>
+        <td>${(+d.error||0).toFixed(1)}%</td>
         `;
         tbody.appendChild(tr);
     });
 
-    if (chartInstance) chartInstance.destroy();
+    const x=dataRecords.map(d=>+d.omega2||0);
+    const y=dataRecords.map(d=>+d.fMeasured||0);
 
-    const ctx = document.getElementById('dataChart').getContext('2d');
-    const xValues = dataRecords.map(d => parseFloat(d.omega2) || 0);
-    const yValues = dataRecords.map(d => parseFloat(d.fMeasured) || 0);
+    if(chartInstance) chartInstance.destroy();
+    const ctx=document.getElementById('dataChart').getContext('2d');
 
-    chartInstance = new Chart(ctx, {
-        type: 'scatter',
-        data: {
-            datasets: [{
-                label: 'F vs ω²',
-                data: xValues.map((x,i) => ({x: x, y: yValues[i]})),
-                backgroundColor: '#1e3a8a',
-                borderColor: '#60a5fa',
-                borderWidth: 3,
-                pointRadius: 7
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: { title: { display: true, text: 'ω² (rad²/s²)' } },
-                y: { title: { display: true, text: 'F (N)' } }
+    let datasets=[{
+        label:'Data Eksperimen',
+        data:x.map((v,i)=>({x:v,y:y[i]})),
+        backgroundColor:'#1e3a8a',
+        pointRadius:6
+    }];
+
+    let reg=calculateRegression(x,y);
+
+    if(reg){
+        const trend=x.map(v=>({x:v,y:reg.slope*v+reg.intercept}));
+
+        datasets.push({
+            label:'Trendline',
+            data:trend,
+            type:'line',
+            borderColor:'#ef4444',
+            borderWidth:3,
+            pointRadius:0,
+            tension:0
+        });
+
+        document.getElementById("regression-result").innerHTML=`
+        <b>Persamaan:</b> F = ${reg.slope.toFixed(4)} ω² + ${reg.intercept.toFixed(4)}<br>
+        <b>R²:</b> ${reg.r2.toFixed(4)}<br>
+        <b>Status:</b> ${reg.r2>0.9?"VALID ✅":"BELUM AKURAT ⚠️"}
+        `;
+    }
+
+    chartInstance=new Chart(ctx,{
+        type:'scatter',
+        data:{datasets},
+        options:{
+            responsive:true,
+            maintainAspectRatio:false,
+            scales:{
+                x:{title:{display:true,text:'ω²'}},
+                y:{title:{display:true,text:'F'}}
             }
         }
     });
+
+    // ===== STATS =====
+    if(y.length>0){
+        let max=Math.max(...y);
+        let min=Math.min(...y);
+        let avg=y.reduce((a,b)=>a+b,0)/y.length;
+
+        let statsBox=document.getElementById("statsBox");
+        if(statsBox){
+            statsBox.innerHTML=`
+            🚀 <b>DATA ANALYTICS</b><br>
+            Max F: ${max.toFixed(2)} N<br>
+            Min F: ${min.toFixed(2)} N<br>
+            Avg F: ${avg.toFixed(2)} N
+            `;
+        }
+    }
 }
 
-function startListening() {
-    if (isListening) return;
-    isListening = true;
-    dbRef = firebase.database().ref('centripetalData');
-    dbRef.on('child_added', (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
+// ================== REALTIME ==================
+function startListening(){
+    if(isListening) return;
+    isListening=true;
+
+    dataRecords=[];
+    updateTableAndChart();
+
+    dbRef=firebase.database().ref('centripetalData');
+
+    dbRef.on('child_added',(snap)=>{
+        const data=snap.val();
+        if(data){
             dataRecords.unshift(data);
-            if (dataRecords.length > 5) dataRecords.pop();
+
+            if(dataRecords.length>MAX_DATA){
+                dataRecords.pop();
+            }
+
             updateTableAndChart();
         }
     });
-    alert("✅ REAL-TIME AKTIF! Data dari ESP32 akan muncul otomatis.");
+
+    alert("✅ REALTIME AKTIF");
 }
 
-function stopListening() {
-    if (dbRef) dbRef.off('child_added');
-    isListening = false;
-    alert("⛔ Real-time dimatikan.");
+function stopListening(){
+    if(dbRef) dbRef.off();
+    isListening=false;
+    alert("⛔ STOP");
 }
 
-function resetData() {
-    if (confirm("Reset semua data?")) {
-        dataRecords = [];
+function resetData(){
+    if(confirm("Reset data?")){
+        dataRecords=[];
         updateTableAndChart();
     }
 }
 
-function switchPage(n) {
-    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-    document.getElementById('tab-' + n).classList.add('active');
+// ================== NAV ==================
+function switchPage(n){
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.getElementById('tab-'+n).classList.add('active');
 
-    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-    document.getElementById('page-' + n).classList.add('active');
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById('page-'+n).classList.add('active');
 }
 
-window.addEventListener('load', () => {
-    dataRecords = [
-        {time:"10:05", omega:8.5, omega2:72.25, fMeasured:18.2, fTheory:18.0, error:1.1},
-        {time:"10:07", omega:10.2, omega2:104.04, fMeasured:26.1, fTheory:26.0, error:0.4},
-        {time:"10:09", omega:12.0, omega2:144.0, fMeasured:36.5, fTheory:36.0, error:1.4}
+// ================== INIT ==================
+window.onload=()=>{
+    dataRecords=[
+        {time:"10:05",omega:8.5,omega2:72.25,fMeasured:18.2,fTheory:18,error:1.1},
+        {time:"10:07",omega:10.2,omega2:104.04,fMeasured:26.1,fTheory:26,error:0.4},
+        {time:"10:09",omega:12,omega2:144,fMeasured:36.5,fTheory:36,error:1.4}
     ];
+
     updateTableAndChart();
-    console.log("%c✅ FULL FINAL CODE SIAP!", "color:#1e3a8a; font-weight:bold");
-});
-</script>
-</body>
-</html>
+};
