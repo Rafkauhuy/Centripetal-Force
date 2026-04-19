@@ -43,6 +43,7 @@ body {
     cursor: pointer;
     border-bottom: 4px solid transparent;
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 .tab.active {
     color: #1e3a8a;
@@ -106,7 +107,6 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
     box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 
-/* LOADING PREMIUM */
 #loading-spinner {
     position: fixed;
     top: 0; left: 0;
@@ -218,8 +218,7 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
         <h3>🧠 5. Contoh Soal Singkat</h3>
         <p>Sebuah benda bermassa 0.5 kg bergerak melingkar dengan jari-jari 0.4 m dan kecepatan sudut 10 rad/s.</p>
         <p><b>Ditanya: gaya sentripetal?</b></p>
-        <p>Gunakan rumus: F = mω
-²r</p>
+        <p>Gunakan rumus: F = mω²r</p>
         <p>F = 0.5 × (10)² × 0.4 = 20 N</p>
         <p><b>Jawaban: 20 Newton</b></p>
 
@@ -235,7 +234,8 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
         <h2>🧪 EKSPERIMEN GAYA SENTRIPETAL (FULL A+ AKADEMIK)</h2>
 
         <h3>🎯 1. Tujuan Eksperimen</h3>
-        <p>Mengetahui hubungan antara gaya sentripetal (F) dengan kuadrat kecepatan sudut (ω²) serta membuktikan bahwa F berbanding lurus dengan ω².</p>
+        <p>Mengetahui hubungan antara gaya sentripetal (F) dengan kuadrat kecepatan sudut (ω²) serta membuktikan bahwa F berbanding lurus dengan ω
+².</p>
 
         <h3>📌 2. Variabel Penelitian</h3>
         <ul>
@@ -283,7 +283,8 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
         <h3>📈 7. Analisis Data</h3>
         <p>Hubungan diuji menggunakan regresi linear:</p>
         <p style="color:#38bdf8"><b>F = mω² + b</b></p>
-        <p>Jika nilai R² mendekati 1, maka hubungan antara gaya sentripetal dan kecepatan sudut sangat kuat dan sesuai dengan teori fisika.</p>
+        <p>Jika nilai R
+² mendekati 1, maka hubungan antara gaya sentripetal dan kecepatan sudut sangat kuat dan sesuai dengan teori fisika.</p>
 
         <h3>⚠️ 8. Analisis Error</h3>
         <p>Error dihitung dari perbedaan antara nilai teoritis dan hasil eksperimen:</p>
@@ -324,7 +325,8 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
                         <th>Waktu</th>
                         <th>Massa (gram)</th>
                         <th>ω (rad/s)</th>
-                        <th>ω²</th>
+                        <th>ω
+²</th>
                         <th>v (m/s)</th>
                         <th>F_Measured (N)</th>
                         <th>F_Teori (N)</th>
@@ -454,7 +456,7 @@ function updateTableAndChart() {
             <td>${(parseFloat(d.v) || 0).toFixed(2)}</td>
             <td>${fM.toFixed(2)}</td>
             <td>${fT.toFixed(2)}</td>
-            <td style="color:\( {selisih >= 0 ? '#10b981' : '#ef4444'}"> \){selisih.toFixed(2)}</td>
+            <td style="color: \( {selisih >= 0 ? '#10b981' : '#ef4444'}"> \){selisih.toFixed(2)}</td>
             <td>${residual2.toFixed(3)}</td>
             <td>${(parseFloat(d.error) || 0).toFixed(1)}%</td>
             <td>${kontribusi}%</td>
@@ -463,6 +465,7 @@ function updateTableAndChart() {
     });
 
     if (chartInstance) chartInstance.destroy();
+
     const xValues = dataRecords.map(d => parseFloat(d.omega2)||0);
     const yValues = dataRecords.map(d => parseFloat(d.fMeasured)||0);
     const reg = calculateRegression(xValues, yValues);
@@ -470,8 +473,7 @@ function updateTableAndChart() {
     document.getElementById('regression-result').innerHTML = `
         <strong>📊 Analisis Regresi Linear</strong><br>
         Persamaan: <span style="color:#1e3a8a">F = ${reg.slope.toFixed(3)} ω² + ${reg.intercept.toFixed(3)}</span><br>
-        Koefisien Determinasi: <span style="color:${reg.r2>0.9?'#10b981':(reg.r2>0.7?'#f59e0b':'#ef4444')}">R
-² = ${reg.r2.toFixed(4)}</span><br>
+        Koefisien Determinasi: <span style="color:${reg.r2>0.9?'#10b981':(reg.r2>0.7?'#f59e0b':'#ef4444')}">R² = ${reg.r2.toFixed(4)}</span><br>
         <small>${reg.r2>0.9?'✅ Sangat baik & sesuai teori':reg.r2>0.7?'⚠️ Cukup baik':'❌ Perlu diperbaiki'}</small>
     `;
 
@@ -490,8 +492,7 @@ function updateTableAndChart() {
         },
         options: {
             scales: {
-                x: { title: { display: true, text: 'ω² (rad²/s
-²)' } },
+                x: { title: { display: true, text: 'ω² (rad²/s²)' } },
                 y: { title: { display: true, text: 'F (N)' } }
             }
         }
@@ -502,7 +503,6 @@ function updateTableAndChart() {
 function startListening() {
     if (isListening) return;
     isListening = true;
-
     dbRef = firebase.database().ref('centripetalData');
     dbRef.on('child_added', (snapshot) => {
         const newData = snapshot.val();
@@ -512,7 +512,6 @@ function startListening() {
             updateTableAndChart();
         }
     });
-
     alert("🔴 REAL-TIME MONITORING DARI FIREBASE TELAH AKTIF");
 }
 
@@ -530,10 +529,9 @@ function resetData() {
     }
 }
 
-// ================== SWITCH PAGE (SUDAH DIPERBAIKI) ==================
+// ================== SWITCH PAGE ==================
 function switchPage(n) {
     showLoading();
-
     document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
     const activeTab = document.getElementById(`tab-${n}`);
     if (activeTab) activeTab.classList.add('active');
@@ -542,9 +540,7 @@ function switchPage(n) {
 
     setTimeout(() => {
         const targetPage = document.getElementById(`page-${n}`);
-        if (targetPage) {
-            targetPage.classList.add('active');
-        }
+        if (targetPage) targetPage.classList.add('active');
         hideLoading();
     }, 850);
 }
