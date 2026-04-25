@@ -34,7 +34,12 @@ body {
 .header-title h1 { font-size: 1.52rem; font-weight: 800; color: #1e3a8a; }
 .header-title p { font-size: 0.93rem; color: #64748b; }
 
-.tabs { display: flex; background: white; border-bottom: 3px solid #e2e8f0; overflow-x: auto; }
+.tabs { 
+    display: flex; 
+    background: white; 
+    border-bottom: 3px solid #e2e8f0; 
+    overflow-x: auto;
+}
 .tab {
     padding: 14px 22px;
     font-weight: 700;
@@ -209,7 +214,8 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
         <p>Data yang dikirim akan ditampilkan secara real-time pada website dalam bentuk:</p>
         <ul>
             <li>Nilai numerik (gaya, RPM, kecepatan, dll)</li>
-            <li>Grafik hubungan F terhadap ω²</li>
+            <li>Grafik hubungan F terhadap ω
+²</li>
             <li>Analisis regresi linear otomatis</li>
         </ul>
 
@@ -228,7 +234,8 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
 
         <h3>7. Analisis Data</h3>
         <p>Hubungan diuji menggunakan regresi linear:</p>
-        <p style="color:#38bdf8"><b>F = mω² + b</b></p>
+        <p style="color:#38bdf8"><b>F = mω
+² + b</b></p>
         <p>Jika nilai R² mendekati 1, maka hubungan antara gaya sentripetal dan kecepatan sudut sangat kuat dan sesuai dengan teori fisika.</p>
 
         <h3>8. Analisis Error</h3>
@@ -268,8 +275,7 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
                         <th>No</th>
                         <th>Waktu</th>
                         <th>ω (rad/s)</th>
-                        <th>ω
-²</th>
+                        <th>ω²</th>
                         <th>F Measured (N)</th>
                         <th>F Teori (N)</th>
                         <th>Error (%)</th>
@@ -313,7 +319,6 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
 
 <script>
 // ================== FIREBASE & CHART ==================
-// ================== FIREBASE ==================
 const firebaseConfig = {
     apiKey: "AIzaSyCjYmgWEfWBBnkM5LISCgnKU4Du50g00ls",
     databaseURL: "https://centripetal-force-82ef2-default-rtdb.asia-southeast1.firebasedatabase.app"
@@ -425,23 +430,6 @@ function updateTableAndChart() {
             }
         }
     });
-
-    // ===== STATS =====
-    if(y.length>0){
-        let max=Math.max(...y);
-        let min=Math.min(...y);
-        let avg=y.reduce((a,b)=>a+b,0)/y.length;
-
-        let statsBox=document.getElementById("statsBox");
-        if(statsBox){
-            statsBox.innerHTML=`
-            🚀 <b>DATA ANALYTICS</b><br>
-            Max F: ${max.toFixed(2)} N<br>
-            Min F: ${min.toFixed(2)} N<br>
-            Avg F: ${avg.toFixed(2)} N
-            `;
-        }
-    }
 }
 
 // ================== REALTIME ==================
@@ -483,13 +471,17 @@ function resetData(){
     }
 }
 
-// ================== NAV ==================
+// ================== SWITCH PAGE (FUNGSI UTAMA YANG DIPERBAIKI) ==================
 function switchPage(n){
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    document.getElementById('tab-'+n).classList.add('active');
+    // Hapus active dari semua tab
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    // Tambah active ke tab yang dipilih
+    document.getElementById('tab-' + n).classList.add('active');
 
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    document.getElementById('page-'+n).classList.add('active');
+    // Hapus active dari semua page
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    // Tampilkan page yang dipilih
+    document.getElementById('page-' + n).classList.add('active');
 }
 
 // ================== INIT ==================
@@ -502,3 +494,7 @@ window.onload=()=>{
 
     updateTableAndChart();
 };
+</script>
+
+</body>
+</html>
