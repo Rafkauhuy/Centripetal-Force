@@ -34,12 +34,7 @@ body {
 .header-title h1 { font-size: 1.52rem; font-weight: 800; color: #1e3a8a; }
 .header-title p { font-size: 0.93rem; color: #64748b; }
 
-.tabs { 
-    display: flex; 
-    background: white; 
-    border-bottom: 3px solid #e2e8f0; 
-    overflow-x: auto;
-}
+.tabs { display: flex; background: white; border-bottom: 3px solid #e2e8f0; overflow-x: auto; }
 .tab {
     padding: 14px 22px;
     font-weight: 700;
@@ -49,6 +44,8 @@ body {
     border-bottom: 4px solid transparent;
     transition: all 0.3s ease;
     white-space: nowrap;
+    flex: 1;
+    text-align: center;
 }
 .tab.active {
     color: #1e3a8a;
@@ -143,7 +140,8 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
         <p>v = ωr</p>
         <p><b>Substitusi ke rumus awal:</b></p>
         <p>F = m(ωr)² / r</p>
-        <p>F = m(ω² r²) / r</p>
+        <p>F = m(ω² r
+²) / r</p>
         <p><b>Sederhanakan:</b></p>
         <p>F = mω²r</p>
         <br>
@@ -162,7 +160,8 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
         <h3>4. Grafik Teori</h3>
         <p>Hubungan antara gaya sentripetal dan kuadrat kecepatan sudut berbentuk garis lurus:</p>
         <p><b>Grafik F vs ω² → linear (garis lurus)</b></p>
-        <p>Jika eksperimen benar, maka titik data akan membentuk garis lurus dengan R² mendekati 1.</p>
+        <p>Jika eksperimen benar, maka titik data akan membentuk garis lurus dengan R
+² mendekati 1.</p>
 
         <h3>5. Contoh Soal Singkat</h3>
         <p>Sebuah benda bermassa 0.5 kg bergerak melingkar dengan jari-jari 0.4 m dan kecepatan sudut 10 rad/s.</p>
@@ -214,8 +213,7 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
         <p>Data yang dikirim akan ditampilkan secara real-time pada website dalam bentuk:</p>
         <ul>
             <li>Nilai numerik (gaya, RPM, kecepatan, dll)</li>
-            <li>Grafik hubungan F terhadap ω
-²</li>
+            <li>Grafik hubungan F terhadap ω²</li>
             <li>Analisis regresi linear otomatis</li>
         </ul>
 
@@ -234,8 +232,7 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
 
         <h3>7. Analisis Data</h3>
         <p>Hubungan diuji menggunakan regresi linear:</p>
-        <p style="color:#38bdf8"><b>F = mω
-² + b</b></p>
+        <p style="color:#38bdf8"><b>F = mω² + b</b></p>
         <p>Jika nilai R² mendekati 1, maka hubungan antara gaya sentripetal dan kecepatan sudut sangat kuat dan sesuai dengan teori fisika.</p>
 
         <h3>8. Analisis Error</h3>
@@ -254,7 +251,7 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
     </div>
 </div>
 
-<!-- ARSIP -->
+<!-- ================== ARSIP (SUDAH DIPERBAIKI) ================== -->
 <div class="page" id="page-2">
     <div class="card">
         <h2 style="text-align:center;">📁 ARSIP DATA EKSPERIMEN</h2>
@@ -287,7 +284,7 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
     </div>
 </div>
 
-<!-- PENCIPTA -->
+<!-- ================== PENCIPTA ================== -->
 <div class="page" id="page-3">
     <div class="card" style="text-align:center;">
         <h2>👤 INFORMASI PROYEK</h2>
@@ -318,13 +315,14 @@ th { background: #f1f5f9; font-weight: 600; color: #1e3a8a; }
 </div>
 
 <script>
-// ================== FIREBASE & CHART ==================
-const firebaseConfig = {
-    apiKey: "AIzaSyCjYmgWEfWBBnkM5LISCgnKU4Du50g00ls",
-    databaseURL: "https://centripetal-force-82ef2-default-rtdb.asia-southeast1.firebasedatabase.app"
-};
+// ================== SWITCH PAGE ==================
+function switchPage(n) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + n).classList.add('active');
 
-firebase.initializeApp(firebaseConfig);
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + n).classList.add('active');
+}
 
 // ================== GLOBAL ==================
 let dataRecords = [];
@@ -338,95 +336,90 @@ function calculateRegression(x, y) {
     const n = x.length;
     if (n < 2) return null;
 
-    let sumX=0,sumY=0,sumXY=0,sumX2=0;
-
-    for(let i=0;i<n;i++){
-        sumX+=x[i];
-        sumY+=y[i];
-        sumXY+=x[i]*y[i];
-        sumX2+=x[i]*x[i];
+    let sumX=0, sumY=0, sumXY=0, sumX2=0;
+    for(let i=0; i<n; i++){
+        sumX += x[i];
+        sumY += y[i];
+        sumXY += x[i]*y[i];
+        sumX2 += x[i]*x[i];
     }
 
-    const slope=(n*sumXY - sumX*sumY)/(n*sumX2 - sumX*sumX);
-    const intercept=(sumY - slope*sumX)/n;
+    const slope = (n*sumXY - sumX*sumY) / (n*sumX2 - sumX*sumX);
+    const intercept = (sumY - slope*sumX) / n;
 
-    let ssTot=0, ssRes=0;
-    const meanY=sumY/n;
+    let ssTot = 0, ssRes = 0;
+    const meanY = sumY / n;
 
-    for(let i=0;i<n;i++){
-        let pred=slope*x[i]+intercept;
-        ssTot+=(y[i]-meanY)**2;
-        ssRes+=(y[i]-pred)**2;
+    for(let i=0; i<n; i++){
+        let pred = slope * x[i] + intercept;
+        ssTot += (y[i] - meanY)**2;
+        ssRes += (y[i] - pred)**2;
     }
 
-    const r2=1-(ssRes/ssTot);
-
-    return {slope,intercept,r2};
+    const r2 = 1 - (ssRes / ssTot);
+    return {slope, intercept, r2};
 }
 
-// ================== UPDATE UI ==================
+// ================== UPDATE TABLE & CHART ==================
 function updateTableAndChart() {
     const tbody = document.getElementById('tableBody');
     tbody.innerHTML = '';
 
-    dataRecords.forEach((d,i)=>{
-        const tr=document.createElement('tr');
-        tr.innerHTML=`
-        <td>${i+1}</td>
-        <td>${d.time||'-'}</td>
-        <td>${(+d.omega||0).toFixed(2)}</td>
-        <td>${(+d.omega2||0).toFixed(2)}</td>
-        <td>${(+d.fMeasured||0).toFixed(2)}</td>
-        <td>${(+d.fTheory||0).toFixed(2)}</td>
-        <td>${(+d.error||0).toFixed(1)}%</td>
+    dataRecords.forEach((d, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${i+1}</td>
+            <td>${d.time || '-'}</td>
+            <td>${(+d.omega || 0).toFixed(2)}</td>
+            <td>${(+d.omega2 || 0).toFixed(2)}</td>
+            <td>${(+d.fMeasured || 0).toFixed(2)}</td>
+            <td>${(+d.fTheory || 0).toFixed(2)}</td>
+            <td>${(+d.error || 0).toFixed(1)}%</td>
         `;
         tbody.appendChild(tr);
     });
 
-    const x=dataRecords.map(d=>+d.omega2||0);
-    const y=dataRecords.map(d=>+d.fMeasured||0);
+    const x = dataRecords.map(d => +d.omega2 || 0);
+    const y = dataRecords.map(d => +d.fMeasured || 0);
 
-    if(chartInstance) chartInstance.destroy();
-    const ctx=document.getElementById('dataChart').getContext('2d');
+    if (chartInstance) chartInstance.destroy();
+    const ctx = document.getElementById('dataChart').getContext('2d');
 
-    let datasets=[{
-        label:'Data Eksperimen',
-        data:x.map((v,i)=>({x:v,y:y[i]})),
-        backgroundColor:'#1e3a8a',
-        pointRadius:6
+    let datasets = [{
+        label: 'Data Eksperimen',
+        data: x.map((v, i) => ({x: v, y: y[i]})),
+        backgroundColor: '#1e3a8a',
+        pointRadius: 6
     }];
 
-    let reg=calculateRegression(x,y);
-
-    if(reg){
-        const trend=x.map(v=>({x:v,y:reg.slope*v+reg.intercept}));
-
+    let reg = calculateRegression(x, y);
+    if (reg) {
+        const trend = x.map(v => ({x: v, y: reg.slope * v + reg.intercept}));
         datasets.push({
-            label:'Trendline',
-            data:trend,
-            type:'line',
-            borderColor:'#ef4444',
-            borderWidth:3,
-            pointRadius:0,
-            tension:0
+            label: 'Trendline',
+            data: trend,
+            type: 'line',
+            borderColor: '#ef4444',
+            borderWidth: 3,
+            pointRadius: 0
         });
 
-        document.getElementById("regression-result").innerHTML=`
-        <b>Persamaan:</b> F = ${reg.slope.toFixed(4)} ω² + ${reg.intercept.toFixed(4)}<br>
-        <b>R²:</b> ${reg.r2.toFixed(4)}<br>
-        <b>Status:</b> ${reg.r2>0.9?"VALID ✅":"BELUM AKURAT ⚠️"}
+        document.getElementById("regression-result").innerHTML = `
+            <b>Persamaan:</b> F = ${reg.slope.toFixed(4)} ω² + ${reg.intercept.toFixed(4)}<br>
+            <b>R²:</b> ${reg.r2.toFixed(4)}<br>
+            <b>Status:</b> ${reg.r2 > 0.9 ? "VALID ✅" : "BELUM AKURAT ⚠️"}
         `;
     }
 
-    chartInstance=new Chart(ctx,{
-        type:'scatter',
-        data:{datasets},
-        options:{
-            responsive:true,
-            maintainAspectRatio:false,
-            scales:{
-                x:{title:{display:true,text:'ω²'}},
-                y:{title:{display:true,text:'F'}}
+    chartInstance = new Chart(ctx, {
+        type: 'scatter',
+        data: { datasets },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: { title: { display: true, text: 'ω²' } },
+                y: { title: { display: true, text: 'F (N)' } }
             }
         }
     });
@@ -435,22 +428,16 @@ function updateTableAndChart() {
 // ================== REALTIME ==================
 function startListening(){
     if(isListening) return;
-    isListening=true;
-
-    dataRecords=[];
+    isListening = true;
+    dataRecords = [];
     updateTableAndChart();
 
-    dbRef=firebase.database().ref('centripetalData');
-
-    dbRef.on('child_added',(snap)=>{
-        const data=snap.val();
-        if(data){
+    dbRef = firebase.database().ref('centripetalData');
+    dbRef.on('child_added', (snap) => {
+        const data = snap.val();
+        if (data) {
             dataRecords.unshift(data);
-
-            if(dataRecords.length>MAX_DATA){
-                dataRecords.pop();
-            }
-
+            if (dataRecords.length > MAX_DATA) dataRecords.pop();
             updateTableAndChart();
         }
     });
@@ -459,39 +446,26 @@ function startListening(){
 }
 
 function stopListening(){
-    if(dbRef) dbRef.off();
-    isListening=false;
+    if (dbRef) dbRef.off();
+    isListening = false;
     alert("⛔ STOP");
 }
 
 function resetData(){
-    if(confirm("Reset data?")){
-        dataRecords=[];
+    if (confirm("Reset semua data?")) {
+        dataRecords = [];
         updateTableAndChart();
     }
 }
 
-// ================== SWITCH PAGE (FUNGSI UTAMA YANG DIPERBAIKI) ==================
-function switchPage(n){
-    // Hapus active dari semua tab
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    // Tambah active ke tab yang dipilih
-    document.getElementById('tab-' + n).classList.add('active');
-
-    // Hapus active dari semua page
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    // Tampilkan page yang dipilih
-    document.getElementById('page-' + n).classList.add('active');
-}
-
 // ================== INIT ==================
-window.onload=()=>{
-    dataRecords=[
-        {time:"10:05",omega:8.5,omega2:72.25,fMeasured:18.2,fTheory:18,error:1.1},
-        {time:"10:07",omega:10.2,omega2:104.04,fMeasured:26.1,fTheory:26,error:0.4},
-        {time:"10:09",omega:12,omega2:144,fMeasured:36.5,fTheory:36,error:1.4}
+window.onload = () => {
+    // Data contoh awal supaya grafik langsung muncul
+    dataRecords = [
+        {time:"10:05", omega:8.5, omega2:72.25, fMeasured:18.2, fTheory:18, error:1.1},
+        {time:"10:07", omega:10.2, omega2:104.04, fMeasured:26.1, fTheory:26, error:0.4},
+        {time:"10:09", omega:12, omega2:144, fMeasured:36.5, fTheory:36, error:1.4}
     ];
-
     updateTableAndChart();
 };
 </script>
